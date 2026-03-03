@@ -292,10 +292,11 @@ body.cms-active [data-editable]:focus {
 /* Drag handles for sections */
 body.cms-active section[data-section-id] {
   position:relative;
+  padding-left:60px;
 }
 .cms-drag-handle {
   display:none;
-  position:absolute; left:-42px; top:50%;
+  position:absolute; left:8px; top:50%;
   transform:translateY(-50%);
   width:34px; height:60px;
   background:var(--red-deep); border:1px solid var(--border3);
@@ -308,6 +309,67 @@ body.cms-active section[data-section-id] {
 .cms-drag-handle span { display:block; width:14px; height:2px; background:var(--cream2); border-radius:1px; }
 body.cms-active section[data-section-id]:hover .cms-drag-handle,
 body.cms-active section[data-section-id].drag-over .cms-drag-handle { display:flex; }
+
+/* Section control toolbar */
+.cms-section-toolbar {
+  display:none;
+  position:absolute; right:8px; top:8px; z-index:51;
+  background:var(--card); border:1px solid var(--border3);
+  padding:.4rem; gap:.3rem; flex-direction:row; align-items:center;
+  box-shadow:0 4px 16px rgba(0,0,0,.6);
+}
+body.cms-active section[data-section-id]:hover .cms-section-toolbar { display:flex; }
+.cms-section-btn {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:28px; height:28px; background:transparent; border:1px solid var(--border2);
+  color:var(--cream2); cursor:pointer; transition:.2s; font-size:.7rem;
+  padding:0;
+}
+.cms-section-btn:hover { background:var(--red-deep); border-color:var(--red); color:var(--cream); }
+.cms-section-btn.danger:hover { background:var(--red); color:#fff; }
+
+/* Add section buttons */
+.cms-add-section {
+  display:none;
+  position:relative; margin:1rem 0;
+  padding:1rem 0; border-top:2px dashed var(--border2); border-bottom:2px dashed var(--border2);
+  text-align:center;
+}
+body.cms-active .cms-add-section { display:block; }
+.cms-add-btn {
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-family:var(--fd); font-size:.7rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; padding:.6rem 1.2rem; background:var(--red-deep);
+  border:1px solid var(--red); color:var(--red-glow); cursor:pointer; transition:.2s;
+}
+.cms-add-btn:hover { background:var(--red); color:#fff; }
+
+/* Content item controls */
+body.cms-active .faq-item,
+body.cms-active .price-row,
+body.cms-active .tl-item,
+body.cms-active .rabat-card,
+body.cms-active .pokoj-card {
+  position:relative;
+}
+.cms-item-controls {
+  display:none;
+  position:absolute; right:4px; top:4px; z-index:52;
+  gap:.2rem;
+}
+body.cms-active .faq-item:hover .cms-item-controls,
+body.cms-active .price-row:hover .cms-item-controls,
+body.cms-active .tl-item:hover .cms-item-controls,
+body.cms-active .rabat-card:hover .cms-item-controls,
+body.cms-active .pokoj-card:hover .cms-item-controls { display:flex; }
+.cms-item-btn {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:24px; height:24px; background:var(--card); border:1px solid var(--border2);
+  color:var(--cream2); cursor:pointer; transition:.2s; font-size:.6rem;
+  padding:0;
+}
+.cms-item-btn:hover { background:var(--red-deep); border-color:var(--red); color:var(--cream); }
+.cms-item-btn.danger:hover { background:var(--red); color:#fff; }
 
 /* Drag-over indicator */
 section.drag-over-top { border-top:3px solid var(--red)!important; }
@@ -350,6 +412,73 @@ section.dragging { opacity:.4; pointer-events:none; }
 }
 .rich-btn:hover { background:var(--red-deep); color:var(--cream); }
 
+/* Section template chooser modal */
+#cms-template-modal {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.92);
+  z-index:10000; overflow:auto; padding:2rem;
+}
+#cms-template-modal.show { display:flex; align-items:center; justify-content:center; }
+.cms-tpl-box {
+  background:var(--card); border:1px solid var(--border2); border-top:2px solid var(--red);
+  padding:2.5rem; max-width:700px; width:100%; max-height:85vh; overflow-y:auto;
+  position:relative;
+}
+.cms-tpl-box h3 { font-family:var(--fd); font-size:1.6rem; font-weight:900; color:var(--cream); margin-bottom:.4rem; }
+.cms-tpl-box p { font-size:.8rem; color:var(--muted); margin-bottom:1.5rem; }
+.cms-tpl-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:1rem;
+}
+.cms-tpl-card {
+  background:var(--bg2); border:1px solid var(--border2); padding:1.2rem;
+  cursor:pointer; transition:.2s; text-align:center;
+}
+.cms-tpl-card:hover { border-color:var(--red); background:var(--red-deep); }
+.cms-tpl-card .tpl-icon { font-size:2rem; margin-bottom:.5rem; display:block; }
+.cms-tpl-card .tpl-name {
+  font-family:var(--fd); font-size:.75rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--cream);
+}
+.cms-tpl-card .tpl-desc { font-size:.7rem; color:var(--muted); margin-top:.3rem; }
+.cms-tpl-close {
+  position:absolute; top:1rem; right:1rem; background:none; border:none;
+  color:var(--muted); cursor:pointer; font-size:1.4rem; transition:color .2s;
+}
+.cms-tpl-close:hover { color:var(--red); }
+
+/* Undo/Redo button states */
+.cms-btn:disabled { opacity:.3; cursor:not-allowed; }
+.cms-btn:disabled:hover { background:transparent; border-color:var(--border2); color:var(--cream2); }
+
+/* Add item button (for FAQ, prices, timeline, etc.) */
+.cms-add-item {
+  display:none;
+  margin-top:.8rem; padding:.5rem 1rem;
+  background:var(--red-deep); border:1px dashed var(--red); color:var(--red-glow);
+  font-family:var(--fd); font-size:.65rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; cursor:pointer; transition:.2s; text-align:center; width:100%;
+}
+body.cms-active .cms-add-item { display:block; }
+.cms-add-item:hover { background:var(--red); color:#fff; border-style:solid; }
+
+/* Export modal */
+#cms-export-modal {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.92);
+  z-index:10001; overflow:auto; padding:2rem;
+}
+#cms-export-modal.show { display:flex; align-items:center; justify-content:center; }
+.cms-export-box {
+  background:var(--card); border:1px solid var(--border2); border-top:2px solid var(--red);
+  padding:2.5rem; max-width:600px; width:100%; position:relative;
+}
+.cms-export-box h3 { font-family:var(--fd); font-size:1.4rem; font-weight:900; color:var(--cream); margin-bottom:1rem; }
+.cms-export-box textarea {
+  width:100%; height:200px; background:var(--bg2); border:1px solid var(--border2);
+  color:var(--cream); font-family:monospace; font-size:.7rem; padding:.8rem;
+  resize:vertical; outline:none;
+}
+.cms-export-box textarea:focus { border-color:var(--red); }
+.cms-export-actions { display:flex; gap:.8rem; margin-top:1rem; flex-wrap:wrap; }
+
 /* RESPONSIVE */
 @media(max-width:960px) {
   nav { padding:1rem 1.5rem; }
@@ -367,10 +496,16 @@ section.dragging { opacity:.4; pointer-events:none; }
   footer { flex-direction:column; text-align:center; }
   .cms-drag-handle { display:none!important; }
   #cms-toolbar { width:calc(100% - 2rem); flex-wrap:wrap; }
+  body.cms-active section[data-section-id] { padding-left:1.5rem; }
+  .cms-section-toolbar { right:4px; top:4px; flex-wrap:wrap; }
+  .cms-tpl-grid { grid-template-columns:1fr 1fr; }
 }
 @media(max-width:600px) {
   .hero-title { font-size:clamp(4.5rem,20vw,7rem); }
   .hero-actions { flex-direction:column; align-items:flex-start; }
+  .cms-tpl-grid { grid-template-columns:1fr; }
+  .cms-section-toolbar { flex-wrap:wrap; max-width:120px; }
+  .cms-export-actions { flex-direction:column; }
 }
 </style>
 </head>
@@ -649,14 +784,23 @@ section.dragging { opacity:.4; pointer-events:none; }
   <span class="cms-tb-label">✏️ TRYB EDYCJI</span>
   <div id="cms-autosave-dot" title="Status auto-zapisu"></div>
   <span class="cms-changes" id="cms-changes-txt"></span>
+  <button class="cms-btn" id="cms-undo-btn" onclick="cmsUndo()" title="Cofnij (Ctrl+Z)" disabled>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+    Cofnij
+  </button>
+  <button class="cms-btn" id="cms-redo-btn" onclick="cmsRedo()" title="Ponów (Ctrl+Y)" disabled>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transform:scaleX(-1)"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+    Ponów
+  </button>
   <button class="cms-btn cms-save" id="cms-save-btn" onclick="cmsSave()">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
     Zapisz
   </button>
-  <button class="cms-btn" onclick="cmsReset()" title="Przywróć oryginalne teksty">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-    Reset
+  <button class="cms-btn" onclick="cmsExport()" title="Eksportuj stronę jako HTML">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Eksport
   </button>
+  <button class="cms-btn" onclick="cmsReset()" title="Przywróć oryginalne teksty">Reset</button>
   <button class="cms-btn" onclick="cmsExit()">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     Wyjdź
@@ -669,11 +813,78 @@ section.dragging { opacity:.4; pointer-events:none; }
   <button class="rich-btn" onclick="richCmd('italic')" title="Kursywa"><i>I</i></button>
   <button class="rich-btn" onclick="richCmd('underline')" title="Podkreślenie"><u>U</u></button>
   <button class="rich-btn" onclick="richCmd('strikeThrough')" title="Przekreślenie"><s>S</s></button>
+  <button class="rich-btn" onclick="richCmdLink()" title="Wstaw link">🔗</button>
+  <button class="rich-btn" onclick="richCmd('removeFormat')" title="Usuń formatowanie">✕</button>
 </div>
 
 <!-- CMS: BADGE & TOAST -->
 <div id="cms-badge" class="cms-badge">Tryb edycji aktywny</div>
 <div id="cms-toast"></div>
+
+<!-- CMS: TEMPLATE CHOOSER MODAL -->
+<div id="cms-template-modal">
+  <div class="cms-tpl-box">
+    <button class="cms-tpl-close" onclick="closeTplModal()">✕</button>
+    <h3>Dodaj nową sekcję</h3>
+    <p>Wybierz szablon sekcji do dodania na stronę.</p>
+    <div class="cms-tpl-grid">
+      <div class="cms-tpl-card" onclick="addSectionFromTemplate('text')">
+        <span class="tpl-icon">📝</span>
+        <span class="tpl-name">Tekst</span>
+        <span class="tpl-desc">Tytuł + akapit tekstu</span>
+      </div>
+      <div class="cms-tpl-card" onclick="addSectionFromTemplate('two-col')">
+        <span class="tpl-icon">📰</span>
+        <span class="tpl-name">Dwie kolumny</span>
+        <span class="tpl-desc">Tekst w dwóch kolumnach</span>
+      </div>
+      <div class="cms-tpl-card" onclick="addSectionFromTemplate('cards')">
+        <span class="tpl-icon">🃏</span>
+        <span class="tpl-name">Karty</span>
+        <span class="tpl-desc">Siatka kart z treścią</span>
+      </div>
+      <div class="cms-tpl-card" onclick="addSectionFromTemplate('faq')">
+        <span class="tpl-icon">❓</span>
+        <span class="tpl-name">FAQ</span>
+        <span class="tpl-desc">Pytania i odpowiedzi</span>
+      </div>
+      <div class="cms-tpl-card" onclick="addSectionFromTemplate('cta')">
+        <span class="tpl-icon">📢</span>
+        <span class="tpl-name">CTA / Banner</span>
+        <span class="tpl-desc">Wezwanie do działania</span>
+      </div>
+      <div class="cms-tpl-card" onclick="addSectionFromTemplate('gallery')">
+        <span class="tpl-icon">🖼️</span>
+        <span class="tpl-name">Galeria</span>
+        <span class="tpl-desc">Siatka obrazów z opisami</span>
+      </div>
+      <div class="cms-tpl-card" onclick="addSectionFromTemplate('timeline')">
+        <span class="tpl-icon">📅</span>
+        <span class="tpl-name">Oś czasu</span>
+        <span class="tpl-desc">Lista wydarzeń chronologicznych</span>
+      </div>
+      <div class="cms-tpl-card" onclick="addSectionFromTemplate('html')">
+        <span class="tpl-icon">🔧</span>
+        <span class="tpl-name">Własny HTML</span>
+        <span class="tpl-desc">Wklej własny kod HTML</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CMS: EXPORT MODAL -->
+<div id="cms-export-modal">
+  <div class="cms-export-box">
+    <button class="cms-tpl-close" onclick="closeExportModal()">✕</button>
+    <h3>Eksport strony</h3>
+    <textarea id="cms-export-textarea" readonly></textarea>
+    <div class="cms-export-actions">
+      <button class="cms-btn cms-save" onclick="copyExport()">📋 Kopiuj do schowka</button>
+      <button class="cms-btn cms-save" onclick="downloadExport()">💾 Pobierz jako HTML</button>
+      <button class="cms-btn" onclick="closeExportModal()">Zamknij</button>
+    </div>
+  </div>
+</div>
 
 <!-- ============================================================
      SCRIPTS
@@ -715,16 +926,28 @@ const io = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isI
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 /* ==============================================================
-   CMS ENGINE
+   CMS ENGINE - ENHANCED
    ============================================================== */
-const CMS_PASSWORD = 'familock2026';
-const CMS_STORAGE_KEY = 'familock_cms_v1';
-const CMS_ORDER_KEY = 'familock_order_v1';
+const CMS_PASSWORD_HASH = '050291be2df761a611b11e514ccce1ae086d694ad7323fd12f50d0fd6e0541f1';
+async function cmsHashPw(pw) {
+  const enc = new TextEncoder().encode(pw);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+const CMS_STORAGE_KEY = 'familock_cms_v2';
+const CMS_ORDER_KEY = 'familock_order_v2';
+const CMS_SECTIONS_KEY = 'familock_sections_v2';
 let cmsMode = false;
 let cmsChanged = false;
 let cmsAutoSaveTimer = null;
 let cmsKeySequence = '';
 let dragSrc = null;
+let cmsUndoStack = [];
+let cmsRedoStack = [];
+let tplInsertRef = null; // reference element for section insertion
+let cmsIdCounter = Date.now();
+
+function cmsGenId() { return 'cms-' + (cmsIdCounter++); }
 
 /* --- SECRET TRIGGER: type "edit" anywhere --- */
 document.addEventListener('keydown', e => {
@@ -736,15 +959,23 @@ document.addEventListener('keydown', e => {
     cmsKeySequence = '';
     cmsOpenPw();
   }
-  // Also Ctrl+Shift+E
 });
 document.addEventListener('keydown', e => {
   if (!cmsMode && e.ctrlKey && e.shiftKey && e.key === 'E') { e.preventDefault(); cmsOpenPw(); }
   if (cmsMode && e.key === 'Escape') {
+    const tplModal = document.getElementById('cms-template-modal');
+    const expModal = document.getElementById('cms-export-modal');
+    if (tplModal.classList.contains('show')) { closeTplModal(); return; }
+    if (expModal.classList.contains('show')) { closeExportModal(); return; }
     const overlay = document.getElementById('cms-pw-overlay');
     if (overlay.classList.contains('show')) { cmsClosePw(); return; }
-    if (confirm('Wyjść z trybu edycji? Niezapisane zmiany zostaną utracone.')) cmsExit();
+    if (confirm('Wyjsc z trybu edycji? Niezapisane zmiany zostana utracone.')) cmsExit();
   }
+  // Ctrl+Z / Ctrl+Y for undo/redo
+  if (cmsMode && e.ctrlKey && !e.shiftKey && e.key === 'z') { e.preventDefault(); cmsUndo(); }
+  if (cmsMode && e.ctrlKey && (e.key === 'y' || (e.shiftKey && e.key === 'z'))) { e.preventDefault(); cmsRedo(); }
+  // Ctrl+S to save
+  if (cmsMode && e.ctrlKey && e.key === 's') { e.preventDefault(); cmsSave(); }
 });
 
 /* Logo click x5 trigger */
@@ -767,10 +998,11 @@ function cmsOpenPw() {
 function cmsClosePw() {
   document.getElementById('cms-pw-overlay').classList.remove('show');
 }
-function cmsLogin() {
+async function cmsLogin() {
   const pw = document.getElementById('cms-pw-input').value;
   const err = document.getElementById('cms-pw-error');
-  if (pw === CMS_PASSWORD) {
+  const hash = await cmsHashPw(pw);
+  if (hash === CMS_PASSWORD_HASH) {
     cmsClosePw();
     cmsEnter();
   } else {
@@ -781,6 +1013,77 @@ function cmsLogin() {
   }
 }
 
+/* --- UNDO / REDO --- */
+function cmsSnapshot() {
+  const state = {
+    html: getEditableContent(),
+    order: [...document.querySelectorAll('section[data-section-id]')].map(s => s.dataset.sectionId),
+    sections: getSectionsHTML()
+  };
+  cmsUndoStack.push(JSON.stringify(state));
+  if (cmsUndoStack.length > 50) cmsUndoStack.shift();
+  cmsRedoStack = [];
+  updateUndoRedoButtons();
+}
+function getEditableContent() {
+  const data = {};
+  document.querySelectorAll('[data-editable]').forEach(el => {
+    data[el.getAttribute('data-editable')] = el.innerHTML;
+  });
+  return data;
+}
+function getSectionsHTML() {
+  const data = {};
+  document.querySelectorAll('section[data-section-id]').forEach(sec => {
+    data[sec.dataset.sectionId] = sec.outerHTML;
+  });
+  return data;
+}
+function cmsUndo() {
+  if (cmsUndoStack.length === 0) return;
+  const currentState = JSON.stringify({
+    html: getEditableContent(),
+    order: [...document.querySelectorAll('section[data-section-id]')].map(s => s.dataset.sectionId),
+    sections: getSectionsHTML()
+  });
+  cmsRedoStack.push(currentState);
+  const prev = JSON.parse(cmsUndoStack.pop());
+  restoreState(prev);
+  updateUndoRedoButtons();
+  cmsToast('Cofnieto zmiane');
+}
+function cmsRedo() {
+  if (cmsRedoStack.length === 0) return;
+  const currentState = JSON.stringify({
+    html: getEditableContent(),
+    order: [...document.querySelectorAll('section[data-section-id]')].map(s => s.dataset.sectionId),
+    sections: getSectionsHTML()
+  });
+  cmsUndoStack.push(currentState);
+  const next = JSON.parse(cmsRedoStack.pop());
+  restoreState(next);
+  updateUndoRedoButtons();
+  cmsToast('Ponowiono zmiane');
+}
+function restoreState(state) {
+  // Restore editable content
+  if (state.html) {
+    document.querySelectorAll('[data-editable]').forEach(el => {
+      const key = el.getAttribute('data-editable');
+      if (state.html[key] !== undefined) el.innerHTML = state.html[key];
+    });
+  }
+  cmsChanged = true;
+  cmsUpdateDot('saving');
+  cmsUpdateChangesTxt(true);
+}
+function updateUndoRedoButtons() {
+  const undoBtn = document.getElementById('cms-undo-btn');
+  const redoBtn = document.getElementById('cms-redo-btn');
+  if (undoBtn) undoBtn.disabled = cmsUndoStack.length === 0;
+  if (redoBtn) redoBtn.disabled = cmsRedoStack.length === 0;
+}
+
 /* --- ENTER EDIT MODE --- */
 function cmsEnter() {
   cmsMode = true;
@@ -788,10 +1091,32 @@ function cmsEnter() {
   document.getElementById('cms-toolbar').classList.add('show');
   document.getElementById('cms-badge').classList.add('show');
 
-  // Load saved content first
+  // Load saved content & dynamic sections first
+  cmsLoadDynamicSections();
   cmsLoadContent();
 
   // Make all [data-editable] elements editable
+  enableEditables();
+
+  // Setup section toolbars and drag
+  setupSectionControls();
+  setupSectionDrag();
+  setupItemControls();
+  setupAddItemButtons();
+
+  // Restore section order
+  cmsLoadOrder();
+
+  // Take initial snapshot
+  cmsSnapshot();
+
+  // Start autosave
+  cmsAutoSaveTimer = setInterval(cmsAutoSave, 4000);
+
+  cmsToast('Tryb edycji aktywny! Kliknij tekst by edytowac. Uzyj przyciskow na sekcjach by dodawac/usuwac/przesuwac.');
+}
+
+function enableEditables() {
   document.querySelectorAll('[data-editable]').forEach(el => {
     el.setAttribute('contenteditable', 'true');
     el.setAttribute('spellcheck', 'true');
@@ -800,17 +1125,16 @@ function cmsEnter() {
     el.addEventListener('mouseup', cmsUpdateRichBar);
     el.addEventListener('keyup', cmsUpdateRichBar);
   });
-
-  // Setup drag for sections
-  setupSectionDrag();
-
-  // Restore section order
-  cmsLoadOrder();
-
-  // Start autosave
-  cmsAutoSaveTimer = setInterval(cmsAutoSave, 4000);
-
-  cmsToast('✏️ Tryb edycji aktywny! Kliknij tekst by edytować, przeciągnij sekcje by zmieniać kolejność.');
+}
+function disableEditables() {
+  document.querySelectorAll('[data-editable]').forEach(el => {
+    el.removeAttribute('contenteditable');
+    el.removeAttribute('spellcheck');
+    el.removeEventListener('input', cmsOnInput);
+    el.removeEventListener('keydown', cmsOnKeyDown);
+    el.removeEventListener('mouseup', cmsUpdateRichBar);
+    el.removeEventListener('keyup', cmsUpdateRichBar);
+  });
 }
 
 function cmsExit() {
@@ -820,19 +1144,15 @@ function cmsExit() {
   document.getElementById('cms-badge').classList.remove('show');
   document.getElementById('cms-richbar').classList.remove('show');
 
-  document.querySelectorAll('[data-editable]').forEach(el => {
-    el.removeAttribute('contenteditable');
-    el.removeAttribute('spellcheck');
-    el.removeEventListener('input', cmsOnInput);
-    el.removeEventListener('keydown', cmsOnKeyDown);
-    el.removeEventListener('mouseup', cmsUpdateRichBar);
-    el.removeEventListener('keyup', cmsUpdateRichBar);
-  });
+  disableEditables();
 
-  document.querySelectorAll('.cms-drag-handle').forEach(h => h.remove());
+  document.querySelectorAll('.cms-drag-handle, .cms-section-toolbar, .cms-item-controls, .cms-add-item').forEach(h => h.remove());
   clearInterval(cmsAutoSaveTimer);
   cmsChanged = false;
   cmsUpdateDot('idle');
+  cmsUndoStack = [];
+  cmsRedoStack = [];
+  updateUndoRedoButtons();
 }
 
 /* --- EDITABLE EVENTS --- */
@@ -842,11 +1162,10 @@ function cmsOnInput(e) {
   cmsUpdateChangesTxt(true);
 }
 function cmsOnKeyDown(e) {
-  // Prevent Enter from creating <div> in simple elements
   if (e.key === 'Enter' && !e.shiftKey) {
     const el = e.currentTarget;
     const tag = el.tagName.toLowerCase();
-    if (['span','div'].includes(tag) && !el.classList.contains('historia-body') && !el.classList.contains('historia-quote') && !el.classList.contains('faq-a') && !el.classList.contains('section-intro') && !el.classList.contains('hero-sub')) {
+    if (['span','div'].includes(tag) && !el.classList.contains('historia-body') && !el.classList.contains('historia-quote') && !el.classList.contains('faq-a') && !el.classList.contains('section-intro') && !el.classList.contains('hero-sub') && !el.classList.contains('cms-custom-content')) {
       e.preventDefault();
     }
   }
@@ -859,14 +1178,20 @@ function cmsUpdateRichBar(e) {
   const range = sel.getRangeAt(0);
   const rect = range.getBoundingClientRect();
   const bar = document.getElementById('cms-richbar');
-  bar.style.left = Math.max(8, rect.left + rect.width/2 - 60) + 'px';
+  bar.style.left = Math.max(8, rect.left + rect.width/2 - 80) + 'px';
   bar.style.top = (rect.top + window.scrollY - 44) + 'px';
   bar.classList.add('show');
 }
 function richCmd(cmd) {
   document.execCommand(cmd, false, null);
-  document.querySelectorAll('[data-editable]').forEach(el => el.focus);
   cmsOnInput();
+}
+function richCmdLink() {
+  const url = prompt('Podaj adres URL:', 'https://');
+  if (url) {
+    document.execCommand('createLink', false, url);
+    cmsOnInput();
+  }
 }
 document.addEventListener('selectionchange', () => {
   if (!cmsMode) return;
@@ -889,23 +1214,25 @@ function cmsUpdateChangesTxt(dirty) {
 
 /* --- SAVE / LOAD --- */
 function cmsSave() {
+  cmsSnapshot();
   const data = {};
   document.querySelectorAll('[data-editable]').forEach(el => {
     data[el.getAttribute('data-editable')] = el.innerHTML;
   });
   try {
     localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(data));
+    cmsSaveOrder();
+    cmsSaveDynamicSections();
     cmsChanged = false;
     cmsUpdateDot('saved');
     cmsUpdateChangesTxt(false);
-    // Flash the save button
     const btn = document.getElementById('cms-save-btn');
     btn.classList.add('cms-saved');
-    btn.textContent = '✓ Zapisano!';
+    btn.textContent = 'Zapisano!';
     setTimeout(() => { btn.classList.remove('cms-saved'); btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg> Zapisz'; }, 2000);
-    cmsToast('💾 Zapisano! Zmiany zostały zachowane.');
+    cmsToast('Zapisano! Zmiany zostaly zachowane.');
   } catch(err) {
-    cmsToast('❌ Błąd zapisu: ' + err.message);
+    cmsToast('Blad zapisu: ' + err.message);
   }
 }
 
@@ -931,85 +1258,586 @@ function cmsLoadContent() {
 // Load content on page init (not just in edit mode)
 window.addEventListener('DOMContentLoaded', () => {
   try {
+    cmsLoadDynamicSections();
     const raw = localStorage.getItem(CMS_STORAGE_KEY);
-    if (!raw) return;
-    const data = JSON.parse(raw);
-    document.querySelectorAll('[data-editable]').forEach(el => {
-      const key = el.getAttribute('data-editable');
-      if (data[key] !== undefined) el.innerHTML = data[key];
-    });
-    // Load order
+    if (raw) {
+      const data = JSON.parse(raw);
+      document.querySelectorAll('[data-editable]').forEach(el => {
+        const key = el.getAttribute('data-editable');
+        if (data[key] !== undefined) el.innerHTML = data[key];
+      });
+    }
     cmsLoadOrder();
   } catch(e) {}
 });
 
 function cmsReset() {
-  if (!confirm('Na pewno przywrócić oryginalne teksty? Wszystkie zmiany zostaną usunięte.')) return;
+  if (!confirm('Na pewno przywrocic oryginalne teksty? Wszystkie zmiany zostana usuniete.')) return;
   try {
     localStorage.removeItem(CMS_STORAGE_KEY);
     localStorage.removeItem(CMS_ORDER_KEY);
-    cmsToast('🔄 Przywrócono oryginalne treści. Strona odświeży się za chwilę...');
+    localStorage.removeItem(CMS_SECTIONS_KEY);
+    cmsToast('Przywrocono oryginalne tresci. Strona odswieza sie za chwile...');
     setTimeout(() => location.reload(), 1800);
   } catch(e) {}
 }
 
-/* --- SECTION DRAG & DROP --- */
-function setupSectionDrag() {
-  const sections = document.querySelectorAll('section[data-section-id]');
-  sections.forEach(sec => {
-    // Add handle
-    const handle = document.createElement('div');
-    handle.className = 'cms-drag-handle';
-    handle.title = 'Przeciągnij by zmienić kolejność sekcji';
-    handle.innerHTML = '<span></span><span></span><span></span><span></span><span></span>';
-    sec.appendChild(handle);
+/* ============================================================
+   SECTION CONTROLS (Move Up/Down, Delete, Duplicate, Add)
+   ============================================================ */
+function setupSectionControls() {
+  document.querySelectorAll('section[data-section-id]').forEach(sec => {
+    if (sec.querySelector('.cms-section-toolbar')) return;
+    const tb = document.createElement('div');
+    tb.className = 'cms-section-toolbar';
+    tb.innerHTML = `
+      <button class="cms-section-btn" onclick="moveSectionUp(this)" title="Przesun w gore">&#9650;</button>
+      <button class="cms-section-btn" onclick="moveSectionDown(this)" title="Przesun w dol">&#9660;</button>
+      <button class="cms-section-btn" onclick="duplicateSection(this)" title="Duplikuj sekcje">&#9776;</button>
+      <button class="cms-section-btn" onclick="openTplModal(this)" title="Dodaj nowa sekcje ponizej">&#43;</button>
+      <button class="cms-section-btn danger" onclick="deleteSection(this)" title="Usun sekcje">&#10005;</button>
+    `;
+    sec.appendChild(tb);
+  });
+}
 
-    // Drag events on handle
-    handle.addEventListener('mousedown', () => { sec.setAttribute('draggable', 'true'); });
-    handle.addEventListener('mouseup', () => { sec.setAttribute('draggable', 'false'); });
+function moveSectionUp(btn) {
+  cmsSnapshot();
+  const sec = btn.closest('section[data-section-id]');
+  const prev = sec.previousElementSibling;
+  if (prev && prev.tagName === 'SECTION') {
+    sec.parentNode.insertBefore(sec, prev);
+    cmsSaveOrder();
+    cmsChanged = true;
+    cmsUpdateChangesTxt(true);
+    cmsToast('Sekcja przesunieta w gore');
+  }
+}
+function moveSectionDown(btn) {
+  cmsSnapshot();
+  const sec = btn.closest('section[data-section-id]');
+  const next = sec.nextElementSibling;
+  if (next && next.tagName === 'SECTION') {
+    sec.parentNode.insertBefore(next, sec);
+    cmsSaveOrder();
+    cmsChanged = true;
+    cmsUpdateChangesTxt(true);
+    cmsToast('Sekcja przesunieta w dol');
+  }
+}
+function deleteSection(btn) {
+  if (!confirm('Na pewno usunac te sekcje?')) return;
+  cmsSnapshot();
+  const sec = btn.closest('section[data-section-id]');
+  sec.remove();
+  cmsSaveOrder();
+  cmsSaveDynamicSections();
+  cmsChanged = true;
+  cmsUpdateChangesTxt(true);
+  cmsToast('Sekcja usunieta');
+}
+function duplicateSection(btn) {
+  cmsSnapshot();
+  const sec = btn.closest('section[data-section-id]');
+  const clone = sec.cloneNode(true);
+  const newId = cmsGenId();
+  clone.dataset.sectionId = newId;
+  clone.id = newId;
+  // Update all data-editable keys in clone to be unique
+  clone.querySelectorAll('[data-editable]').forEach(el => {
+    el.setAttribute('data-editable', el.getAttribute('data-editable') + '-' + newId);
+  });
+  // Remove old toolbars from clone
+  clone.querySelectorAll('.cms-section-toolbar, .cms-drag-handle, .cms-item-controls, .cms-add-item').forEach(e => e.remove());
+  sec.parentNode.insertBefore(clone, sec.nextSibling);
+  // Re-setup controls on clone
+  setupSectionControlsOnElement(clone);
+  setupDragOnSection(clone);
+  enableEditablesIn(clone);
+  setupItemControlsIn(clone);
+  cmsSaveOrder();
+  cmsSaveDynamicSections();
+  cmsChanged = true;
+  cmsUpdateChangesTxt(true);
+  cmsToast('Sekcja zduplikowana');
+}
 
-    sec.addEventListener('dragstart', e => {
-      dragSrc = sec;
-      sec.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', sec.dataset.sectionId);
-    });
-    sec.addEventListener('dragend', () => {
-      sec.classList.remove('dragging');
-      sec.setAttribute('draggable', 'false');
-      document.querySelectorAll('section[data-section-id]').forEach(s => {
-        s.classList.remove('drag-over-top', 'drag-over-bottom', 'drag-over');
-      });
-      cmsSaveOrder();
-    });
-    sec.addEventListener('dragover', e => {
-      e.preventDefault();
-      if (dragSrc === sec) return;
-      e.dataTransfer.dropEffect = 'move';
-      sec.classList.add('drag-over');
-      const rect = sec.getBoundingClientRect();
-      const mid = rect.top + rect.height / 2;
-      sec.classList.toggle('drag-over-top', e.clientY < mid);
-      sec.classList.toggle('drag-over-bottom', e.clientY >= mid);
-    });
-    sec.addEventListener('dragleave', () => {
-      sec.classList.remove('drag-over-top', 'drag-over-bottom', 'drag-over');
-    });
-    sec.addEventListener('drop', e => {
-      e.preventDefault();
-      if (dragSrc === sec) return;
-      sec.classList.remove('drag-over-top', 'drag-over-bottom', 'drag-over');
-      const rect = sec.getBoundingClientRect();
-      const mid = rect.top + rect.height / 2;
-      const parent = sec.parentNode;
-      if (e.clientY < mid) {
-        parent.insertBefore(dragSrc, sec);
-      } else {
-        parent.insertBefore(dragSrc, sec.nextSibling);
+function setupSectionControlsOnElement(sec) {
+  if (sec.querySelector('.cms-section-toolbar')) return;
+  const tb = document.createElement('div');
+  tb.className = 'cms-section-toolbar';
+  tb.innerHTML = `
+    <button class="cms-section-btn" onclick="moveSectionUp(this)" title="Przesun w gore">&#9650;</button>
+    <button class="cms-section-btn" onclick="moveSectionDown(this)" title="Przesun w dol">&#9660;</button>
+    <button class="cms-section-btn" onclick="duplicateSection(this)" title="Duplikuj sekcje">&#9776;</button>
+    <button class="cms-section-btn" onclick="openTplModal(this)" title="Dodaj nowa sekcje ponizej">&#43;</button>
+    <button class="cms-section-btn danger" onclick="deleteSection(this)" title="Usun sekcje">&#10005;</button>
+  `;
+  sec.appendChild(tb);
+}
+function enableEditablesIn(container) {
+  container.querySelectorAll('[data-editable]').forEach(el => {
+    el.setAttribute('contenteditable', 'true');
+    el.setAttribute('spellcheck', 'true');
+    el.addEventListener('input', cmsOnInput);
+    el.addEventListener('keydown', cmsOnKeyDown);
+    el.addEventListener('mouseup', cmsUpdateRichBar);
+    el.addEventListener('keyup', cmsUpdateRichBar);
+  });
+}
+
+/* ============================================================
+   ITEM-LEVEL CONTROLS (Delete item, Add item)
+   ============================================================ */
+function setupItemControls() {
+  document.querySelectorAll('section[data-section-id]').forEach(sec => {
+    setupItemControlsIn(sec);
+  });
+}
+
+function setupItemControlsIn(container) {
+  // FAQ items
+  container.querySelectorAll('.faq-item').forEach(item => {
+    if (item.querySelector('.cms-item-controls')) return;
+    const ctrl = createItemControls(() => { cmsSnapshot(); item.remove(); cmsChanged=true; cmsUpdateChangesTxt(true); cmsToast('Element FAQ usuniety'); });
+    item.appendChild(ctrl);
+  });
+  // Price rows
+  container.querySelectorAll('.price-row').forEach(item => {
+    if (item.querySelector('.cms-item-controls')) return;
+    const ctrl = createItemControls(() => { cmsSnapshot(); item.remove(); cmsChanged=true; cmsUpdateChangesTxt(true); cmsToast('Wiersz cennika usuniety'); });
+    item.appendChild(ctrl);
+  });
+  // Timeline items
+  container.querySelectorAll('.tl-item').forEach(item => {
+    if (item.querySelector('.cms-item-controls')) return;
+    const ctrl = createItemControls(() => { cmsSnapshot(); item.remove(); cmsChanged=true; cmsUpdateChangesTxt(true); cmsToast('Element osi czasu usuniety'); });
+    item.appendChild(ctrl);
+  });
+  // Rabat cards
+  container.querySelectorAll('.rabat-card').forEach(item => {
+    if (item.querySelector('.cms-item-controls')) return;
+    const ctrl = createItemControls(() => { cmsSnapshot(); item.remove(); cmsChanged=true; cmsUpdateChangesTxt(true); cmsToast('Karta rabatowa usunieta'); });
+    item.appendChild(ctrl);
+  });
+}
+
+function createItemControls(onDelete) {
+  const ctrl = document.createElement('div');
+  ctrl.className = 'cms-item-controls';
+  const delBtn = document.createElement('button');
+  delBtn.className = 'cms-item-btn danger';
+  delBtn.title = 'Usun element';
+  delBtn.innerHTML = '&#10005;';
+  delBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (confirm('Usunac ten element?')) onDelete();
+  });
+  ctrl.appendChild(delBtn);
+  return ctrl;
+}
+
+/* --- ADD ITEM BUTTONS --- */
+function setupAddItemButtons() {
+  // Add FAQ item button
+  document.querySelectorAll('.faq-wrap').forEach(wrap => {
+    if (wrap.querySelector('.cms-add-item')) return;
+    const btn = document.createElement('button');
+    btn.className = 'cms-add-item';
+    btn.textContent = '+ Dodaj pytanie FAQ';
+    btn.addEventListener('click', () => addFaqItem(wrap));
+    wrap.appendChild(btn);
+  });
+  // Add timeline item button
+  document.querySelectorAll('.timeline').forEach(wrap => {
+    if (wrap.querySelector('.cms-add-item')) return;
+    const btn = document.createElement('button');
+    btn.className = 'cms-add-item';
+    btn.textContent = '+ Dodaj wydarzenie';
+    btn.addEventListener('click', () => addTimelineItem(wrap));
+    wrap.appendChild(btn);
+  });
+  // Add price row button
+  document.querySelectorAll('.price-block').forEach(wrap => {
+    if (wrap.querySelector('.cms-add-item')) return;
+    const btn = document.createElement('button');
+    btn.className = 'cms-add-item';
+    btn.textContent = '+ Dodaj wiersz cennika';
+    btn.addEventListener('click', () => addPriceRow(wrap));
+    wrap.appendChild(btn);
+  });
+  // Add rabat card button
+  document.querySelectorAll('.rabaty-grid').forEach(wrap => {
+    if (wrap.querySelector('.cms-add-item')) return;
+    const btn = document.createElement('button');
+    btn.className = 'cms-add-item';
+    btn.textContent = '+ Dodaj rabat';
+    btn.addEventListener('click', () => addRabatCard(wrap));
+    wrap.appendChild(btn);
+  });
+}
+
+function addFaqItem(wrap) {
+  cmsSnapshot();
+  const id = cmsGenId();
+  const item = document.createElement('div');
+  item.className = 'faq-item';
+  item.innerHTML = `<button class="faq-q" onclick="toggleFaq(this)"><span data-editable="${id}-q" contenteditable="true" spellcheck="true">Nowe pytanie - kliknij by edytowac</span><span class="faq-ico">+</span></button><div class="faq-a" data-editable="${id}-a" contenteditable="true" spellcheck="true">Odpowiedz na pytanie - kliknij by edytowac</div>`;
+  const addBtn = wrap.querySelector('.cms-add-item');
+  wrap.insertBefore(item, addBtn);
+  enableEditablesIn(item);
+  setupItemControlsIn(wrap);
+  cmsChanged = true;
+  cmsUpdateChangesTxt(true);
+  cmsToast('Dodano nowe pytanie FAQ');
+}
+
+function addTimelineItem(wrap) {
+  cmsSnapshot();
+  const id = cmsGenId();
+  const item = document.createElement('div');
+  item.className = 'tl-item reveal in';
+  item.innerHTML = `<div class="tl-year" data-editable="${id}-year" contenteditable="true" spellcheck="true">ROK</div><div class="tl-event" data-editable="${id}-event" contenteditable="true" spellcheck="true"><strong>Wydarzenie</strong> - kliknij by edytowac opis.</div>`;
+  const addBtn = wrap.querySelector('.cms-add-item');
+  wrap.insertBefore(item, addBtn);
+  enableEditablesIn(item);
+  setupItemControlsIn(wrap);
+  cmsChanged = true;
+  cmsUpdateChangesTxt(true);
+  cmsToast('Dodano nowe wydarzenie');
+}
+
+function addPriceRow(wrap) {
+  cmsSnapshot();
+  const id = cmsGenId();
+  const row = document.createElement('div');
+  row.className = 'price-row';
+  row.innerHTML = `<span class="price-persons" data-editable="${id}-p" contenteditable="true" spellcheck="true">X osob</span><span class="price-amount" data-editable="${id}-a" contenteditable="true" spellcheck="true">000 zl</span>`;
+  const addBtn = wrap.querySelector('.cms-add-item');
+  const note = wrap.querySelector('.price-note');
+  if (note) wrap.insertBefore(row, note);
+  else if (addBtn) wrap.insertBefore(row, addBtn);
+  else wrap.appendChild(row);
+  enableEditablesIn(row);
+  setupItemControlsIn(wrap);
+  cmsChanged = true;
+  cmsUpdateChangesTxt(true);
+  cmsToast('Dodano wiersz cennika');
+}
+
+function addRabatCard(wrap) {
+  cmsSnapshot();
+  const id = cmsGenId();
+  const card = document.createElement('div');
+  card.className = 'rabat-card reveal in';
+  card.innerHTML = `<div class="rabat-name" data-editable="${id}-name" contenteditable="true" spellcheck="true">Nowa promocja</div><div class="rabat-desc" data-editable="${id}-desc" contenteditable="true" spellcheck="true">Opis promocji - kliknij by edytowac.</div><span class="rabat-badge" data-editable="${id}-badge" contenteditable="true" spellcheck="true">Znizka</span>`;
+  const addBtn = wrap.querySelector('.cms-add-item');
+  if (addBtn) wrap.insertBefore(card, addBtn);
+  else wrap.appendChild(card);
+  enableEditablesIn(card);
+  setupItemControlsIn(wrap);
+  cmsChanged = true;
+  cmsUpdateChangesTxt(true);
+  cmsToast('Dodano nowa karte rabatowa');
+}
+
+/* ============================================================
+   SECTION TEMPLATES
+   ============================================================ */
+function openTplModal(btnOrRef) {
+  tplInsertRef = btnOrRef ? btnOrRef.closest('section[data-section-id]') : null;
+  document.getElementById('cms-template-modal').classList.add('show');
+}
+function closeTplModal() {
+  document.getElementById('cms-template-modal').classList.remove('show');
+  tplInsertRef = null;
+}
+
+const sectionTemplates = {
+  text: () => {
+    const id = cmsGenId();
+    return `<section id="${id}" data-section-id="${id}" style="background:var(--bg2);position:relative;overflow:hidden;">
+      <div style="max-width:900px;margin:0 auto;">
+        <div class="section-eyebrow" data-editable="${id}-eye">Nowa sekcja</div>
+        <h2 class="section-title" data-editable="${id}-title">Tytul <em>sekcji</em></h2>
+        <p class="section-intro" data-editable="${id}-intro">Opis sekcji - kliknij by edytowac tekst. Mozesz formatowac tekst zaznaczajac go i uzywajac paska narzedzi.</p>
+        <p class="historia-body" data-editable="${id}-body">Tresc glowna sekcji. Kliknij by edytowac. Mozesz dodawac akapity, pogrubienia i wiele wiecej.</p>
+      </div>
+    </section>`;
+  },
+  'two-col': () => {
+    const id = cmsGenId();
+    return `<section id="${id}" data-section-id="${id}" style="background:var(--bg);position:relative;">
+      <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;">
+        <div>
+          <div class="section-eyebrow" data-editable="${id}-eye">Sekcja dwukolumnowa</div>
+          <h2 class="section-title" data-editable="${id}-title">Lewa <em>kolumna</em></h2>
+          <p class="historia-body" data-editable="${id}-left">Tresc lewej kolumny. Kliknij by edytowac tekst.</p>
+        </div>
+        <div>
+          <p class="historia-body" data-editable="${id}-right">Tresc prawej kolumny. Kliknij by edytowac tekst. Mozesz dodac dowolna tresc.</p>
+        </div>
+      </div>
+    </section>`;
+  },
+  cards: () => {
+    const id = cmsGenId();
+    return `<section id="${id}" data-section-id="${id}" style="background:var(--bg3);position:relative;">
+      <div style="max-width:1100px;margin:0 auto;">
+        <div class="section-eyebrow" data-editable="${id}-eye">Karty</div>
+        <h2 class="section-title" data-editable="${id}-title">Nasze <em>karty</em></h2>
+        <div class="rabaty-grid">
+          <div class="rabat-card reveal in"><div class="rabat-name" data-editable="${id}-c1-name">Karta 1</div><div class="rabat-desc" data-editable="${id}-c1-desc">Opis pierwszej karty. Kliknij by edytowac.</div><span class="rabat-badge" data-editable="${id}-c1-badge">Etykieta</span></div>
+          <div class="rabat-card reveal in"><div class="rabat-name" data-editable="${id}-c2-name">Karta 2</div><div class="rabat-desc" data-editable="${id}-c2-desc">Opis drugiej karty. Kliknij by edytowac.</div><span class="rabat-badge" data-editable="${id}-c2-badge">Etykieta</span></div>
+          <div class="rabat-card reveal in"><div class="rabat-name" data-editable="${id}-c3-name">Karta 3</div><div class="rabat-desc" data-editable="${id}-c3-desc">Opis trzeciej karty. Kliknij by edytowac.</div><span class="rabat-badge" data-editable="${id}-c3-badge">Etykieta</span></div>
+        </div>
+      </div>
+    </section>`;
+  },
+  faq: () => {
+    const id = cmsGenId();
+    return `<section id="${id}" data-section-id="${id}" style="background:var(--bg2);position:relative;">
+      <div class="section-eyebrow" style="max-width:820px;margin:0 auto .8rem" data-editable="${id}-eye">Pytania i odpowiedzi</div>
+      <h2 class="section-title" style="max-width:820px;margin:0 auto 2.5rem" data-editable="${id}-title">FAQ</h2>
+      <div class="faq-wrap">
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span data-editable="${id}-q1">Nowe pytanie 1?</span><span class="faq-ico">+</span></button><div class="faq-a" data-editable="${id}-a1">Odpowiedz na pytanie 1.</div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)"><span data-editable="${id}-q2">Nowe pytanie 2?</span><span class="faq-ico">+</span></button><div class="faq-a" data-editable="${id}-a2">Odpowiedz na pytanie 2.</div></div>
+      </div>
+    </section>`;
+  },
+  cta: () => {
+    const id = cmsGenId();
+    return `<section id="${id}" data-section-id="${id}" style="background:var(--bg2);position:relative;overflow:hidden;text-align:center;padding:6rem 3rem;">
+      <div style="max-width:700px;margin:0 auto;position:relative;">
+        <h2 style="font-family:var(--fd);font-weight:900;font-size:clamp(2.5rem,5vw,4.5rem);line-height:.95;margin-bottom:1.5rem;" data-editable="${id}-title">Gotowy na <span style="color:var(--red)">przygode</span>?</h2>
+        <p style="font-family:var(--fs);font-style:italic;color:var(--cream2);font-size:1rem;margin-bottom:2rem;line-height:1.9;" data-editable="${id}-desc">Zarezerwuj swoj termin juz dzis i odkryj tajemnice naszych pokojow.</p>
+        <a href="#rezerwacja" class="btn-primary" style="display:inline-flex">Zarezerwuj teraz</a>
+      </div>
+    </section>`;
+  },
+  gallery: () => {
+    const id = cmsGenId();
+    return `<section id="${id}" data-section-id="${id}" style="background:var(--bg);position:relative;">
+      <div style="max-width:1100px;margin:0 auto;">
+        <div class="section-eyebrow" data-editable="${id}-eye">Galeria</div>
+        <h2 class="section-title" data-editable="${id}-title">Nasze <em>zdjecia</em></h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem;">
+          <div style="background:var(--card);border:1px solid var(--border2);padding:1.5rem;text-align:center;">
+            <div style="font-size:3rem;margin-bottom:1rem;opacity:.6;">&#128247;</div>
+            <p style="color:var(--cream2);font-size:.85rem;" data-editable="${id}-g1">Opis zdjecia 1</p>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border2);padding:1.5rem;text-align:center;">
+            <div style="font-size:3rem;margin-bottom:1rem;opacity:.6;">&#128247;</div>
+            <p style="color:var(--cream2);font-size:.85rem;" data-editable="${id}-g2">Opis zdjecia 2</p>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border2);padding:1.5rem;text-align:center;">
+            <div style="font-size:3rem;margin-bottom:1rem;opacity:.6;">&#128247;</div>
+            <p style="color:var(--cream2);font-size:.85rem;" data-editable="${id}-g3">Opis zdjecia 3</p>
+          </div>
+        </div>
+      </div>
+    </section>`;
+  },
+  timeline: () => {
+    const id = cmsGenId();
+    return `<section id="${id}" data-section-id="${id}" style="background:var(--bg);position:relative;">
+      <div style="max-width:1100px;margin:0 auto;">
+        <div class="section-eyebrow" data-editable="${id}-eye">Historia</div>
+        <h2 class="section-title" data-editable="${id}-title">Os <em>czasu</em></h2>
+        <div class="timeline" style="margin-top:2rem;">
+          <div class="tl-item reveal in"><div class="tl-year" data-editable="${id}-y1">2020</div><div class="tl-event" data-editable="${id}-e1"><strong>Wydarzenie 1</strong> - opis wydarzenia.</div></div>
+          <div class="tl-item reveal in"><div class="tl-year" data-editable="${id}-y2">2021</div><div class="tl-event" data-editable="${id}-e2"><strong>Wydarzenie 2</strong> - opis wydarzenia.</div></div>
+          <div class="tl-item reveal in"><div class="tl-year" data-editable="${id}-y3">2022</div><div class="tl-event" data-editable="${id}-e3"><strong>Wydarzenie 3</strong> - opis wydarzenia.</div></div>
+        </div>
+      </div>
+    </section>`;
+  },
+  html: () => {
+    const html = prompt('Wklej wlasny kod HTML dla sekcji:');
+    if (!html) return null;
+    const id = cmsGenId();
+    return `<section id="${id}" data-section-id="${id}" style="background:var(--bg2);position:relative;">
+      <div style="max-width:1100px;margin:0 auto;" class="cms-custom-content" data-editable="${id}-html">${html}</div>
+    </section>`;
+  }
+};
+
+function addSectionFromTemplate(type) {
+  const tplFn = sectionTemplates[type];
+  if (!tplFn) return;
+  const html = tplFn();
+  if (!html) { closeTplModal(); return; }
+
+  cmsSnapshot();
+
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+  const newSec = temp.firstElementChild;
+
+  if (tplInsertRef) {
+    tplInsertRef.parentNode.insertBefore(newSec, tplInsertRef.nextSibling);
+  } else {
+    const footer = document.querySelector('footer');
+    if (footer) footer.parentNode.insertBefore(newSec, footer);
+    else document.body.appendChild(newSec);
+  }
+
+  // Setup controls on new section
+  setupSectionControlsOnElement(newSec);
+  setupDragOnSection(newSec);
+  enableEditablesIn(newSec);
+  setupItemControlsIn(newSec);
+  setupAddItemButtonsIn(newSec);
+
+  cmsSaveOrder();
+  cmsSaveDynamicSections();
+  cmsChanged = true;
+  cmsUpdateChangesTxt(true);
+  closeTplModal();
+  newSec.scrollIntoView({ behavior:'smooth', block:'center' });
+  cmsToast('Nowa sekcja dodana!');
+}
+
+function setupAddItemButtonsIn(sec) {
+  sec.querySelectorAll('.faq-wrap').forEach(wrap => {
+    if (wrap.querySelector('.cms-add-item')) return;
+    const btn = document.createElement('button');
+    btn.className = 'cms-add-item';
+    btn.textContent = '+ Dodaj pytanie FAQ';
+    btn.addEventListener('click', () => addFaqItem(wrap));
+    wrap.appendChild(btn);
+  });
+  sec.querySelectorAll('.timeline').forEach(wrap => {
+    if (wrap.querySelector('.cms-add-item')) return;
+    const btn = document.createElement('button');
+    btn.className = 'cms-add-item';
+    btn.textContent = '+ Dodaj wydarzenie';
+    btn.addEventListener('click', () => addTimelineItem(wrap));
+    wrap.appendChild(btn);
+  });
+  sec.querySelectorAll('.price-block').forEach(wrap => {
+    if (wrap.querySelector('.cms-add-item')) return;
+    const btn = document.createElement('button');
+    btn.className = 'cms-add-item';
+    btn.textContent = '+ Dodaj wiersz cennika';
+    btn.addEventListener('click', () => addPriceRow(wrap));
+    wrap.appendChild(btn);
+  });
+  sec.querySelectorAll('.rabaty-grid').forEach(wrap => {
+    if (wrap.querySelector('.cms-add-item')) return;
+    const btn = document.createElement('button');
+    btn.className = 'cms-add-item';
+    btn.textContent = '+ Dodaj rabat';
+    btn.addEventListener('click', () => addRabatCard(wrap));
+    wrap.appendChild(btn);
+  });
+}
+
+/* ============================================================
+   DYNAMIC SECTIONS PERSISTENCE
+   ============================================================ */
+function cmsSaveDynamicSections() {
+  try {
+    const dynamicSections = [];
+    document.querySelectorAll('section[data-section-id]').forEach(sec => {
+      if (sec.dataset.sectionId.startsWith('cms-')) {
+        // Clean the section HTML before saving
+        const clone = sec.cloneNode(true);
+        clone.querySelectorAll('.cms-section-toolbar, .cms-drag-handle, .cms-item-controls, .cms-add-item').forEach(e => e.remove());
+        clone.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
+        clone.querySelectorAll('[spellcheck]').forEach(e => e.removeAttribute('spellcheck'));
+        dynamicSections.push({
+          id: sec.dataset.sectionId,
+          html: clone.outerHTML
+        });
       }
-      cmsSaveOrder();
-      cmsToast('↕️ Kolejność sekcji zmieniona.');
     });
+    localStorage.setItem(CMS_SECTIONS_KEY, JSON.stringify(dynamicSections));
+  } catch(e) {}
+}
+
+function cmsLoadDynamicSections() {
+  try {
+    const raw = localStorage.getItem(CMS_SECTIONS_KEY);
+    if (!raw) return;
+    const sections = JSON.parse(raw);
+    const footer = document.querySelector('footer');
+    sections.forEach(secData => {
+      // Don't re-add if already exists
+      if (document.querySelector(`section[data-section-id="${secData.id}"]`)) return;
+      const temp = document.createElement('div');
+      temp.innerHTML = secData.html;
+      const sec = temp.firstElementChild;
+      if (sec && footer) {
+        footer.parentNode.insertBefore(sec, footer);
+      }
+    });
+  } catch(e) {}
+}
+
+/* ============================================================
+   SECTION DRAG & DROP
+   ============================================================ */
+function setupSectionDrag() {
+  document.querySelectorAll('section[data-section-id]').forEach(sec => {
+    setupDragOnSection(sec);
+  });
+}
+
+function setupDragOnSection(sec) {
+  if (sec.querySelector('.cms-drag-handle')) return;
+
+  const handle = document.createElement('div');
+  handle.className = 'cms-drag-handle';
+  handle.title = 'Przeciagnij by zmienic kolejnosc sekcji';
+  handle.innerHTML = '<span></span><span></span><span></span><span></span><span></span>';
+  sec.appendChild(handle);
+
+  handle.addEventListener('mousedown', () => { sec.setAttribute('draggable', 'true'); });
+  handle.addEventListener('mouseup', () => { sec.setAttribute('draggable', 'false'); });
+
+  sec.addEventListener('dragstart', e => {
+    dragSrc = sec;
+    sec.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', sec.dataset.sectionId);
+  });
+  sec.addEventListener('dragend', () => {
+    sec.classList.remove('dragging');
+    sec.setAttribute('draggable', 'false');
+    document.querySelectorAll('section[data-section-id]').forEach(s => {
+      s.classList.remove('drag-over-top', 'drag-over-bottom', 'drag-over');
+    });
+    cmsSaveOrder();
+  });
+  sec.addEventListener('dragover', e => {
+    e.preventDefault();
+    if (dragSrc === sec) return;
+    e.dataTransfer.dropEffect = 'move';
+    sec.classList.add('drag-over');
+    const rect = sec.getBoundingClientRect();
+    const mid = rect.top + rect.height / 2;
+    sec.classList.toggle('drag-over-top', e.clientY < mid);
+    sec.classList.toggle('drag-over-bottom', e.clientY >= mid);
+  });
+  sec.addEventListener('dragleave', () => {
+    sec.classList.remove('drag-over-top', 'drag-over-bottom', 'drag-over');
+  });
+  sec.addEventListener('drop', e => {
+    e.preventDefault();
+    if (dragSrc === sec) return;
+    cmsSnapshot();
+    sec.classList.remove('drag-over-top', 'drag-over-bottom', 'drag-over');
+    const rect = sec.getBoundingClientRect();
+    const mid = rect.top + rect.height / 2;
+    const parent = sec.parentNode;
+    if (e.clientY < mid) {
+      parent.insertBefore(dragSrc, sec);
+    } else {
+      parent.insertBefore(dragSrc, sec.nextSibling);
+    }
+    cmsSaveOrder();
+    cmsToast('Kolejnosc sekcji zmieniona.');
   });
 }
 
@@ -1029,6 +1857,45 @@ function cmsLoadOrder() {
       if (sec) parent.appendChild(sec);
     });
   } catch(e) {}
+}
+
+/* ============================================================
+   EXPORT / IMPORT
+   ============================================================ */
+function cmsExport() {
+  // Build clean HTML for export
+  const clone = document.documentElement.cloneNode(true);
+  // Remove CMS elements
+  clone.querySelectorAll('#cms-pw-overlay, #cms-toolbar, #cms-richbar, #cms-badge, #cms-toast, #cms-template-modal, #cms-export-modal').forEach(e => e.remove());
+  clone.querySelectorAll('.cms-section-toolbar, .cms-drag-handle, .cms-item-controls, .cms-add-item, .cms-add-section').forEach(e => e.remove());
+  clone.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
+  clone.querySelectorAll('[spellcheck]').forEach(e => e.removeAttribute('spellcheck'));
+  clone.querySelectorAll('[draggable]').forEach(e => e.removeAttribute('draggable'));
+  clone.querySelector('body')?.classList.remove('cms-active');
+
+  const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+  document.getElementById('cms-export-textarea').value = html;
+  document.getElementById('cms-export-modal').classList.add('show');
+}
+function closeExportModal() {
+  document.getElementById('cms-export-modal').classList.remove('show');
+}
+function copyExport() {
+  const ta = document.getElementById('cms-export-textarea');
+  ta.select();
+  document.execCommand('copy');
+  cmsToast('Skopiowano do schowka!');
+}
+function downloadExport() {
+  const html = document.getElementById('cms-export-textarea').value;
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'familock-strona.html';
+  a.click();
+  URL.revokeObjectURL(url);
+  cmsToast('Pobieranie pliku HTML...');
 }
 
 /* --- TOAST --- */
