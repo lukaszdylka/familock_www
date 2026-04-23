@@ -2711,45 +2711,108 @@
           </button>
         </div>
         <div class="cennik-panel active" id="tab-starzik">
-          <div class="price-block reveal">
-            <div class="price-block-head" data-editable="c-s1-head">
-              Poniedziałek – Czwartek
-            </div>
-            <div class="price-row">
-              <span class="price-persons" data-editable="c-s1-p1">2 osoby</span
-              ><span class="price-amount" data-editable="c-s1-a1">260 zł</span>
-            </div>
-            <div class="price-row">
-              <span class="price-persons" data-editable="c-s1-p2">3 osoby</span
-              ><span class="price-amount" data-editable="c-s1-a2">300 zł</span>
-            </div>
-            <div class="price-row">
-              <span class="price-persons" data-editable="c-s1-p3">4 osoby</span
-              ><span class="price-amount" data-editable="c-s1-a3">350 zł</span>
-            </div>
-            <div class="price-row">
-              <span class="price-persons" data-editable="c-s1-p4">5 osób*</span
-              ><span class="price-amount" data-editable="c-s1-a4">400 zł</span>
-            </div>
-            <p class="price-note" data-editable="c-s1-note">
-              *Tylko na wyraźne życzenie graczy.
-            </p>
-          </div>
+         <div class="price-block reveal">
+  <div class="price-block-head" data-editable="c-s1-head">
+    Poniedziałek – Czwartek
+  </div>
+
+  <style>
+    .price-row-wrap { position: relative; }
+    .price-was {
+      font-family: var(--fd);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: line-through;
+      text-decoration-color: var(--red);
+      text-decoration-thickness: 2px;
+      margin-right: .5rem;
+      opacity: .7;
+    }
+    .price-save {
+      display: inline-block;
+      font-family: var(--fd);
+      font-size: 0.58rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      background: var(--red-dark);
+      color: #fff;
+      padding: .18rem .55rem;
+      margin-left: .5rem;
+      vertical-align: middle;
+      position: relative;
+      top: -2px;
+    }
+    .price-amount-main {
+      font-family: var(--fd);
+      font-size: 1.7rem;
+      font-weight: 900;
+      color: var(--cream);
+    }
+    .price-amounts {
+      display: flex;
+      align-items: baseline;
+      gap: .3rem;
+      flex-wrap: wrap;
+    }
+  </style>
+
+  <div class="price-row price-row-wrap">
+    <span class="price-persons" data-editable="c-s1-p1">2 osoby</span>
+    <div class="price-amounts">
+      <span class="price-was">300 zł</span>
+      <span class="price-amount-main" data-editable="c-s1-a1">270 zł</span>
+      <span class="price-save">-30 zł</span>
+    </div>
+  </div>
+
+  <div class="price-row price-row-wrap">
+    <span class="price-persons" data-editable="c-s1-p2">3 osoby</span>
+    <div class="price-amounts">
+      <span class="price-was">350 zł</span>
+      <span class="price-amount-main" data-editable="c-s1-a2">310 zł</span>
+      <span class="price-save">-40 zł</span>
+    </div>
+  </div>
+
+  <div class="price-row price-row-wrap">
+    <span class="price-persons" data-editable="c-s1-p3">4 osoby</span>
+    <div class="price-amounts">
+      <span class="price-was">400 zł</span>
+      <span class="price-amount-main" data-editable="c-s1-a3">360 zł</span>
+      <span class="price-save">-40 zł</span>
+    </div>
+  </div>
+
+  <div class="price-row price-row-wrap">
+    <span class="price-persons" data-editable="c-s1-p4">5 osób*</span>
+    <div class="price-amounts">
+      <span class="price-was">450 zł</span>
+      <span class="price-amount-main" data-editable="c-s1-a4">400 zł</span>
+      <span class="price-save">-50 zł</span>
+    </div>
+  </div>
+
+  <p class="price-note" data-editable="c-s1-note">
+    *Tylko na wyraźne życzenie graczy.
+  </p>
+</div>
           <div class="price-block reveal" style="transition-delay: 0.1s">
             <div class="price-block-head" data-editable="c-s2-head">
               Piątek – Niedziela & Święta
             </div>
             <div class="price-row">
               <span class="price-persons" data-editable="c-s2-p1">2 osoby</span
-              ><span class="price-amount" data-editable="c-s2-a1">290 zł</span>
+              ><span class="price-amount" data-editable="c-s2-a1">300 zł</span>
             </div>
             <div class="price-row">
               <span class="price-persons" data-editable="c-s2-p2">3 osoby</span
-              ><span class="price-amount" data-editable="c-s2-a2">340 zł</span>
+              ><span class="price-amount" data-editable="c-s2-a2">350 zł</span>
             </div>
             <div class="price-row">
               <span class="price-persons" data-editable="c-s2-p3">4 osoby</span
-              ><span class="price-amount" data-editable="c-s2-a3">390 zł</span>
+              ><span class="price-amount" data-editable="c-s2-a3">400 zł</span>
             </div>
             <div class="price-row">
               <span class="price-persons" data-editable="c-s2-p4">5 osób*</span
@@ -2850,7 +2913,7 @@
     <section id="voucher" class="voucher-section">
       <div class="voucher-grid">
         <div class="voucher-img-wrap reveal">
-          <img src="img/twoj-voucher.webp" alt="Voucher podarunkowy Familock" />
+          <img src="img/voucher-familock-escape-room.webp" alt="Voucher podarunkowy Familock" />
         </div>
 
         <div class="reveal" style="transition-delay: 0.2s">
