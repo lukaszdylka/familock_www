@@ -542,6 +542,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   <div class="f-links">
     <a href="javascript:void(0)" onclick="showModal('polityka')">Polityka prywatności</a>
     <a href="javascript:void(0)" onclick="showModal('regulamin')">Regulamin</a>
+    <a href="javascript:void(0)" onclick="cookieOpenSettings()">Ustawienia cookies</a>
     <a href="mailto:kontakt@familock.pl">kontakt@familock.pl</a>
   </div>
 </footer>
@@ -685,6 +686,360 @@ filterBtns.forEach(function(btn) {
   });
 });
 </script>
+<!-- ============================================================
+     COOKIE CONSENT BANNER — Familock
+     Wklej CAŁY ten blok tuż przed </body>
+     ============================================================ -->
 
+<!-- STYLE banera -->
+<style>
+#cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9998;
+  background: #1a1517;
+  border-top: 2px solid #5a2a2e;
+  padding: 1.5rem 2rem;
+  display: none;
+  animation: cookieSlideUp .35s ease forwards;
+}
+#cookie-banner.show { display: block; }
+@keyframes cookieSlideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.cookie-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.cookie-text { flex: 1; min-width: 260px; }
+.cookie-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #f0ecec;
+  margin-bottom: .4rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.cookie-title svg { color: #8b2530; flex-shrink: 0; }
+.cookie-desc {
+  font-size: .8rem;
+  color: #b0a8a5;
+  line-height: 1.65;
+}
+.cookie-desc a { color: #c04858; text-decoration: none; }
+.cookie-desc a:hover { text-decoration: underline; }
+
+/* Szczegółowe opcje */
+.cookie-options {
+  display: none;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #353030;
+  display: none;
+  flex-direction: column;
+  gap: .6rem;
+}
+.cookie-options.open { display: flex; }
+.cookie-option {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .6rem .8rem;
+  background: #252020;
+  border: 1px solid #353030;
+}
+.cookie-option-info {}
+.cookie-option-name {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #f0ecec;
+  margin-bottom: .15rem;
+}
+.cookie-option-desc {
+  font-size: .72rem;
+  color: #6b6260;
+  line-height: 1.5;
+}
+/* Toggle switch */
+.cookie-toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.cookie-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.cookie-toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: #353030;
+  border-radius: 22px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.cookie-toggle-slider::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 3px;
+  top: 3px;
+  background: #888;
+  border-radius: 50%;
+  transition: transform .2s, background .2s;
+}
+.cookie-toggle input:checked + .cookie-toggle-slider { background: #5a2a2e; }
+.cookie-toggle input:checked + .cookie-toggle-slider::before { transform: translateX(18px); background: #c04858; }
+.cookie-toggle input:disabled + .cookie-toggle-slider { cursor: not-allowed; opacity: .6; }
+
+/* Przyciski */
+.cookie-actions {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  flex-shrink: 0;
+  min-width: 170px;
+}
+.cookie-btn {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .7rem 1.2rem;
+  border: none;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+  text-align: center;
+  width: 100%;
+}
+.cookie-btn-accept {
+  background: #8b2530;
+  color: #fff;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+.cookie-btn-accept:hover { background: #a03340; }
+.cookie-btn-save {
+  background: #5a2a2e;
+  color: #f0ecec;
+}
+.cookie-btn-save:hover { background: #6b3034; }
+.cookie-btn-reject {
+  background: transparent;
+  color: #6b6260;
+  border: 1px solid #353030;
+}
+.cookie-btn-reject:hover { color: #b0a8a5; border-color: #4a4244; }
+.cookie-btn-details {
+  background: transparent;
+  color: #6b6260;
+  border: none;
+  font-size: .7rem;
+  padding: .3rem 0;
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: "Barlow Condensed", sans-serif;
+  text-align: center;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.cookie-btn-details:hover { color: #b0a8a5; }
+
+/* Widget ustawień cookies (link w stopce) */
+#cookie-settings-link {
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  #cookie-banner { padding: 1.2rem 1.2rem; }
+  .cookie-inner { flex-direction: column; gap: 1rem; }
+  .cookie-actions { flex-direction: row; flex-wrap: wrap; min-width: unset; }
+  .cookie-btn { flex: 1; min-width: 120px; }
+}
+</style>
+
+<!-- HTML banera -->
+<div id="cookie-banner" role="dialog" aria-label="Ustawienia plików cookies" aria-live="polite">
+  <div class="cookie-inner">
+    <div class="cookie-text">
+      <div class="cookie-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Pliki cookies
+      </div>
+      <p class="cookie-desc">
+        Używamy plików cookies, aby strona działała poprawnie. Cookies niezbędne są aktywne zawsze.
+        Możesz wyrazić zgodę na cookies analityczne (statystyki) i marketingowe (reklamy) lub je odrzucić.
+        Więcej informacji w <a href="javascript:void(0)" onclick="showModal('polityka')">Polityce Prywatności</a>.
+      </p>
+
+      <!-- Szczegółowe opcje (ukryte domyślnie) -->
+      <div class="cookie-options" id="cookie-options">
+
+        <div class="cookie-option">
+          <div class="cookie-option-info">
+            <div class="cookie-option-name">Niezbędne</div>
+            <div class="cookie-option-desc">Konieczne do działania strony. Nie można ich wyłączyć.</div>
+          </div>
+          <label class="cookie-toggle">
+            <input type="checkbox" checked disabled />
+            <span class="cookie-toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="cookie-option">
+          <div class="cookie-option-info">
+            <div class="cookie-option-name">Analityczne</div>
+            <div class="cookie-option-desc">Google Analytics — anonimowe statystyki odwiedzin. Pomagają nam ulepszać stronę.</div>
+          </div>
+          <label class="cookie-toggle">
+            <input type="checkbox" id="cookie-analytics" />
+            <span class="cookie-toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="cookie-option">
+          <div class="cookie-option-info">
+            <div class="cookie-option-name">Marketingowe</div>
+            <div class="cookie-option-desc">Meta Pixel (Facebook) — pomiar skuteczności reklam i remarketing.</div>
+          </div>
+          <label class="cookie-toggle">
+            <input type="checkbox" id="cookie-marketing" />
+            <span class="cookie-toggle-slider"></span>
+          </label>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="cookie-actions">
+      <button class="cookie-btn cookie-btn-accept" onclick="cookieAcceptAll()">
+        Akceptuj wszystkie
+      </button>
+      <button class="cookie-btn cookie-btn-save" id="cookie-save-btn" onclick="cookieSaveChoice()" style="display:none">
+        Zapisz wybór
+      </button>
+      <button class="cookie-btn cookie-btn-reject" onclick="cookieRejectAll()">
+        Odrzuć opcjonalne
+      </button>
+      <button class="cookie-btn-details" onclick="cookieToggleDetails(this)">
+        Dostosuj ustawienia ▾
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPT -->
+<script>
+(function() {
+
+  var COOKIE_KEY = 'familock_cookies';
+  var banner = document.getElementById('cookie-banner');
+
+  /* Wczytaj zapisane preferencje */
+  function getPrefs() {
+    try { return JSON.parse(localStorage.getItem(COOKIE_KEY)) || null; }
+    catch(e) { return null; }
+  }
+
+  /* Zapisz preferencje */
+  function savePrefs(analytics, marketing) {
+    var prefs = { analytics: analytics, marketing: marketing, date: new Date().toISOString() };
+    localStorage.setItem(COOKIE_KEY, JSON.stringify(prefs));
+    applyPrefs(prefs);
+    hideBanner();
+  }
+
+  /* Zastosuj preferencje (tutaj dodajesz ładowanie skryptów) */
+  function applyPrefs(prefs) {
+    if (prefs.analytics) {
+G-LY7D7XH1K3
+    }
+    if (prefs.marketing) {
+      /* Tu możesz wkleić kod Meta Pixel */
+      /* np: loadMetaPixel(); */
+    }
+  }
+
+  function hideBanner() {
+    banner.classList.remove('show');
+    banner.style.display = 'none';
+  }
+
+  /* Pokaż baner jeśli brak zapisanych preferencji */
+  var prefs = getPrefs();
+  if (prefs) {
+    applyPrefs(prefs);
+  } else {
+    /* Małe opóźnienie żeby strona zdążyła się załadować */
+    setTimeout(function() { banner.classList.add('show'); }, 600);
+  }
+
+  /* Akceptuj wszystkie */
+  window.cookieAcceptAll = function() {
+    document.getElementById('cookie-analytics').checked = true;
+    document.getElementById('cookie-marketing').checked = true;
+    savePrefs(true, true);
+  };
+
+  /* Odrzuć opcjonalne */
+  window.cookieRejectAll = function() {
+    document.getElementById('cookie-analytics').checked = false;
+    document.getElementById('cookie-marketing').checked = false;
+    savePrefs(false, false);
+  };
+
+  /* Zapisz własny wybór */
+  window.cookieSaveChoice = function() {
+    var analytics = document.getElementById('cookie-analytics').checked;
+    var marketing = document.getElementById('cookie-marketing').checked;
+    savePrefs(analytics, marketing);
+  };
+
+  /* Pokaż/ukryj szczegóły */
+  window.cookieToggleDetails = function(btn) {
+    var opts = document.getElementById('cookie-options');
+    var saveBtn = document.getElementById('cookie-save-btn');
+    var isOpen = opts.classList.contains('open');
+    opts.classList.toggle('open', !isOpen);
+    saveBtn.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? 'Dostosuj ustawienia ▾' : 'Zwiń ustawienia ▴';
+  };
+
+  /* Link "Ustawienia cookies" w stopce — otwiera baner ponownie */
+  window.cookieOpenSettings = function() {
+    var prefs = getPrefs();
+    if (prefs) {
+      document.getElementById('cookie-analytics').checked = prefs.analytics;
+      document.getElementById('cookie-marketing').checked = prefs.marketing;
+    }
+    /* Pokaż szczegóły od razu */
+    var opts = document.getElementById('cookie-options');
+    var saveBtn = document.getElementById('cookie-save-btn');
+    opts.classList.add('open');
+    saveBtn.style.display = 'block';
+    var detailsBtn = banner.querySelector('.cookie-btn-details');
+    if (detailsBtn) detailsBtn.textContent = 'Zwiń ustawienia ▴';
+    banner.classList.add('show');
+    banner.style.display = 'block';
+    banner.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  };
+
+})();
+</script>
 </body>
 </html>
