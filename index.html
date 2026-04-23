@@ -270,6 +270,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   <a href="#home" class="nav-logo">FAMI<span class="dot"></span><span class="lock">LOCK</span></a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#pokoje">Pokoje</a></li>
+    <li><a href="#theszpil">Gra online</a></li>
     <li><a href="#cennik">Cennik</a></li>
     <li><a href="#galeria">Galeria</a></li>
     <li><a href="#historia">Historia</a></li>
@@ -364,7 +365,71 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
     <div style="background:var(--bg2)"></div>
   </div>
 </section>
+<!-- ============================================================
+     SEKCJA THESZPIL
+     Wklej między </section> pokoje a <section id="cennik">
+     ============================================================ -->
 
+<section id="theszpil" style="background:var(--bg);position:relative;overflow:hidden">
+
+  <!-- dekoracyjna linia górna -->
+  <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red-dark),transparent)"></div>
+
+  <!-- dekoracyjny napis w tle -->
+  <div aria-hidden="true" style="position:absolute;right:-2%;top:50%;transform:translateY(-50%);font-family:var(--fd);font-size:22vw;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(90,42,46,.07);pointer-events:none;user-select:none;white-space:nowrap">SZPIL</div>
+
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;position:relative" class="theszpil-grid">
+
+    <!-- LEWA — opis -->
+    <div class="reveal">
+      <div class="section-eyebrow">Gra online · Za darmo</div>
+      <h2 class="section-title">Starzik<br><em>TheSzpil</em></h2>
+      <p style="font-family:var(--fs);font-style:italic;color:var(--cream2);font-size:.98rem;line-height:1.9;margin-bottom:1.5rem">Krótka gra przygodowa point&amp;click w klimacie retro. Fabuła pośrednio związana ze Starzikiem — nic nie zdradza, ale wiele zapowiada.</p>
+      <p style="font-size:.88rem;color:var(--cream2);line-height:1.85;margin-bottom:2rem">Zagraj zanim przyjdziesz do pokoju — <strong style="color:var(--cream)">wciągniesz się w klimat i jeszcze bardziej będziesz chciał zobaczyć, co kryje mieszkanie Starzika na żywo.</strong> Można grać na komputerze i telefonie, bez rejestracji, całkowicie za darmo.</p>
+      <a href="https://gra.familock.pl/" target="_blank" rel="noopener" class="btn-primary" style="display:inline-flex">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>
+        Zagraj teraz — za darmo
+      </a>
+      <p style="font-size:.72rem;color:var(--muted);margin-top:.8rem">Wersja beta · familock.pl</p>
+    </div>
+
+    <!-- PRAWA — "screen" z oknem gry -->
+    <div class="reveal" style="transition-delay:.15s">
+      <div style="background:var(--card);border:1px solid var(--border2);border-top:2px solid var(--red);position:relative">
+
+        <!-- pasek tytułowy jak stara gra DOS -->
+        <div style="background:var(--red-deep);padding:.7rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border2)">
+          <span style="font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--muted)">Starzik · TheSzpil</span>
+          <div style="display:flex;gap:.4rem">
+            <div style="width:10px;height:10px;background:var(--border3);border-radius:50%"></div>
+            <div style="width:10px;height:10px;background:var(--border3);border-radius:50%"></div>
+            <div style="width:10px;height:10px;background:var(--red-dark);border-radius:50%"></div>
+          </div>
+        </div>
+
+        <!-- "ekran" gry -->
+        <div style="padding:2.5rem 2rem;text-align:center;min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;background:linear-gradient(135deg,#0a0808 0%,#120d0d 100%)">
+          <div style="font-family:var(--fd);font-size:3rem;font-weight:900;letter-spacing:.08em;color:var(--red);text-shadow:0 0 40px rgba(139,37,48,.5)">F A M I L O C K</div>
+          <div style="font-family:var(--fd);font-size:.75rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)">prezentuje</div>
+          <div style="font-family:var(--fd);font-size:1.6rem;font-weight:900;color:var(--cream);letter-spacing:.05em">Starzik: TheSzpil</div>
+          <div style="width:40px;height:1px;background:var(--border3)"></div>
+          <a href="https://gra.familock.pl/" target="_blank" rel="noopener" style="font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--red-glow);text-decoration:none;border:1px solid var(--red-dark);padding:.5rem 1.4rem;transition:.2s;animation:pulse-nav 2.8s ease-in-out infinite" onmouseover="this.style.background='var(--red-deep)'" onmouseout="this.style.background='transparent'">
+            ▶ &nbsp;START
+          </a>
+          <div style="font-size:.65rem;color:var(--muted);letter-spacing:.15em">point &amp; click adventure · wersja beta</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+@media(max-width:960px){
+  .theszpil-grid{grid-template-columns:1fr!important;gap:2.5rem!important}
+}
+</style>
 <section id="galeria">
   <div class="galeria-wrap">
     <div style="text-align:center;margin-bottom:3rem">
