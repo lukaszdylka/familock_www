@@ -1519,6 +1519,17 @@
         padding: 2.5rem;
         position: relative;
       }
+      .modal-box h3 {
+  font-family: var(--fd);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cream);
+  margin: 1.5rem 0 .5rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: .4rem;
+}
       .modal-close {
         position: absolute;
         top: 1rem;
@@ -2427,6 +2438,7 @@
       }
     </script>
   <script data-cfasync="false" nonce="14b489c0-c9aa-4736-ac8f-0ce326fc30d2">try{(function(w,d){!function(F,G,H,I){if(F.zaraz)console.error("zaraz is loaded twice");else{F[H]=F[H]||{};F[H].executed=[];F.zaraz={deferred:[],listeners:[]};F.zaraz._v="5882";F.zaraz._n="14b489c0-c9aa-4736-ac8f-0ce326fc30d2";F.zaraz.q=[];F.zaraz._f=function(J){return async function(){var K=Array.prototype.slice.call(arguments);F.zaraz.q.push({m:J,a:K})}};for(const L of["track","set","debug"])F.zaraz[L]=F.zaraz._f(L);F.zaraz.init=()=>{var M=G.getElementsByTagName(I)[0],N=G.createElement(I),O=G.getElementsByTagName("title")[0];O&&(F[H].t=G.getElementsByTagName("title")[0].text);F[H].x=Math.random();F[H].w=F.screen.width;F[H].h=F.screen.height;F[H].j=F.innerHeight;F[H].e=F.innerWidth;F[H].l=F.location.href;F[H].r=G.referrer;F[H].k=F.screen.colorDepth;F[H].n=G.characterSet;F[H].o=(new Date).getTimezoneOffset();if(F.dataLayer)for(const P of Object.entries(Object.entries(dataLayer).reduce((Q,R)=>({...Q[1],...R[1]}),{})))zaraz.set(P[0],P[1],{scope:"page"});F[H].q=[];for(;F.zaraz.q.length;){const S=F.zaraz.q.shift();F[H].q.push(S)}N.defer=!0;for(const T of[localStorage,sessionStorage])Object.keys(T||{}).filter(V=>V.startsWith("_zaraz_")).forEach(U=>{try{F[H]["z_"+U.slice(7)]=JSON.parse(T.getItem(U))}catch{F[H]["z_"+U.slice(7)]=T.getItem(U)}});N.referrerPolicy="origin";N.src="/cdn-cgi/zaraz/s.js?z="+btoa(encodeURIComponent(JSON.stringify(F[H])));M.parentNode.insertBefore(N,M)};["complete","interactive"].includes(G.readyState)?zaraz.init():F.addEventListener("DOMContentLoaded",zaraz.init)}}(w,d,"zarazData","script");window.zaraz._p=async bO=>new Promise(bP=>{if(bO){bO.e&&bO.e.forEach(bQ=>{try{const bR=d.querySelector("script[nonce]"),bS=bR?.nonce||bR?.getAttribute("nonce"),bT=d.createElement("script");bS&&(bT.nonce=bS);bT.innerHTML=bQ;bT.onload=()=>{d.head.removeChild(bT)};d.head.appendChild(bT)}catch(bU){console.error(`Error executing script: ${bQ}\n`,bU)}});Promise.allSettled((bO.f||[]).map(bV=>fetch(bV[0],bV[1])))}bP()});zaraz._p({"e":["(function(w,d){})(window,document)"]});})(window,document)}catch(e){throw fetch("/cdn-cgi/zaraz/t"),e;};</script></head>
+  
   <body>
     <!-- NAV -->
     <nav id="navbar">
@@ -3799,10 +3811,12 @@ Familock, to mała firma escape room, oferująca fabularne, autorskie scenariusz
           }
         });
       }
-      const modals = {
-        polityka: `<h2>Polityka Prywatności</h2><p>Administratorem danych jest <strong>Łukasz Dyłka Familock</strong>, NIP: 6272709230, ul. Cmentarna 5/3, 41-600 Świętochłowice.</p><p>Dane zbierane są w celu realizacji rezerwacji i kontaktu. Podstawy: art. 6 ust. 1 lit. b, c, f RODO.</p><p>Przysługuje Ci prawo dostępu, sprostowania, usunięcia i skargi do UODO.</p><p>Kontakt: <a href="mailto:kontakt@familock.pl">kontakt@familock.pl</a></p>`,
-        regulamin: `<h2>Regulamin</h2><p>Uczestnictwo jest jednoznaczne z akceptacją regulaminu Familock (Łukasz Dyłka Familock, NIP: 6272709230).</p><p><strong>Rezerwacje:</strong> odwołanie do 24h – bezpłatne. Po tym czasie 100% ceny.</p><p><strong>Uczestnicy:</strong> od 13 lat z opiekunem.</p><p><strong>Płatność:</strong> gotówka, karta lub BLIK – po grze.</p>`,
-      };
+function showModal(type) {
+  const tpl = document.getElementById('tpl-' + type);
+  document.getElementById('modal-body').innerHTML = tpl ? tpl.innerHTML : '';
+  document.getElementById('modal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
       function showModal(type) {
         document.getElementById("modal-body").innerHTML = modals[type] || "";
         document.getElementById("modal").style.display = "block";
