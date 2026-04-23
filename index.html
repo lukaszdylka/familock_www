@@ -77,7 +77,7 @@ section{padding:5.5rem 3rem}
 #pokoje{background:var(--bg2);position:relative}
 #pokoje::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red-dark),transparent)}
 .pokoje-header{max-width:1200px;margin:0 auto 3rem}
-.pokoje-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:1.5px;background:var(--border)}
+.pokoje-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:1.5px;background:var(--border)align-items: stretch;}
 .pokoj-card{position:relative;min-height:580px;display:flex;flex-direction:column;justify-content:flex-end;padding:2.5rem;overflow:hidden}
 .pokoj-bg{position:absolute;inset:0;transition:transform .7s cubic-bezier(.25,.46,.45,.94)}
 .pokoj-card:hover .pokoj-bg{transform:scale(1.04)}
@@ -335,9 +335,12 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
       </div>
       <div class="pokoj-line" style="background:var(--border3)"></div>
     </article>
+    <div class="room-actions" style="opacity:0;pointer-events:none">
+  <a class="btn-book">—</a>
+</div>
   </div>
   <div class="pokoje-header" style="margin-top:6rem;margin-bottom:2rem">
-    <div class="section-eyebrow">Escape</div>
+    <div class="section-eyebrow">Escape Box</div>
     <h2 class="section-title" style="font-size:clamp(2.2rem,4vw,3.5rem)">Escape <em>Box</em></h2>
   </div>
   <div class="pokoje-grid">
