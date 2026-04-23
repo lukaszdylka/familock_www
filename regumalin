@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Regulamin — Familock Escape Room Świętochłowice</title>
+<meta name="description" content="Regulamin Escape Room Familock, Świętochłowice. Zasady rezerwacji, uczestnictwa, bezpieczeństwa i płatności." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://familock.pl/regulamin.html" />
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" /></noscript>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0d0d;--bg2:#121212;--card:#1c1a1a;
+  --red:#8b2530;--red-dark:#5a2a2e;--red-deep:#261214;--red-glow:#c04858;
+  --cream:#f0ecec;--cream2:#b0a8a5;--muted:#6b6260;
+  --border:#252222;--border2:#353030;
+  --fd:"Barlow Condensed",sans-serif;--fb:"Barlow",sans-serif;--fs:"Playfair Display",serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font-family:var(--fb);font-weight:300;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--red);border-radius:3px}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(13,13,13,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem}
+.nav-logo{font-family:var(--fd);font-size:1.5rem;font-weight:900;letter-spacing:.04em;color:var(--cream);text-decoration:none;display:flex;align-items:center}
+.nav-logo .lock{color:var(--red)}
+.nav-logo .dot{width:5px;height:5px;background:var(--red);border-radius:50%;display:inline-block;margin:0 2px 8px}
+.nav-back{font-family:var(--fd);font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .2s}
+.nav-back:hover{color:var(--cream)}
+.nav-back svg{transition:transform .2s}
+.nav-back:hover svg{transform:translateX(-3px)}
+
+/* HERO */
+.page-hero{padding:4rem 3rem 3rem;border-bottom:1px solid var(--border2);position:relative;overflow:hidden}
+.page-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 0% 50%,rgba(90,42,46,.15) 0%,transparent 70%)}
+.page-hero-inner{max-width:860px;margin:0 auto;position:relative}
+.page-eyebrow{font-family:var(--fd);font-size:.7rem;font-weight:700;letter-spacing:.42em;text-transform:uppercase;color:var(--red);margin-bottom:.8rem;display:flex;align-items:center;gap:.8rem}
+.page-eyebrow::before{content:"";width:24px;height:1px;background:var(--red-dark)}
+.page-title{font-family:var(--fd);font-weight:900;font-size:clamp(2.5rem,5vw,4rem);line-height:.95;letter-spacing:-.01em;margin-bottom:1rem}
+.page-title em{color:var(--red);font-style:normal}
+.page-meta{font-size:.78rem;color:var(--muted);margin-top:.5rem}
+.page-meta a{color:var(--red-glow);text-decoration:none}
+
+/* CONTENT */
+.page-content{max-width:860px;margin:0 auto;padding:3rem 3rem 5rem}
+
+/* TOC */
+.toc{background:var(--card);border:1px solid var(--border2);border-left:3px solid var(--red-dark);padding:1.5rem 2rem;margin-bottom:3rem}
+.toc-title{font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.toc ol{padding-left:1.2rem;display:flex;flex-direction:column;gap:.3rem}
+.toc li{font-size:.82rem;color:var(--cream2)}
+.toc a{color:var(--cream2);text-decoration:none;transition:color .2s}
+.toc a:hover{color:var(--red-glow)}
+
+/* SECTIONS */
+.doc-section{margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border)}
+.doc-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.doc-section h2{font-family:var(--fd);font-size:1.15rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--cream);margin-bottom:1rem;display:flex;align-items:baseline;gap:.8rem}
+.doc-section h2 .sec-num{font-size:.78rem;color:var(--red);letter-spacing:.1em;font-weight:700;flex-shrink:0;font-family:var(--fd)}
+.doc-section p{font-size:.88rem;color:var(--cream2);line-height:1.85;margin-bottom:.7rem}
+.doc-section p:last-child{margin-bottom:0}
+.doc-section ul,.doc-section ol{padding-left:1.5rem;margin-bottom:.8rem}
+.doc-section li{font-size:.88rem;color:var(--cream2);line-height:1.8;margin-bottom:.25rem}
+.doc-section strong{color:var(--cream);font-weight:500}
+.doc-section a{color:var(--red-glow);text-decoration:none}
+.doc-section a:hover{text-decoration:underline}
+
+.highlight-box{background:var(--card);border:1px solid var(--border2);border-top:2px solid var(--red-dark);padding:1.2rem 1.5rem;margin:.8rem 0 1rem}
+.highlight-box p{margin-bottom:0;font-size:.88rem;color:var(--cream2);line-height:1.8}
+
+.warning-box{background:var(--red-deep);border:1px solid var(--red-dark);border-left:3px solid var(--red);padding:1rem 1.5rem;margin:.8rem 0 1rem}
+.warning-box p{margin-bottom:0;font-size:.85rem;color:var(--cream2);line-height:1.75}
+
+/* FOOTER */
+.back-section{padding:2rem 3rem;border-top:1px solid var(--border2);background:var(--bg2)}
+.back-section-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.back-section p{font-size:.78rem;color:var(--muted)}
+.footer-links{display:flex;gap:.8rem;flex-wrap:wrap}
+.btn-back{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fd);font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cream2);text-decoration:none;border:1px solid var(--border2);padding:.55rem 1.1rem;transition:.2s}
+.btn-back:hover{border-color:var(--red);color:var(--red-glow)}
+
+@media(max-width:700px){
+  nav{padding:.9rem 1.2rem}
+  .page-hero{padding:2.5rem 1.2rem 2rem}
+  .page-content{padding:2rem 1.2rem 4rem}
+  .toc{padding:1rem 1.2rem}
+  .back-section{padding:1.5rem 1.2rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">FAMI<span class="dot"></span><span class="lock">LOCK</span></a>
+  <a href="/" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,5 5,12 12,19"/></svg>
+    Wróć na stronę główną
+  </a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-eyebrow">Dokumenty prawne</div>
+    <h1 class="page-title"><em>Regulamin</em><br>Escape Room Familock</h1>
+    <p class="page-meta">Łukasz Dyłka Familock &middot; NIP: 6272709230 &middot; REGON: 524722644</p>
+    <p class="page-meta">ul. Cmentarna 5/3, 41-600 Świętochłowice &middot; <a href="mailto:kontakt@familock.pl">kontakt@familock.pl</a> &middot; tel. 573 955 316</p>
+    <p class="page-meta" style="margin-top:.6rem">Data wejścia w życie: kwiecień 2026</p>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <div class="toc">
+    <div class="toc-title">Spis treści</div>
+    <ol>
+      <li><a href="#s1">§ 1 — Postanowienia ogólne</a></li>
+      <li><a href="#s2">§ 2 — Definicje</a></li>
+      <li><a href="#s3">§ 3 — Rezerwacje</a></li>
+      <li><a href="#s4">§ 4 — Płatności</a></li>
+      <li><a href="#s5">§ 5 — Zmiana i odwołanie rezerwacji</a></li>
+      <li><a href="#s6">§ 6 — Warunki uczestnictwa i ograniczenia wiekowe</a></li>
+      <li><a href="#s7">§ 7 — Stan zdrowia i przeciwwskazania</a></li>
+      <li><a href="#s8">§ 8 — Zasady bezpieczeństwa</a></li>
+      <li><a href="#s9">§ 9 — Monitoring i nadzór nad grą</a></li>
+      <li><a href="#s10">§ 10 — Telefony, zdjęcia i nagrywanie</a></li>
+      <li><a href="#s11">§ 11 — Podpowiedzi i przebieg gry</a></li>
+      <li><a href="#s12">§ 12 — Rzeczy osobiste</a></li>
+      <li><a href="#s13">§ 13 — Odpowiedzialność za szkody</a></li>
+      <li><a href="#s14">§ 14 — Vouchery</a></li>
+      <li><a href="#s15">§ 15 — Publikacja zdjęć i materiały promocyjne</a></li>
+      <li><a href="#s16">§ 16 — Reklamacje</a></li>
+      <li><a href="#s17">§ 17 — Dane osobowe</a></li>
+      <li><a href="#s18">§ 18 — Postanowienia końcowe</a></li>
+    </ol>
+  </div>
+
+  <div class="doc-section" id="s1">
+    <h2><span class="sec-num">§ 1</span>Postanowienia ogólne</h2>
+    <p>Niniejszy Regulamin określa zasady dokonywania rezerwacji, uczestnictwa w grach organizowanych przez Escape Room Familock, zasady bezpieczeństwa, płatności, odpowiedzialności uczestników oraz zasady składania reklamacji.</p>
+    <div class="highlight-box">
+      <p><strong>Organizatorem gier jest:</strong><br>
+      Łukasz Dyłka Familock<br>
+      NIP: 6272709230 &middot; REGON: 524722644<br>
+      adres lokalu: ul. Cmentarna 5/3, 41-600 Świętochłowice<br>
+      e-mail: <a href="mailto:kontakt@familock.pl">kontakt@familock.pl</a><br>
+      telefon: <a href="tel:573955316">573 955 316</a></p>
+    </div>
+    <p>Escape Room Familock organizuje gry typu escape room, w tym pokoje stacjonarne, escape boxy oraz inne formy gier i atrakcji dostępne w aktualnej ofercie, w szczególności <strong>Starzik</strong>, <strong>Escape Box Tesla</strong> oraz przyszłe pokoje i scenariusze.</p>
+    <p>Dokonanie rezerwacji oraz udział w grze oznaczają zapoznanie się z niniejszym Regulaminem i jego akceptację.</p>
+    <p>Regulamin jest dostępny do wglądu na stronie internetowej Organizatora oraz w lokalu.</p>
+  </div>
+
+  <div class="doc-section" id="s2">
+    <h2><span class="sec-num">§ 2</span>Definicje</h2>
+    <ul>
+      <li><strong>Organizator</strong> — Łukasz Dyłka Familock, prowadzący działalność pod nazwą Escape Room Familock.</li>
+      <li><strong>Uczestnik lub Gracz</strong> — osoba biorąca udział w grze organizowanej przez Escape Room Familock.</li>
+      <li><strong>Drużyna</strong> — grupa uczestników biorących udział w jednej grze.</li>
+      <li><strong>Obsługa lub Mistrz Gry</strong> — osoba wyznaczona przez Organizatora do przeprowadzenia instruktażu, nadzorowania przebiegu gry, udzielania podpowiedzi i dbania o bezpieczeństwo uczestników.</li>
+      <li><strong>Pokój gry lub gra</strong> — przestrzeń albo forma rozgrywki przygotowana przez Organizatora.</li>
+      <li><strong>Rezerwacja</strong> — zamówienie terminu gry dokonane przez stronę internetową, system rezerwacyjny, telefonicznie lub mailowo.</li>
+    </ul>
+  </div>
+
+  <div class="doc-section" id="s3">
+    <h2><span class="sec-num">§ 3</span>Rezerwacje</h2>
+    <p>Rezerwacji można dokonać przez:</p>
+    <ol type="a">
+      <li>lock.me</li>
+      <li>stronę familock.pl</li>
+      <li>telefonicznie: <a href="tel:573955316">573 955 316</a></li>
+      <li>mailowo: <a href="mailto:kontakt@familock.pl">kontakt@familock.pl</a></li>
+    </ol>
+    <p>Rezerwacja jest skuteczna po jej potwierdzeniu przez Organizatora albo system rezerwacyjny.</p>
+    <p>Organizator może kontaktować się z osobą rezerwującą w sprawach związanych z realizacją rezerwacji.</p>
+    <p>Osoba dokonująca rezerwacji zobowiązana jest do podania prawdziwych danych kontaktowych.</p>
+  </div>
+
+  <div class="doc-section" id="s4">
+    <h2><span class="sec-num">§ 4</span>Płatności</h2>
+    <p>Płatność za grę następuje po zakończeniu rozgrywki, chyba że Organizator wskaże inaczej dla konkretnej oferty, wydarzenia albo vouchera.</p>
+    <p>Akceptowane formy płatności:</p>
+    <ol type="a">
+      <li>gotówka</li>
+      <li>karta płatnicza</li>
+      <li>BLIK</li>
+      <li>przelew</li>
+    </ol>
+    <p>Organizator wystawia dowód zakupu zgodnie z obowiązującymi przepisami prawa.</p>
+  </div>
+
+  <div class="doc-section" id="s5">
+    <h2><span class="sec-num">§ 5</span>Zmiana i odwołanie rezerwacji</h2>
+    <p>Rezerwację można odwołać telefonicznie, mailowo lub SMS najpóźniej <strong>24 godziny</strong> przed planowaną godziną rozpoczęcia gry.</p>
+    <div class="warning-box">
+      <p>W przypadku odwołania rezerwacji później niż 24 godziny przed grą albo niestawienia się drużyny bez wcześniejszego odwołania, Organizator ma prawo obciążyć osobę rezerwującą pełną opłatą za grę na podstawie wystawionej faktury.</p>
+    </div>
+    <p>Spóźnienie uczestników powoduje skrócenie czasu gry o czas spóźnienia.</p>
+    <p>W przypadku większego spóźnienia Organizator może odmówić realizacji gry albo zdecydować o sposobie jej przeprowadzenia, z uwzględnieniem obłożenia lokalu i kolejnych rezerwacji.</p>
+  </div>
+
+  <div class="doc-section" id="s6">
+    <h2><span class="sec-num">§ 6</span>Warunki uczestnictwa i ograniczenia wiekowe</h2>
+    <p>W grach Escape Room Familock mogą brać udział osoby spełniające wymagania wiekowe i organizacyjne określone przez Organizatora.</p>
+    <ul>
+      <li>Osoby do ukończenia <strong>16 roku życia</strong> mogą uczestniczyć w grze wyłącznie pod opieką pełnoletniego opiekuna.</li>
+      <li>Osoby od <strong>16 do 18 roku życia</strong> mogą uczestniczyć w grze za pisemną zgodą opiekuna prawnego.</li>
+    </ul>
+    <p>Osoba dokonująca rezerwacji odpowiada za poinformowanie wszystkich uczestników o treści Regulaminu oraz zasadach bezpieczeństwa.</p>
+    <p>Organizator ma prawo odmówić udziału w grze osobie, która:</p>
+    <ol type="a">
+      <li>znajduje się pod wpływem alkoholu</li>
+      <li>znajduje się pod wpływem środków odurzających lub innych substancji wpływających na zachowanie</li>
+      <li>zachowuje się agresywnie, niestosownie lub w sposób zagrażający bezpieczeństwu</li>
+      <li>odmawia przestrzegania Regulaminu albo poleceń Obsługi</li>
+    </ol>
+  </div>
+
+  <div class="doc-section" id="s7">
+    <h2><span class="sec-num">§ 7</span>Stan zdrowia i przeciwwskazania</h2>
+    <p>Udział w grze wymaga stanu zdrowia i sprawności pozwalających na bezpieczne uczestnictwo w rozgrywce.</p>
+    <div class="warning-box">
+      <p>Osoby cierpiące na <strong>klaustrofobię, epilepsję</strong>, silne stany lękowe, choroby serca, nadwrażliwość na bodźce, <strong>kobiety w ciąży</strong> oraz osoby z innymi problemami zdrowotnymi, które mogą mieć wpływ na bezpieczeństwo lub komfort uczestnictwa, powinny przed rozpoczęciem gry skontaktować się z Obsługą.</p>
+    </div>
+    <p>Organizator może odmówić dopuszczenia do gry albo zalecić jej przerwanie, jeżeli uzna, że stan uczestnika może stwarzać zagrożenie dla niego samego albo innych osób.</p>
+  </div>
+
+  <div class="doc-section" id="s8">
+    <h2><span class="sec-num">§ 8</span>Zasady bezpieczeństwa</h2>
+    <p>Przed rozpoczęciem gry każdy uczestnik ma obowiązek zapoznać się z instruktażem przekazanym przez Obsługę i stosować się do jej poleceń.</p>
+    <p>W trakcie gry zabrania się:</p>
+    <ol type="a">
+      <li>używania siły fizycznej wobec elementów wystroju, wyposażenia, mebli, instalacji, kłódek, zamków, rekwizytów i urządzeń</li>
+      <li>wspinania się na elementy scenografii lub wyposażenia</li>
+      <li>manipulowania przy instalacjach elektrycznych, technicznych, wentylacyjnych i zabezpieczeniach</li>
+      <li>używania otwartego ognia, zapałek, zapalniczek i innych źródeł zapłonu</li>
+      <li>palenia tytoniu oraz korzystania z papierosów elektronicznych</li>
+      <li>spożywania alkoholu lub zażywania środków odurzających</li>
+      <li>wnoszenia przedmiotów niebezpiecznych</li>
+      <li>działań mogących zagrażać bezpieczeństwu własnemu, innych uczestników lub Obsługi</li>
+    </ol>
+    <p>Uczestnicy zobowiązani są do korzystania z pokoju i wyposażenia zgodnie z ich przeznaczeniem.</p>
+    <p>W pokojach znajdują się <strong>przyciski bezpieczeństwa</strong> odblokowujące drogę ewakuacyjną.</p>
+    <p>W przypadku złego samopoczucia, sytuacji awaryjnej, potrzeby opuszczenia gry lub polecenia wydanego przez Obsługę, uczestnicy zobowiązani są niezwłocznie przerwać grę i zastosować się do wskazówek Obsługi.</p>
+    <p>Rozwiązania takie jak przyciski bezpieczeństwa, monitoring i nadzór Mistrza Gry są zgodne z aktualną praktyką branżową i bezpieczeństwa w escape roomach.</p>
+  </div>
+
+  <div class="doc-section" id="s9">
+    <h2><span class="sec-num">§ 9</span>Monitoring i nadzór nad grą</h2>
+    <p>W celu zapewnienia bezpieczeństwa uczestników oraz wspomagania przebiegu gry, pokoje i wybrane części lokalu objęte są monitoringiem wizyjnym.</p>
+    <p><strong>Monitoring nie obejmuje toalet.</strong></p>
+    <p>Uczestnicy przyjmują do wiadomości, że przebieg gry może być obserwowany przez Obsługę w czasie rzeczywistym.</p>
+    <p>Szczegółowe zasady przetwarzania danych związanych z monitoringiem określa <a href="/polityka.html">Polityka Prywatności</a> Organizatora.</p>
+  </div>
+
+  <div class="doc-section" id="s10">
+    <h2><span class="sec-num">§ 10</span>Telefony, zdjęcia i nagrywanie</h2>
+    <p>Przed, w trakcie oraz po zakończeniu gry w pokoju obowiązuje <strong>zakaz korzystania z telefonów komórkowych</strong>, robienia zdjęć oraz nagrywania filmów.</p>
+    <p>Po zakończeniu gry zdjęcie uczestnikom może wykonać Obsługa, wyłącznie na życzenie graczy i za ich zgodą.</p>
+    <p>Uczestnikom nie wolno samodzielnie wykonywać zdjęć ani nagrań w pokoju gry bez wyraźnej zgody Organizatora.</p>
+  </div>
+
+  <div class="doc-section" id="s11">
+    <h2><span class="sec-num">§ 11</span>Podpowiedzi i przebieg gry</h2>
+    <p>Podpowiedzi w trakcie gry są dostępne i udzielane przez Mistrza Gry.</p>
+    <p>Liczba podpowiedzi jest <strong>nielimitowana</strong>, chyba że Organizator poinformuje inaczej przy konkretnej ofercie lub scenariuszu.</p>
+    <p>Forma i moment udzielania podpowiedzi zależą od przebiegu gry oraz decyzji Obsługi.</p>
+    <p>Organizator zastrzega sobie prawo do przerwania gry w przypadku:</p>
+    <ol type="a">
+      <li>awarii technicznej</li>
+      <li>zagrożenia bezpieczeństwa</li>
+      <li>naruszenia Regulaminu</li>
+      <li>zachowania uczestników uniemożliwiającego bezpieczne prowadzenie gry</li>
+      <li>działania siły wyższej</li>
+    </ol>
+  </div>
+
+  <div class="doc-section" id="s12">
+    <h2><span class="sec-num">§ 12</span>Rzeczy osobiste</h2>
+    <p>Uczestnicy mają możliwość pozostawienia rzeczy osobistych w wyznaczonym miejscu udostępnionym przez Organizatora.</p>
+    <p>Miejsce to jest <strong>zamykane na klucz przez graczy</strong>.</p>
+    <p>Organizator nie odpowiada za rzeczy wartościowe, dokumenty, pieniądze ani przedmioty pozostawione poza miejscem do tego przeznaczonym albo niezabezpieczone przez uczestników.</p>
+  </div>
+
+  <div class="doc-section" id="s13">
+    <h2><span class="sec-num">§ 13</span>Odpowiedzialność za szkody</h2>
+    <p>Uczestnicy ponoszą odpowiedzialność za szkody wyrządzone umyślnie albo wskutek rażącego naruszenia Regulaminu.</p>
+    <p>W przypadku uszkodzenia wyposażenia, rekwizytów, elementów scenografii, urządzeń lub lokalu z winy uczestnika, Organizator ma prawo dochodzić odszkodowania na zasadach ogólnych.</p>
+    <p>Organizator nie ponosi odpowiedzialności za skutki wynikające z nieprzestrzegania Regulaminu oraz poleceń Obsługi przez uczestników.</p>
+  </div>
+
+  <div class="doc-section" id="s14">
+    <h2><span class="sec-num">§ 14</span>Vouchery</h2>
+    <p>Escape Room Familock oferuje vouchery podarunkowe.</p>
+    <p>Voucher może zostać wykorzystany zgodnie z jego przeznaczeniem, w terminie wskazanym przy jego zakupie.</p>
+    <p>Warunki realizacji vouchera, w tym termin ważności, zakres oferty oraz sposób rezerwacji, określane są przy jego sprzedaży.</p>
+    <p>Voucher nie podlega wymianie na gotówkę, chyba że bezwzględnie obowiązujące przepisy prawa stanowią inaczej.</p>
+  </div>
+
+  <div class="doc-section" id="s15">
+    <h2><span class="sec-num">§ 15</span>Publikacja zdjęć i materiały promocyjne</h2>
+    <p>Zdjęcia uczestników po zakończeniu gry mogą być publikowane przez Organizatora, w szczególności na profilach społecznościowych takich jak <strong>Facebook</strong> i <strong>Instagram</strong>, wyłącznie za zgodą osób widocznych na zdjęciu.</p>
+    <p>Brak zgody na publikację zdjęcia nie wpływa na możliwość udziału w grze.</p>
+  </div>
+
+  <div class="doc-section" id="s16">
+    <h2><span class="sec-num">§ 16</span>Reklamacje</h2>
+    <p>Reklamacje dotyczące usług świadczonych przez Escape Room Familock można składać mailowo na adres: <a href="mailto:kontakt@familock.pl">kontakt@familock.pl</a></p>
+    <p>Reklamacja powinna zawierać:</p>
+    <ol type="a">
+      <li>imię i nazwisko osoby składającej reklamację</li>
+      <li>datę i godzinę gry</li>
+      <li>opis sytuacji</li>
+      <li>dane kontaktowe do odpowiedzi</li>
+    </ol>
+    <p>Reklamacje rozpatrywane są w terminie <strong>14 dni</strong> od dnia ich otrzymania.</p>
+  </div>
+
+  <div class="doc-section" id="s17">
+    <h2><span class="sec-num">§ 17</span>Dane osobowe</h2>
+    <p>Dane osobowe uczestników są przetwarzane przez Organizatora zgodnie z obowiązującymi przepisami prawa.</p>
+    <p>Szczegółowe zasady przetwarzania danych osobowych, monitoringu, kontaktu z klientami oraz publikacji zdjęć określa <a href="/polityka.html">Polityka Prywatności</a> Organizatora.</p>
+  </div>
+
+  <div class="doc-section" id="s18">
+    <h2><span class="sec-num">§ 18</span>Postanowienia końcowe</h2>
+    <p>Organizator zastrzega sobie prawo do zmiany Regulaminu z ważnych przyczyn, w szczególności w razie zmiany przepisów prawa, zasad bezpieczeństwa, sposobu prowadzenia działalności albo zakresu oferty.</p>
+    <p>W sprawach nieuregulowanych w Regulaminie zastosowanie mają przepisy prawa polskiego.</p>
+    <p>Regulamin wchodzi w życie z dniem: <strong>kwiecień 2026</strong>.</p>
+  </div>
+
+</div>
+
+<div class="back-section">
+  <div class="back-section-inner">
+    <p>© 2026 Łukasz Dyłka Familock &middot; Świętochłowice &middot; NIP: 6272709230</p>
+    <div class="footer-links">
+      <a href="/polityka.html" class="btn-back">Polityka Prywatności</a>
+      <a href="/" class="btn-back">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,5 5,12 12,19"/></svg>
+        Wróć na stronę główną
+      </a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
