@@ -231,6 +231,67 @@ section{padding:5.5rem 3rem}
 .gal-item img{width:100%;height:260px;object-fit:cover;display:block;filter:grayscale(40%) contrast(1.1) brightness(.8);transition:filter .4s,transform .5s}
 .gal-item:hover img{filter:grayscale(0%) contrast(1.05) brightness(1);transform:scale(1.03)}
 .gal-item.hide{display:none}
+.online-hub{background:radial-gradient(ellipse 70% 55% at 12% 30%,rgba(90,42,46,.2),transparent 70%),var(--bg);position:relative;overflow:hidden;scroll-margin-top:72px}
+.online-hub::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent)}
+.online-ghost{position:absolute;right:-1%;top:2rem;font-family:var(--fd);font-size:clamp(9rem,22vw,22rem);font-weight:900;line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(90,42,46,.08);pointer-events:none;user-select:none;white-space:nowrap}
+.online-wrap{max-width:1180px;margin:0 auto;position:relative}
+.online-head{max-width:720px;margin-bottom:3rem}
+.online-intro{font-family:var(--fs);font-style:italic;color:var(--cream2);font-size:1rem;line-height:1.9;max-width:660px}
+.online-grid{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(340px,.82fr);gap:1.35rem;align-items:stretch}
+.online-side{display:grid;grid-template-rows:1fr 1fr;gap:1.35rem}
+.online-card{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(33,31,31,.96),rgba(20,18,18,.98));border:1px solid var(--border2);padding:2rem;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+.online-card::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--red-dark),var(--red),transparent)}
+.online-card::after{content:"";position:absolute;width:230px;height:230px;border-radius:50%;right:-120px;top:-130px;background:rgba(139,37,48,.13);filter:blur(2px);pointer-events:none}
+.online-card:hover{transform:translateY(-4px);border-color:var(--border3);box-shadow:0 24px 55px rgba(0,0,0,.28)}
+.online-card-main{min-height:540px;padding:2.5rem;display:flex;flex-direction:column;background:radial-gradient(circle at 86% 12%,rgba(139,37,48,.22),transparent 35%),linear-gradient(145deg,#211b1c,#121111 72%)}
+.online-card-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:2rem;position:relative;z-index:1}
+.online-kicker{font-family:var(--fd);font-size:.66rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--gray-light)}
+.online-badge{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--fd);font-size:.58rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--cream);border:1px solid var(--border3);padding:.32rem .72rem;background:rgba(13,13,13,.55)}
+.online-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red-glow);box-shadow:0 0 10px rgba(192,72,88,.7)}
+.online-brand{position:relative;z-index:1;margin-bottom:1.15rem}
+.online-brand h3{font-family:var(--fd);font-size:clamp(3.5rem,7vw,6rem);font-weight:900;line-height:.85;letter-spacing:-.02em;margin:0}
+.online-brand h3 span{color:var(--red)}
+.online-desc{position:relative;z-index:1;color:var(--cream2);font-size:.9rem;line-height:1.8;max-width:590px;margin-bottom:2rem}
+.online-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:2.1rem;position:relative;z-index:1}
+.online-mini{display:flex;align-items:center;gap:.8rem;min-width:0;padding:.8rem .85rem;background:rgba(10,9,9,.68);border:1px solid var(--border2);text-decoration:none;transition:border-color .2s,background .2s,transform .2s}
+.online-mini:hover{border-color:var(--red-dark);background:var(--red-deep);transform:translateX(2px)}
+.online-mini-icon{width:37px;height:37px;display:grid;place-items:center;flex:none;color:var(--red-glow);background:#100d0e;border:1px solid var(--border2)}
+.online-mini-icon svg{width:20px;height:20px}
+.online-mini-copy{min-width:0}
+.online-mini-name{display:block;font-family:var(--fd);font-size:.9rem;font-weight:800;letter-spacing:.04em;color:var(--cream);line-height:1.1}
+.online-mini-text{display:block;font-size:.66rem;color:var(--muted);margin-top:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.online-actions{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:auto;position:relative;z-index:1}
+.online-actions .btn-primary,.online-actions .btn-outline{padding:.85rem 1.6rem;font-size:.78rem}
+.online-note{font-size:.69rem;color:var(--muted);line-height:1.5}
+.online-card-compact{min-height:0;display:flex;flex-direction:column;justify-content:center;padding:1.85rem 2rem}
+.online-compact-head{display:flex;align-items:center;gap:1rem;margin-bottom:.9rem;position:relative;z-index:1}
+.online-compact-icon{width:50px;height:50px;display:grid;place-items:center;color:var(--red-glow);background:#100d0e;border:1px solid var(--border3);flex:none}
+.online-compact-icon svg{width:26px;height:26px}
+.online-compact-title{font-family:var(--fd);font-size:2rem;font-weight:900;line-height:1;color:var(--cream)}
+.online-compact-label{font-family:var(--fd);font-size:.6rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gray);margin-bottom:.28rem}
+.online-compact-desc{font-size:.8rem;color:var(--cream2);line-height:1.65;margin-bottom:1rem;position:relative;z-index:1}
+.online-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.1rem;position:relative;z-index:1}
+.online-tag{font-family:var(--fd);font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray-light);padding:.24rem .55rem;border:1px solid var(--border2);background:rgba(10,9,9,.42)}
+.online-card-link{display:inline-flex;align-items:center;gap:.55rem;width:max-content;color:var(--red-glow);font-family:var(--fd);font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;position:relative;z-index:1}
+.online-card-link svg{transition:transform .2s}
+.online-card-link:hover svg{transform:translateX(4px)}
+.online-card-story{background:radial-gradient(circle at 85% 20%,rgba(90,42,46,.22),transparent 38%),linear-gradient(145deg,#1b1818,#100e0e)}
+@media(max-width:960px){
+  .online-grid{grid-template-columns:1fr}
+  .online-side{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .online-card-main{min-height:auto}
+}
+@media(max-width:680px){
+  .online-head{margin-bottom:2rem}
+  .online-card-main,.online-card{padding:1.4rem}
+  .online-card-main{min-height:0}
+  .online-side{grid-template-columns:1fr}
+  .online-mini-grid{grid-template-columns:1fr}
+  .online-brand h3{font-size:3rem}
+  .online-actions{align-items:flex-start;flex-direction:column}
+  .online-actions .btn-primary{width:100%;justify-content:center}
+  .online-ghost{font-size:10rem;right:-3rem}
+}
 footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
 .f-logo{font-family:var(--fd);font-size:1.5rem;font-weight:900;text-decoration:none;color:var(--cream)}
 .f-logo span{color:var(--red)}
@@ -279,7 +340,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   <a href="#home" class="nav-logo">FAMI<span class="dot"></span><span class="lock">LOCK</span></a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#pokoje">Pokoje</a></li>
-    <li><a href="#theszpil">Gra online</a></li>
+    <li><a href="#theszpil">Gry online</a></li>
     <li><a href="#cennik">Cennik</a></li>
     <li><a href="#galeria">Galeria</a></li>
     <li><a href="#historia">Historia</a></li>
@@ -373,71 +434,93 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
     <div style="background:var(--bg2)"></div>
   </div>
 </section>
-<!-- ============================================================
-     SEKCJA THESZPIL
-     Wklej między </section> pokoje a <section id="cennik">
-     ============================================================ -->
+<section id="theszpil" class="online-hub">
+  <div class="online-ghost" aria-hidden="true">SZPIL</div>
+  <div class="online-wrap">
+    <header class="online-head reveal">
+      <div class="section-eyebrow">Gry online · za darmo</div>
+      <h2 class="section-title">Familockowy <em>plac do grania</em></h2>
+      <p class="online-intro">Codzienne śląskie zagadki, szybkie gierki i przygodówka ze Starzikiem. Wybierz coś dla siebie i zagraj od razu w przeglądarce.</p>
+    </header>
 
-<section id="theszpil" style="background:var(--bg);position:relative;overflow:hidden">
-
-  <!-- dekoracyjna linia górna -->
-  <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red-dark),transparent)"></div>
-
-  <!-- dekoracyjny napis w tle -->
-  <div aria-hidden="true" style="position:absolute;right:-2%;top:50%;transform:translateY(-50%);font-family:var(--fd);font-size:22vw;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(90,42,46,.07);pointer-events:none;user-select:none;white-space:nowrap">SZPIL</div>
-
-  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;position:relative" class="theszpil-grid">
-
-    <!-- LEWA — opis -->
-    <div class="reveal">
-      <div class="section-eyebrow">Gra online · Za darmo</div>
-      <h2 class="section-title">Starzik<br><em>TheSzpil</em></h2>
-      <p style="font-family:var(--fs);font-style:italic;color:var(--cream2);font-size:.98rem;line-height:1.9;margin-bottom:1.5rem">Krótka gra przygodowa point&amp;click w klimacie retro. Fabuła pośrednio związana ze Starzikiem — nie zdradza fabuły escape room'u.</p>
-      <p style="font-size:.88rem;color:var(--cream2);line-height:1.85;margin-bottom:2rem">Zagraj zanim przyjdziesz do pokoju — <strong style="color:var(--cream)">wciągniesz się w klimat i jeszcze bardziej będziesz chciał zobaczyć, co skrywa kamienica.</strong> Zalecana gra na komputerze. Bez rejestracji, całkowicie za darmo.</p>
-      <a href="https://gra.familock.pl/" target="_blank" rel="noopener" class="btn-primary" style="display:inline-flex">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>
-        Zagraj teraz — za darmo
-      </a>
-      <p style="font-size:.72rem;color:var(--muted);margin-top:.8rem">Wersja beta · familock.pl</p>
-    </div>
-
-    <!-- PRAWA — "screen" z oknem gry -->
-    <div class="reveal" style="transition-delay:.15s">
-      <div style="background:var(--card);border:1px solid var(--border2);border-top:2px solid var(--red);position:relative">
-
-        <!-- pasek tytułowy jak stara gra DOS -->
-        <div style="background:var(--red-deep);padding:.7rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border2)">
-          <span style="font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--muted)">Starzik · TheSzpil</span>
-          <div style="display:flex;gap:.4rem">
-            <div style="width:10px;height:10px;background:var(--border3);border-radius:50%"></div>
-            <div style="width:10px;height:10px;background:var(--border3);border-radius:50%"></div>
-            <div style="width:10px;height:10px;background:var(--red-dark);border-radius:50%"></div>
-          </div>
+    <div class="online-grid">
+      <article class="online-card online-card-main reveal">
+        <div class="online-card-top">
+          <span class="online-kicker">Codzienne zagadki</span>
+          <span class="online-badge">Nowe wyzwania</span>
         </div>
 
-        <!-- "ekran" gry -->
-        <div style="padding:2.5rem 2rem;text-align:center;min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;background:linear-gradient(135deg,#0a0808 0%,#120d0d 100%)">
-          <div style="font-family:var(--fd);font-size:3rem;font-weight:900;letter-spacing:.08em;color:var(--red);text-shadow:0 0 40px rgba(139,37,48,.5)">F A M I L O C K</div>
-          <div style="font-family:var(--fd);font-size:.75rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)">prezentuje</div>
-          <div style="font-family:var(--fd);font-size:1.6rem;font-weight:900;color:var(--cream);letter-spacing:.05em">Starzik: TheSzpil</div>
-          <div style="width:40px;height:1px;background:var(--border3)"></div>
-          <a href="https://gra.familock.pl/" target="_blank" rel="noopener" style="font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--red-glow);text-decoration:none;border:1px solid var(--red-dark);padding:.5rem 1.4rem;transition:.2s;animation:pulse-nav 2.8s ease-in-out infinite" onmouseover="this.style.background='var(--red-deep)'" onmouseout="this.style.background='transparent'">
-            ▶ &nbsp;START
+        <div class="online-brand">
+          <h3>SZPIL<span>PLAC</span></h3>
+        </div>
+        <p class="online-desc">Śląski plac z krótkimi grami słownymi i logicznymi. Graj bez logowania albo załóż konto, aby zapisywać wyniki, osiągnięcia i miejsce w rankingu.</p>
+
+        <div class="online-mini-grid" aria-label="Gry na Szpilplacu">
+          <a class="online-mini" href="https://szpilplac.familock.pl/slowko.html">
+            <span class="online-mini-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7" fill="currentColor" opacity=".3"/></svg>
+            </span>
+            <span class="online-mini-copy"><span class="online-mini-name">Słōwko</span><span class="online-mini-text">Zgadnij słowo dnia</span></span>
           </a>
-          <div style="font-size:.65rem;color:var(--muted);letter-spacing:.15em">familock.pl · wersja beta</div>
+          <a class="online-mini" href="https://szpilplac.familock.pl/klodka.html">
+            <span class="online-mini-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15" r="1.5"/></svg>
+            </span>
+            <span class="online-mini-copy"><span class="online-mini-name">Kłōdka</span><span class="online-mini-text">Odkryj cztery cyfry</span></span>
+          </a>
+          <a class="online-mini" href="https://szpilplac.familock.pl/raja/">
+            <span class="online-mini-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 4h12M8 10h9M8 16h6M8 22h3"/><circle cx="4" cy="4" r="1" fill="currentColor"/><circle cx="4" cy="10" r="1" fill="currentColor"/><circle cx="4" cy="16" r="1" fill="currentColor"/><circle cx="4" cy="22" r="1" fill="currentColor"/></svg>
+            </span>
+            <span class="online-mini-copy"><span class="online-mini-name">Raja</span><span class="online-mini-text">Ułóż właściwą kolejność</span></span>
+          </a>
+          <a class="online-mini" href="https://szpilplac.familock.pl/cuzamen.html">
+            <span class="online-mini-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="6" height="6"/><rect x="15" y="3" width="6" height="6"/><rect x="3" y="15" width="6" height="6"/><rect x="15" y="15" width="6" height="6"/><path d="M9 6h6M6 9v6M18 9v6M9 18h6" opacity=".55"/></svg>
+            </span>
+            <span class="online-mini-copy"><span class="online-mini-name">Cuzamen</span><span class="online-mini-text">Połącz pasujące grupy</span></span>
+          </a>
         </div>
 
+        <div class="online-actions">
+          <a href="https://szpilplac.familock.pl/" class="btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>
+            Wejdź na Szpilplac
+          </a>
+          <span class="online-note">Zagrasz bez konta.<br>Konto zapisuje Twoje postępy.</span>
+        </div>
+      </article>
+
+      <div class="online-side">
+        <article class="online-card online-card-compact reveal" style="transition-delay:.1s">
+          <div class="online-compact-head">
+            <span class="online-compact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 8h8a6 6 0 0 1 5.4 8.6l-.5 1a2.5 2.5 0 0 1-4.2.5L15.1 16H8.9l-1.6 2.1a2.5 2.5 0 0 1-4.2-.5l-.5-1A6 6 0 0 1 8 8Z"/><path d="M7 11v4M5 13h4M16.5 12h.01M19 14h.01"/></svg>
+            </span>
+            <div><div class="online-compact-label">Szybkie gry</div><h3 class="online-compact-title">Gierki</h3></div>
+          </div>
+          <p class="online-compact-desc">Kopalnia, skoki po familoku, automat i klasyczny Pong. Klikasz i od razu grasz.</p>
+          <div class="online-tags" aria-label="Przykładowe gierki">
+            <span class="online-tag">Starzik w kopalni</span><span class="online-tag">Na Wiyrch</span><span class="online-tag">Bandyta</span><span class="online-tag">Pong</span>
+          </div>
+          <a class="online-card-link" href="https://szpilplac.familock.pl/gierki.html">Wszystkie gierki <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+
+        <article class="online-card online-card-compact online-card-story reveal" style="transition-delay:.2s">
+          <div class="online-compact-head">
+            <span class="online-compact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 21V4.5L17 2v19M5 21h14"/><circle cx="13.5" cy="12" r="1" fill="currentColor"/><path d="M17 7h2a2 2 0 0 1 2 2v12" opacity=".55"/></svg>
+            </span>
+            <div><div class="online-compact-label">Przygodówka retro</div><h3 class="online-compact-title">Starzik: TheSzpil</h3></div>
+          </div>
+          <p class="online-compact-desc">Krótka gra point&amp;click, która wprowadza w klimat kamienicy, ale nie zdradza fabuły pokoju.</p>
+          <div class="online-tags"><span class="online-tag">Point &amp; click</span><span class="online-tag">Wersja beta</span></div>
+          <a class="online-card-link" href="https://gra.familock.pl/">Zagraj w przygodówkę <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
       </div>
     </div>
-
   </div>
 </section>
-
-<style>
-@media(max-width:960px){
-  .theszpil-grid{grid-template-columns:1fr!important;gap:2.5rem!important}
-}
-</style>
 <section id="galeria">
   <div class="galeria-wrap">
     <div style="text-align:center;margin-bottom:3rem">
