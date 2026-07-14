@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Wersja podglądu: Cuzamen nie jest linkiem ani przyciskiem. -->
 <html lang="pl">
 <head>
 <meta charset="UTF-8" />
@@ -254,7 +255,8 @@ section{padding:5.5rem 3rem}
 .online-desc{position:relative;z-index:1;color:var(--cream2);font-size:.9rem;line-height:1.8;max-width:590px;margin-bottom:2rem}
 .online-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:2.1rem;position:relative;z-index:1}
 .online-mini{display:flex;align-items:center;gap:.8rem;min-width:0;padding:.8rem .85rem;background:rgba(10,9,9,.68);border:1px solid var(--border2);text-decoration:none;transition:border-color .2s,background .2s,transform .2s}
-.online-mini:hover{border-color:var(--red-dark);background:var(--red-deep);transform:translateX(2px)}
+.online-mini:not(.online-mini-disabled):hover{border-color:var(--red-dark);background:var(--red-deep);transform:translateX(2px)}
+.online-mini-disabled{display:flex;align-items:center;gap:.8rem;min-width:0;padding:.8rem .85rem;background:rgba(10,9,9,.68);border:1px solid var(--border2);pointer-events:none;cursor:default;user-select:none;opacity:.48}
 .online-mini-icon{width:37px;height:37px;display:grid;place-items:center;flex:none;color:var(--red-glow);background:#100d0e;border:1px solid var(--border2)}
 .online-mini-icon svg{width:20px;height:20px}
 .online-mini-copy{min-width:0}
@@ -474,12 +476,12 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
             </span>
             <span class="online-mini-copy"><span class="online-mini-name">Raja</span><span class="online-mini-text">Ułóż właściwą kolejność</span></span>
           </a>
-          <a class="online-mini" href="https://szpilplac.familock.pl/cuzamen.html">
+          <div class="online-mini-disabled" aria-disabled="true" data-interactive="false">
             <span class="online-mini-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="6" height="6"/><rect x="15" y="3" width="6" height="6"/><rect x="3" y="15" width="6" height="6"/><rect x="15" y="15" width="6" height="6"/><path d="M9 6h6M6 9v6M18 9v6M9 18h6" opacity=".55"/></svg>
             </span>
-            <span class="online-mini-copy"><span class="online-mini-name">Cuzamen</span><span class="online-mini-text">Połącz pasujące grupy</span></span>
-          </a>
+            <span class="online-mini-copy"><span class="online-mini-name">Cuzamen</span><span class="online-mini-text">Wkrótce</span></span>
+          </div>
         </div>
 
         <div class="online-actions">
