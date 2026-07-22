@@ -1,5 +1,4 @@
 <!doctype html>
-<!-- Wersja podglądu: Cuzamen nie jest linkiem ani przyciskiem. -->
 <html lang="pl">
 <head>
 <meta charset="UTF-8" />
@@ -84,7 +83,7 @@ section{padding:5.5rem 3rem}
 .pokoj-bg{position:absolute;inset:0;transition:transform .7s cubic-bezier(.25,.46,.45,.94)}
 .pokoj-card:hover .pokoj-bg{transform:scale(1.04)}
 .bg-starzik{background:radial-gradient(ellipse 80% 60% at 20% 30%,rgba(90,42,46,.35) 0%,transparent 70%),linear-gradient(to top,rgba(13,13,13,.95) 0%,rgba(13,13,13,.4) 60%,rgba(13,13,13,.15) 100%),repeating-linear-gradient(135deg,rgba(90,42,46,.03) 0px,rgba(90,42,46,.03) 1px,transparent 1px,transparent 40px);background-color:#151010}
-.bg-tesla{background:radial-gradient(ellipse 70% 50% at 80% 20%,rgba(40,60,140,.3) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 20% 80%,rgba(90,42,46,.2) 0%,transparent 55%),linear-gradient(to top,rgba(13,13,13,.95) 0%,rgba(13,13,13,.3) 60%,rgba(13,13,13,.1) 100%);background-color:#0c0d1a}
+.bg-tesla{background:linear-gradient(to top,rgba(13,13,13,.98) 0%,rgba(13,13,13,.72) 40%,rgba(13,13,13,.18) 100%),radial-gradient(ellipse 70% 50% at 80% 20%,rgba(40,60,140,.22) 0%,transparent 65%),url("img/tesla/escape-box-tesla-familock-swietochlowice-05.webp") center/cover no-repeat;background-color:#0c0d1a}
 .pokoj-number{position:absolute;top:2rem;left:2.5rem;font-family:var(--fd);font-size:.65rem;font-weight:700;letter-spacing:.35em;color:var(--gray);opacity:.8}
 .pokoj-big-icon{position:absolute;top:1.5rem;right:2rem;font-family:var(--fd);font-size:9rem;font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(90,42,46,.14);line-height:1;pointer-events:none;user-select:none}
 .pokoj-tag{font-family:var(--fd);font-size:.62rem;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--gray-light);margin-bottom:.6rem;position:relative}
@@ -227,11 +226,33 @@ section{padding:5.5rem 3rem}
 .filter-btn{font-family:var(--fd);font-size:.88rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;background:transparent;color:var(--cream2);border:1px solid var(--border3);padding:.85rem 2.2rem;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
 .filter-btn:hover,.filter-btn.active{border-color:var(--red);color:var(--red-glow);background:var(--red-deep)}
 .galeria-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
-.gal-item{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--border2);border-top:2px solid transparent;transition:border-color .3s,transform .3s}
+.gal-item{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--border2);border-top:2px solid transparent;cursor:zoom-in;transition:border-color .3s,transform .3s}
 .gal-item:hover{border-top-color:var(--red);transform:translateY(-4px)}
+.gal-item:focus-visible{outline:2px solid var(--red-glow);outline-offset:4px}
 .gal-item img{width:100%;height:260px;object-fit:cover;display:block;filter:grayscale(40%) contrast(1.1) brightness(.8);transition:filter .4s,transform .5s}
 .gal-item:hover img{filter:grayscale(0%) contrast(1.05) brightness(1);transform:scale(1.03)}
 .gal-item.hide{display:none}
+.galeria-empty{display:none;max-width:620px;margin:0 auto;padding:2rem;text-align:center;background:var(--card);border:1px solid var(--border2);border-top:2px solid var(--red-dark);color:var(--cream2);font-size:.9rem;line-height:1.75}
+.galeria-empty.show{display:block}
+.gallery-lightbox{display:none;position:fixed;inset:0;z-index:10000;background:rgba(5,4,4,.96);padding:clamp(1rem,3vw,2.5rem);align-items:center;justify-content:center}
+.gallery-lightbox.open{display:flex}
+.gallery-lightbox-inner{position:relative;display:flex;flex-direction:column;align-items:center;max-width:min(1500px,100%);max-height:100%;gap:.8rem}
+.gallery-lightbox-img{display:block;max-width:100%;max-height:calc(100vh - 7rem);width:auto;height:auto;object-fit:contain;box-shadow:0 20px 70px rgba(0,0,0,.65)}
+.gallery-lightbox-caption{max-width:900px;color:var(--cream2);font-size:.82rem;line-height:1.5;text-align:center}
+.gallery-lightbox-close{position:fixed;top:1rem;right:1rem;width:46px;height:46px;display:grid;place-items:center;background:rgba(20,18,18,.9);border:1px solid var(--border3);color:#fff;font-size:1.45rem;line-height:1;cursor:pointer;z-index:1;transition:background .2s,border-color .2s,transform .2s}
+.gallery-lightbox-close:hover,.gallery-lightbox-close:focus-visible{background:var(--red-deep);border-color:var(--red);transform:scale(1.05);outline:none}
+.gallery-lightbox-nav{position:fixed;top:50%;width:52px;height:68px;display:grid;place-items:center;transform:translateY(-50%);background:rgba(20,18,18,.86);border:1px solid var(--border3);color:#fff;font-size:2rem;line-height:1;cursor:pointer;z-index:1;transition:background .2s,border-color .2s,color .2s}
+.gallery-lightbox-nav.prev{left:1rem}
+.gallery-lightbox-nav.next{right:1rem}
+.gallery-lightbox-nav:hover,.gallery-lightbox-nav:focus-visible{background:var(--red-deep);border-color:var(--red);color:var(--red-glow);outline:none}
+.gallery-lightbox-counter{color:var(--muted);font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:.14em}
+@media(max-width:600px){
+  .gallery-lightbox{padding:4.5rem .75rem 5rem}
+  .gallery-lightbox-img{max-height:calc(100vh - 13rem)}
+  .gallery-lightbox-nav{top:auto;bottom:1rem;width:48px;height:48px;transform:none;font-size:1.6rem}
+  .gallery-lightbox-nav.prev{left:calc(50% - 58px)}
+  .gallery-lightbox-nav.next{right:calc(50% - 58px)}
+}
 .online-hub{background:radial-gradient(ellipse 70% 55% at 12% 30%,rgba(90,42,46,.2),transparent 70%),var(--bg);position:relative;overflow:hidden;scroll-margin-top:72px}
 .online-hub::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent)}
 .online-ghost{position:absolute;right:-1%;top:2rem;font-family:var(--fd);font-size:clamp(9rem,22vw,22rem);font-weight:900;line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(90,42,46,.08);pointer-events:none;user-select:none;white-space:nowrap}
@@ -333,6 +354,8 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
 @media(max-width:600px){
   .hero-title{font-size:clamp(4.5rem,20vw,7rem)}
   .hero-actions{flex-direction:column;align-items:flex-start}
+  .galeria-grid{grid-template-columns:1fr;gap:1rem}
+  .gal-item img{height:auto;aspect-ratio:3/2}
 }
 </style>
 </head>
@@ -526,21 +549,26 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
 <section id="galeria">
   <div class="galeria-wrap">
     <div style="text-align:center;margin-bottom:3rem">
-      <div class="section-eyebrow" style="justify-content:center">Nasze wnętrza</div>
+      <div class="section-eyebrow" style="justify-content:center">Nasze wnętrza i gry</div>
       <h2 class="section-title">Galeria <em>zdjęć</em></h2>
+      <p class="section-intro" style="margin:1.5rem auto 0">Wybierz galerię Starzika lub Tesla Escape BOX. Pokazujemy klimat i detale, ale nie zdradzamy rozwiązań.</p>
     </div>
-    <div class="galeria-filters reveal">
-      <button class="filter-btn active" data-filter="all">Wszystkie</button>
-      <button class="filter-btn" data-filter="starzik">Starzik</button>
-      <button class="filter-btn" data-filter="tesla">Tesla</button>
+    <div class="galeria-filters reveal" role="group" aria-label="Wybierz galerię">
+      <button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">Wszystkie</button>
+      <button class="filter-btn" type="button" data-filter="starzik" aria-pressed="false">Starzik</button>
+      <button class="filter-btn" type="button" data-filter="tesla" aria-pressed="false">Tesla Escape BOX</button>
     </div>
     <div class="galeria-grid">
-      <div class="gal-item starzik reveal"><img src="link-do-zdjecia-1.jpg" alt="Pokój Starzik" /></div>
-      <div class="gal-item starzik reveal" style="transition-delay:.1s"><img src="link-do-zdjecia-2.jpg" alt="Pokój Starzik" /></div>
-      <div class="gal-item starzik reveal" style="transition-delay:.2s"><img src="link-do-zdjecia-3.jpg" alt="Pokój Starzik" /></div>
-      <div class="gal-item tesla reveal" style="transition-delay:.1s"><img src="link-do-zdjecia-4.jpg" alt="Tesla Escape Box" /></div>
-      <div class="gal-item tesla reveal" style="transition-delay:.2s"><img src="link-do-zdjecia-5.jpg" alt="Tesla Escape Box" /></div>
+      <figure class="gal-item tesla reveal"><img src="img/tesla/escape-box-tesla-familock-swietochlowice-05-800.webp" srcset="img/tesla/escape-box-tesla-familock-swietochlowice-05-800.webp 800w, img/tesla/escape-box-tesla-familock-swietochlowice-05.webp 1600w" sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw" width="1600" height="1068" alt="Panel z podpisem N. Tesla w grze Tesla Escape Box Familock" loading="lazy" decoding="async" /></figure>
+      <figure class="gal-item tesla reveal" style="transition-delay:.05s"><img src="img/tesla/escape-box-tesla-familock-swietochlowice-08-800.webp" srcset="img/tesla/escape-box-tesla-familock-swietochlowice-08-800.webp 800w, img/tesla/escape-box-tesla-familock-swietochlowice-08.webp 1600w" sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw" width="1600" height="1068" alt="Tajemnicze drewniane pudełko w scenografii Tesla Escape Box" loading="lazy" decoding="async" /></figure>
+      <figure class="gal-item tesla reveal" style="transition-delay:.1s"><img src="img/tesla/escape-box-tesla-familock-swietochlowice-03-800.webp" srcset="img/tesla/escape-box-tesla-familock-swietochlowice-03-800.webp 800w, img/tesla/escape-box-tesla-familock-swietochlowice-03.webp 1600w" sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw" width="1600" height="1068" alt="Retro panel przełączników w grze Ostatni wynalazek Nikoli Tesli" loading="lazy" decoding="async" /></figure>
+      <figure class="gal-item tesla reveal"><img src="img/tesla/escape-box-tesla-familock-swietochlowice-07-800.webp" srcset="img/tesla/escape-box-tesla-familock-swietochlowice-07-800.webp 800w, img/tesla/escape-box-tesla-familock-swietochlowice-07.webp 1600w" sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw" width="1600" height="1068" alt="Mechaniczna kłódka będąca elementem Tesla Escape Box Familock" loading="lazy" decoding="async" /></figure>
+      <figure class="gal-item tesla reveal" style="transition-delay:.05s"><img src="img/tesla/escape-box-tesla-familock-swietochlowice-01-800.webp" srcset="img/tesla/escape-box-tesla-familock-swietochlowice-01-800.webp 800w, img/tesla/escape-box-tesla-familock-swietochlowice-01.webp 1600w" sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw" width="1600" height="1068" alt="Stare dokumenty i szkice w scenografii Tesla Escape Box" loading="lazy" decoding="async" /></figure>
+      <figure class="gal-item tesla reveal" style="transition-delay:.1s"><img src="img/tesla/escape-box-tesla-familock-swietochlowice-02-800.webp" srcset="img/tesla/escape-box-tesla-familock-swietochlowice-02-800.webp 800w, img/tesla/escape-box-tesla-familock-swietochlowice-02.webp 1600w" sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw" width="1600" height="1068" alt="Miedziana płytka z literami w grze Tesla Escape Box w Świętochłowicach" loading="lazy" decoding="async" /></figure>
+      <figure class="gal-item tesla reveal"><img src="img/tesla/escape-box-tesla-familock-swietochlowice-06-800.webp" srcset="img/tesla/escape-box-tesla-familock-swietochlowice-06-800.webp 800w, img/tesla/escape-box-tesla-familock-swietochlowice-06.webp 1600w" sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw" width="1600" height="1068" alt="Archiwalne fotografie Nikoli Tesli jako część scenografii escape boxu" loading="lazy" decoding="async" /></figure>
+      <figure class="gal-item tesla reveal" style="transition-delay:.05s"><img src="img/tesla/escape-box-tesla-familock-swietochlowice-04-800.webp" srcset="img/tesla/escape-box-tesla-familock-swietochlowice-04-800.webp 800w, img/tesla/escape-box-tesla-familock-swietochlowice-04.webp 1600w" sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw" width="1600" height="1068" alt="Przewody i drewniane elementy zagadek Tesla Escape Box Familock" loading="lazy" decoding="async" /></figure>
     </div>
+    <div class="galeria-empty" id="galeria-starzik-empty" role="status">Galeria pokoju Starzik jest już przygotowana jako osobna część. Zdjęcia pojawią się tutaj, gdy będą gotowe do publikacji.</div>
   </div>
 </section>
 
@@ -751,6 +779,17 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   </div>
 </div>
 
+<div class="gallery-lightbox" id="gallery-lightbox" role="dialog" aria-modal="true" aria-label="Powiększone zdjęcie" aria-hidden="true">
+  <button class="gallery-lightbox-close" id="gallery-lightbox-close" type="button" aria-label="Zamknij powiększone zdjęcie">✕</button>
+  <button class="gallery-lightbox-nav prev" id="gallery-lightbox-prev" type="button" aria-label="Poprzednie zdjęcie">&#10094;</button>
+  <div class="gallery-lightbox-inner">
+    <img class="gallery-lightbox-img" id="gallery-lightbox-img" src="" alt="" />
+    <p class="gallery-lightbox-caption" id="gallery-lightbox-caption"></p>
+    <span class="gallery-lightbox-counter" id="gallery-lightbox-counter" aria-live="polite"></span>
+  </div>
+  <button class="gallery-lightbox-nav next" id="gallery-lightbox-next" type="button" aria-label="Następne zdjęcie">&#10095;</button>
+</div>
+
 <!-- SZABLONY POPUPÓW -->
 <!-- Zamień stary <div id="tpl-polityka" hidden> tym: -->
 
@@ -864,17 +903,133 @@ document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
 
 var filterBtns = document.querySelectorAll('.filter-btn');
 var galItems = document.querySelectorAll('.gal-item');
+var starzikEmpty = document.getElementById('galeria-starzik-empty');
 filterBtns.forEach(function(btn) {
   btn.addEventListener('click', function() {
-    filterBtns.forEach(function(b) { b.classList.remove('active'); });
+    filterBtns.forEach(function(b) {
+      b.classList.remove('active');
+      b.setAttribute('aria-pressed', 'false');
+    });
     btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
     var filter = btn.getAttribute('data-filter');
     galItems.forEach(function(item) {
-      if (filter === 'all' || item.classList.contains(filter)) item.classList.remove('hide');
-      else item.classList.add('hide');
+      item.classList.toggle('hide', filter !== 'all' && !item.classList.contains(filter));
     });
+    if (starzikEmpty) starzikEmpty.classList.toggle('show', filter === 'starzik' && !document.querySelector('.gal-item.starzik'));
   });
 });
+
+var galleryLightbox = document.getElementById('gallery-lightbox');
+var galleryLightboxImg = document.getElementById('gallery-lightbox-img');
+var galleryLightboxCaption = document.getElementById('gallery-lightbox-caption');
+var galleryLightboxClose = document.getElementById('gallery-lightbox-close');
+var galleryLightboxPrev = document.getElementById('gallery-lightbox-prev');
+var galleryLightboxNext = document.getElementById('gallery-lightbox-next');
+var galleryLightboxCounter = document.getElementById('gallery-lightbox-counter');
+var galleryLastFocused = null;
+var galleryCurrentItems = [];
+var galleryCurrentIndex = 0;
+var galleryTouchStartX = null;
+
+function getLargestGalleryImage(img) {
+  var srcset = img.getAttribute('srcset');
+  if (!srcset) return img.currentSrc || img.src;
+  var candidates = srcset.split(',').map(function(candidate) {
+    var parts = candidate.trim().split(/\s+/);
+    return { src: parts[0], width: parseInt(parts[1], 10) || 0 };
+  });
+  candidates.sort(function(a, b) { return b.width - a.width; });
+  return candidates[0].src;
+}
+
+function getVisibleGalleryItems() {
+  return Array.prototype.filter.call(galItems, function(item) {
+    return !item.classList.contains('hide');
+  });
+}
+
+function showGalleryImage(index) {
+  if (!galleryCurrentItems.length) return;
+  galleryCurrentIndex = (index + galleryCurrentItems.length) % galleryCurrentItems.length;
+  var img = galleryCurrentItems[galleryCurrentIndex].querySelector('img');
+  if (!img) return;
+  galleryLightboxImg.src = getLargestGalleryImage(img);
+  galleryLightboxImg.alt = img.alt;
+  galleryLightboxCaption.textContent = img.alt;
+  galleryLightboxCounter.textContent = (galleryCurrentIndex + 1) + ' / ' + galleryCurrentItems.length;
+}
+
+function changeGalleryImage(direction) {
+  showGalleryImage(galleryCurrentIndex + direction);
+}
+
+function openGalleryLightbox(item) {
+  var img = item.querySelector('img');
+  if (!img) return;
+  galleryLastFocused = item;
+  galleryCurrentItems = getVisibleGalleryItems();
+  galleryCurrentIndex = galleryCurrentItems.indexOf(item);
+  if (galleryCurrentIndex < 0) galleryCurrentIndex = 0;
+  showGalleryImage(galleryCurrentIndex);
+  galleryLightbox.classList.add('open');
+  galleryLightbox.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  galleryLightboxClose.focus();
+}
+
+function closeGalleryLightbox() {
+  if (!galleryLightbox.classList.contains('open')) return;
+  galleryLightbox.classList.remove('open');
+  galleryLightbox.setAttribute('aria-hidden', 'true');
+  galleryLightboxImg.src = '';
+  document.body.style.overflow = '';
+  if (galleryLastFocused) galleryLastFocused.focus();
+}
+
+galItems.forEach(function(item) {
+  var img = item.querySelector('img');
+  item.setAttribute('tabindex', '0');
+  item.setAttribute('role', 'button');
+  item.setAttribute('aria-label', 'Powiększ zdjęcie: ' + (img ? img.alt : 'zdjęcie z galerii'));
+  item.addEventListener('click', function() { openGalleryLightbox(item); });
+  item.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openGalleryLightbox(item);
+    }
+  });
+});
+
+galleryLightboxClose.addEventListener('click', closeGalleryLightbox);
+galleryLightboxPrev.addEventListener('click', function() { changeGalleryImage(-1); });
+galleryLightboxNext.addEventListener('click', function() { changeGalleryImage(1); });
+galleryLightbox.addEventListener('click', function(e) {
+  if (e.target === galleryLightbox) closeGalleryLightbox();
+});
+galleryLightbox.addEventListener('touchstart', function(e) {
+  galleryTouchStartX = e.changedTouches[0].clientX;
+}, { passive: true });
+galleryLightbox.addEventListener('touchend', function(e) {
+  if (galleryTouchStartX === null) return;
+  var distance = e.changedTouches[0].clientX - galleryTouchStartX;
+  galleryTouchStartX = null;
+  if (Math.abs(distance) < 50) return;
+  changeGalleryImage(distance < 0 ? 1 : -1);
+}, { passive: true });
+document.addEventListener('keydown', function(e) {
+  if (!galleryLightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeGalleryLightbox();
+  if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    changeGalleryImage(-1);
+  }
+  if (e.key === 'ArrowRight') {
+    e.preventDefault();
+    changeGalleryImage(1);
+  }
+});
+
 </script>
 <!-- ============================================================
      COOKIE CONSENT BANNER — Familock (poprawiona wersja)
