@@ -1,0 +1,68 @@
+name: Aktualizacja formularza kontaktowego
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-contact-form.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-contact-form:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobierz repozytorium
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Popraw formularz Formspree
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("index.html")
+          content = path.read_text(encoding="utf-8")
+
+          replacements = [
+              (
+                  '<form id="contact-form" action="https://formspree.io/f/mreanydg" method="POST">',
+                  '<form id="contact-form" action="https://formspree.io/f/mreanydg" method="POST">\n        <input type="hidden" name="subject" value="Familock.pl | Nowa wiadomość od {{ imie }}" />'
+              ),
+              (
+                  '<div class="f-group"><label>Imię</label><input type="text" name="imie" placeholder="np. Józef" required /></div>',
+                  '<div class="f-group"><label>Imię</label><input type="text" name="imie" placeholder="np. Józef" autocomplete="name" required /></div>'
+              ),
+              (
+                  '<div class="f-group"><label>Telefon</label><input type="tel" name="telefon" placeholder="+48 000 000 000" /></div>',
+                  '<div class="f-group"><label>Telefon</label><input type="tel" name="telefon" placeholder="+48 000 000 000" autocomplete="tel" /></div>'
+              ),
+              (
+                  '<div class="f-group"><label>E-mail</label><input type="email" name="email" placeholder="twoj@email.pl" required /></div>',
+                  '<div class="f-group"><label>E-mail</label><input type="email" name="email" placeholder="twoj@email.pl" autocomplete="email" required /></div>'
+              ),
+              (
+                  '<select name="temat"><option value="">Wybierz temat...</option>',
+                  '<select name="temat" required><option value="">Wybierz temat...</option>'
+              ),
+              (
+                  '<input type="checkbox" id="rodo" name="zgoda_rodo" required />',
+                  '<input type="checkbox" id="rodo" name="Zgoda RODO" value="Tak" required />'
+              ),
+          ]
+
+          for old, new in replacements:
+              if old not in content:
+                  raise SystemExit(f"Nie znaleziono oczekiwanego fragmentu: {old}")
+              content = content.replace(old, new, 1)
+
+          path.write_text(content, encoding="utf-8")
+
+      - name: Zapisz zmianę
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Popraw formularz kontaktowy Formspree"
+          git push
