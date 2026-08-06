@@ -10,7 +10,7 @@
 <link rel="canonical" href="https://familock.pl/" />
 <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"EntertainmentBusiness","name":"Familock Escape Room","url":"https://familock.pl","email":"kontakt@familock.pl","address":{"@type":"PostalAddress","streetAddress":"ul. Cmentarna 5/3","addressLocality":"Świętochłowice","postalCode":"41-600","addressCountry":"PL"},"priceRange":"100–450 PLN"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"EntertainmentBusiness","name":"Familock Escape Room","legalName":"Łukasz Dyłka Familock","taxID":"6272709230","url":"https://familock.pl","telephone":"+48573955316","email":"kontakt@familock.pl","address":{"@type":"PostalAddress","streetAddress":"ul. Cmentarna 5/3","addressLocality":"Świętochłowice","postalCode":"41-600","addressCountry":"PL"},"priceRange":"100–450 PLN"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" media="print" onload="this.media='all'" />
@@ -162,6 +162,40 @@ section{padding:5.5rem 3rem}
 .booking-widget-wrap{background:var(--card);border:1px solid var(--border2);border-top:2px solid var(--red);overflow:hidden}
 .booking-widget-head{padding:1.2rem 1.5rem;background:var(--red-deep);display:flex;align-items:center;gap:.7rem}
 .booking-widget-head span{font-family:var(--fd);font-size:.75rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gray-light)}
+.booking-mode[hidden]{display:none!important}
+.booking-request{padding:1.6rem}
+.booking-request-note{margin-bottom:1.5rem;padding:1rem 1.1rem;background:rgba(90,42,46,.18);border-left:2px solid var(--red);color:var(--cream2);font-size:.88rem;line-height:1.65}
+.booking-request-note strong{color:var(--cream)}
+.booking-request-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.booking-calendar-field{grid-column:1/-1}
+.booking-calendar-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(210px,.8fr);gap:1rem;margin-top:.4rem}
+.booking-calendar{background:var(--bg2);border:1px solid var(--border2);padding:1rem}
+.booking-calendar-head{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:.6rem;margin-bottom:1rem}
+.booking-calendar-month{font-family:var(--fd);font-size:.95rem;font-weight:800;color:var(--cream);text-align:center;text-transform:capitalize}
+.booking-calendar-nav{width:42px;height:42px;border:1px solid var(--border2);background:var(--card2);color:var(--cream);cursor:pointer;font-size:1.25rem;transition:.2s}
+.booking-calendar-nav:hover:not(:disabled){border-color:var(--red);background:var(--red-deep);color:var(--red-glow)}
+.booking-calendar-nav:disabled{opacity:.25;cursor:not-allowed}
+.booking-calendar-week,.booking-calendar-days{display:grid;grid-template-columns:repeat(7,1fr);gap:.35rem}
+.booking-calendar-week span{padding:.35rem 0;text-align:center;font-family:var(--fd);font-size:.58rem;font-weight:800;letter-spacing:.08em;color:var(--muted)}
+.booking-calendar-day{aspect-ratio:1;border:1px solid transparent;background:var(--card2);color:var(--cream2);font-family:var(--fd);font-size:.78rem;font-weight:700;cursor:pointer;transition:.18s}
+.booking-calendar-day:hover:not(:disabled){border-color:var(--red);color:var(--cream);background:var(--red-deep)}
+.booking-calendar-day.is-selected{border-color:var(--red);background:var(--red-dark);color:#fff;box-shadow:0 0 0 1px var(--red-dark)}
+.booking-calendar-day.is-today{border-color:var(--gray-dark)}
+.booking-calendar-day:disabled,.booking-calendar-day.is-empty{background:transparent;color:var(--muted);opacity:.28;cursor:not-allowed}
+.booking-times{background:var(--bg2);border:1px solid var(--border2);padding:1rem;display:flex;flex-direction:column}
+.booking-times-title{font-family:var(--fd);font-size:.68rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--gray);margin-bottom:.35rem}
+.booking-selected-date{font-size:.9rem;color:var(--cream);line-height:1.45;min-height:2.7rem;margin-bottom:.9rem}
+.booking-time-list{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.booking-time-btn{border:1px solid var(--border2);background:var(--card2);color:var(--cream2);padding:.75rem .45rem;font-family:var(--fd);font-size:.8rem;font-weight:800;cursor:pointer;transition:.18s}
+.booking-time-btn:hover{border-color:var(--red);color:var(--cream);background:var(--red-deep)}
+.booking-time-btn.is-selected{border-color:var(--red);background:var(--red-dark);color:#fff}
+.booking-calendar-help{grid-column:1/-1;color:var(--muted);font-size:.74rem;line-height:1.55;margin-top:.15rem}
+.booking-selection-error{display:none;grid-column:1/-1;padding:.75rem .9rem;background:rgba(139,37,48,.12);border-left:2px solid var(--red);color:var(--red-glow);font-size:.8rem}
+.booking-price{display:flex;justify-content:space-between;gap:1rem;align-items:center;margin:1.2rem 0;padding:1rem 1.1rem;background:var(--bg2);border:1px solid var(--border2)}
+.booking-price-label{font-family:var(--fd);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gray)}
+.booking-price-value{font-family:var(--fd);font-size:1.3rem;font-weight:900;color:var(--cream)}
+.booking-legal{margin:.8rem 0 1rem;color:var(--muted);font-size:.76rem;line-height:1.55}
+.booking-lockme-frame{display:block;width:100%;min-height:600px;background:transparent;border:0}
 .alt-link{display:flex;align-items:center;gap:.8rem;padding:.9rem 1.1rem;border:1px solid var(--border2);color:var(--cream2);text-decoration:none;font-family:var(--fd);font-size:.82rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:.2s;margin-bottom:.7rem}
 .alt-link:hover{border-color:var(--red);color:var(--red-glow);background:var(--red-deep)}
 .alt-link svg{flex-shrink:0;color:var(--red)}
@@ -356,6 +390,12 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   .hero-actions{flex-direction:column;align-items:flex-start}
   .galeria-grid{grid-template-columns:1fr;gap:1rem}
   .gal-item img{height:auto;aspect-ratio:3/2}
+  .booking-request{padding:1.1rem}
+  .booking-request-grid{grid-template-columns:1fr}
+  .booking-calendar-layout{grid-template-columns:1fr}
+  .booking-calendar{padding:.75rem}
+  .booking-calendar-week,.booking-calendar-days{gap:.22rem}
+  .booking-calendar-day{font-size:.72rem}
 }
 </style>
 </head>
@@ -364,7 +404,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
 <nav id="navbar">
   <a href="#home" class="nav-logo">FAMI<span class="dot"></span><span class="lock">LOCK</span></a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#pokoje">Pokoje/Oferta</a></li>
+    <li><a href="#pokoje">Pokoje</a></li>
     <li><a href="#theszpil">Gry online</a></li>
     <li><a href="#cennik">Cennik</a></li>
     <li><a href="#galeria">Galeria</a></li>
@@ -653,8 +693,83 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
     </div>
     <div style="margin-bottom:2rem">
       <div class="booking-widget-wrap">
-        <div class="booking-widget-head"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>System rezerwacji online</span></div>
-        <iframe src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0.html" loading="lazy" width="100%" height="600" frameborder="0" scrolling="auto" allowtransparency="true" title="Rezerwacja Familock" style="display:block;background:transparent;min-height:600px"></iframe>
+        <div class="booking-widget-head"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span id="booking-widget-title">Zgłoszenie rezerwacji</span></div>
+        <div id="booking-request-mode" class="booking-mode booking-request">
+          <div class="booking-request-note"><strong>To jest zgłoszenie terminu, a nie automatyczna rezerwacja.</strong> Wybrany termin staje się zarezerwowany dopiero po potwierdzeniu przez Familock. Dzięki temu nie przyjmiemy rezerwacji, której nie możemy jeszcze zrealizować.</div>
+          <form id="booking-request-form" action="https://formspree.io/f/mreanydg" method="POST">
+            <input type="hidden" name="_subject" value="Nowe zgłoszenie rezerwacji Familock" />
+            <input type="hidden" name="rodzaj_formularza" value="Zgłoszenie rezerwacji" />
+            <div class="booking-request-grid">
+              <div class="f-group">
+                <label for="booking-room">Pokój</label>
+                <select id="booking-room" name="pokoj" required>
+                  <option value="Starzik">Starzik</option>
+                </select>
+              </div>
+              <div class="f-group">
+                <label for="booking-players">Liczba graczy</label>
+                <select id="booking-players" name="liczba_graczy" required></select>
+              </div>
+              <div class="f-group booking-calendar-field">
+                <label>Wybierz termin</label>
+                <input id="booking-date" type="hidden" name="preferowana_data" />
+                <input id="booking-time" type="hidden" name="preferowana_godzina" />
+                <div class="booking-calendar-layout">
+                  <div class="booking-calendar" aria-label="Kalendarz dostępnych terminów">
+                    <div class="booking-calendar-head">
+                      <button id="booking-calendar-prev" class="booking-calendar-nav" type="button" aria-label="Poprzedni miesiąc">‹</button>
+                      <div id="booking-calendar-month" class="booking-calendar-month" aria-live="polite"></div>
+                      <button id="booking-calendar-next" class="booking-calendar-nav" type="button" aria-label="Następny miesiąc">›</button>
+                    </div>
+                    <div class="booking-calendar-week" aria-hidden="true">
+                      <span>PN</span><span>WT</span><span>ŚR</span><span>CZW</span><span>PT</span><span>SOB</span><span>ND</span>
+                    </div>
+                    <div id="booking-calendar-days" class="booking-calendar-days"></div>
+                  </div>
+                  <div class="booking-times">
+                    <div class="booking-times-title">Dostępne godziny</div>
+                    <div id="booking-selected-date" class="booking-selected-date">Najpierw wybierz dzień</div>
+                    <div id="booking-time-list" class="booking-time-list"></div>
+                  </div>
+                  <p class="booking-calendar-help">Terminy można wybierać od 10 września 2026 roku. Wysłanie formularza nie blokuje terminu automatycznie. Rezerwacja jest ważna dopiero po potwierdzeniu przez Familock.</p>
+                  <div id="booking-selection-error" class="booking-selection-error" role="alert">Wybierz dzień i godzinę gry.</div>
+                </div>
+              </div>
+              <div class="f-group">
+                <label for="booking-name">Imię i nazwisko</label>
+                <input id="booking-name" type="text" name="imie_i_nazwisko" autocomplete="name" required />
+              </div>
+              <div class="f-group">
+                <label for="booking-phone">Telefon</label>
+                <input id="booking-phone" type="tel" name="telefon" autocomplete="tel" required />
+              </div>
+            </div>
+            <div class="f-group">
+              <label for="booking-email">E-mail</label>
+              <input id="booking-email" type="email" name="email" autocomplete="email" required />
+            </div>
+            <div class="booking-price" aria-live="polite">
+              <span class="booking-price-label">Cena gry</span>
+              <span id="booking-price-value" class="booking-price-value">250 zł</span>
+              <input id="booking-price-input" type="hidden" name="cena" value="250 zł" />
+            </div>
+            <div class="f-check">
+              <input type="checkbox" id="booking-rules" name="akceptacja_regulaminu" value="Tak" required />
+              <label for="booking-rules">Akceptuję <a href="/regulamin.html" target="_blank" rel="noopener" style="color:var(--red-glow)">Regulamin</a> i potwierdzam, że zapoznałem się z zasadami zmiany oraz odwołania terminu.</label>
+            </div>
+            <div class="f-check">
+              <input type="checkbox" id="booking-privacy" name="akceptacja_polityki_prywatnosci" value="Tak" required />
+              <label for="booking-privacy">Zapoznałem się z <a href="/polityka.html" target="_blank" rel="noopener" style="color:var(--red-glow)">Polityką prywatności</a>.</label>
+            </div>
+            <p class="booking-legal">Kliknięcie przycisku wysyła prośbę o termin. Umowa dotycząca wybranego terminu zostaje zawarta dopiero po otrzymaniu potwierdzenia od Familock. Płatność odbywa się po grze.</p>
+            <button type="submit" class="btn-primary" style="width:100%;justify-content:center">Wyślij zgłoszenie terminu</button>
+            <div id="booking-form-ok" class="form-ok" style="border-left-color:#4caf50">Zgłoszenie zostało wysłane. Termin nie jest jeszcze zarezerwowany. Potwierdzimy go e-mailem lub telefonicznie.</div>
+            <div id="booking-form-err" class="form-ok" style="border-left-color:var(--red-glow)">Nie udało się wysłać zgłoszenia. Spróbuj ponownie albo skontaktuj się z nami telefonicznie.</div>
+          </form>
+        </div>
+        <div id="booking-lockme-mode" class="booking-mode" hidden>
+          <iframe id="booking-lockme-frame" class="booking-lockme-frame" data-src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0.html" loading="lazy" height="600" scrolling="auto" allowtransparency="true" title="Rezerwacja Familock"></iframe>
+        </div>
       </div>
     </div>
     <div class="rez-grid" style="grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem">
@@ -729,7 +844,8 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
     <div>
       <div class="section-eyebrow">Znajdź nas</div>
       <h2 class="section-title">Kontakt<br />&amp; <em>Dojazd</em></h2>
-      <div class="info-block"><div class="info-label">Adres</div><div class="info-val">ul. Cmentarna 5/3<br />41-600 Świętochłowice<br /><br/>NIP: 6272709230><br><span style="font-size:.8rem;color:var(--muted)">wejście przez klatkę schodową</span></div></div>
+      <div class="info-block"><div class="info-label">Dane firmy</div><div class="info-val"><strong>Łukasz Dyłka Familock</strong><br />NIP: 6272709230<br />ul. Cmentarna 5/3<br />41-600 Świętochłowice<br /><span style="font-size:.8rem;color:var(--muted)">wejście przez klatkę schodową</span></div></div>
+      <div class="info-block"><div class="info-label">Telefon</div><div class="info-val"><a href="tel:573955316">573 955 316</a></div></div>
       <div class="info-block"><div class="info-label">E-mail</div><div class="info-val"><a href="mailto:kontakt@familock.pl">kontakt@familock.pl</a></div></div>
       <div class="info-block"><div class="info-label">Parking i dojazd</div><div class="info-val">Bezpłatny parking na ul. Cmentarnej i ul. Dulcissimy Hoffmann. Przystanki autobusowe i tramwajowe w pobliżu. Dworzec kolejowy &lt;1 km.</div></div>
       <div class="map-wrap reveal">
@@ -805,8 +921,9 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   <p style="color:var(--muted);font-size:.8rem;margin-bottom:1.5rem">Escape Room Familock · Łukasz Dyłka Familock · NIP: 6272709230</p>
 
   <h3>Administrator danych</h3>
-  <p><strong>Łukasz Dyłka Familock</strong>, ul. Cmentarna 5/3, 41-600 Świętochłowice<br>
-  e-mail: <a href="mailto:kontakt@familock.pl" style="color:var(--red-glow)">kontakt@familock.pl</a> · NIP: 6272709230 · REGON: 524722644</p>
+  <p>Administratorem danych osobowych jest <strong>Łukasz Dyłka, prowadzący działalność gospodarczą pod firmą Łukasz Dyłka Familock</strong>, ul. Cmentarna 5/3, 41-600 Świętochłowice.<br>
+  Telefon: <a href="tel:573955316" style="color:var(--red-glow)">573 955 316</a> · e-mail: <a href="mailto:kontakt@familock.pl" style="color:var(--red-glow)">kontakt@familock.pl</a><br>
+  NIP: 6272709230 · REGON: 524722644</p>
 
   <h3>Co przetwarzamy i po co</h3>
   <p>Przetwarzamy Twoje dane (imię, e-mail, telefon, dane rezerwacji) w celu obsługi rezerwacji i kontaktu <span style="font-size:.65rem;background:var(--red-deep);color:var(--red-glow);border:1px solid var(--red-dark);padding:.1rem .4rem;display:inline-block">art. 6 ust. 1 lit. b RODO</span>, wystawiania dokumentów księgowych <span style="font-size:.65rem;background:var(--red-deep);color:var(--red-glow);border:1px solid var(--red-dark);padding:.1rem .4rem;display:inline-block">lit. c</span> oraz prowadzenia korespondencji i monitoringu <span style="font-size:.65rem;background:var(--red-deep);color:var(--red-glow);border:1px solid var(--red-dark);padding:.1rem .4rem;display:inline-block">lit. f</span>. Zdjęcia po grze publikujemy wyłącznie za Twoją zgodą <span style="font-size:.65rem;background:var(--red-deep);color:var(--red-glow);border:1px solid var(--red-dark);padding:.1rem .4rem;display:inline-block">lit. a</span>.</p>
@@ -829,6 +946,9 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
 <div id="tpl-regulamin" hidden>
   <h2>Regulamin</h2>
   <p style="color:var(--muted);font-size:.8rem;margin-bottom:1.5rem">Escape Room Familock · Łukasz Dyłka Familock</p>
+
+  <h3>Organizator i usługodawca</h3>
+  <p>Organizatorem i usługodawcą jest <strong>Łukasz Dyłka, prowadzący działalność gospodarczą pod firmą Łukasz Dyłka Familock</strong>, ul. Cmentarna 5/3, 41-600 Świętochłowice, NIP: 6272709230, tel. 573 955 316, e-mail: kontakt@familock.pl.</p>
 
   <h3>Rezerwacje i płatność</h3>
   <p>Rezerwacja przez lock.me, mail lub telefon. Odwołanie bezpłatne do 24h przed grą. Płatność po grze — gotówka, karta, BLIK.</p>
@@ -874,6 +994,224 @@ function switchTab(id, btn) {
   document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
+}
+
+/* Zmień na 'lockme', gdy kalendarz LockMe ma zostać uruchomiony publicznie. */
+var BOOKING_MODE = 'request';
+
+var bookingRequestMode = document.getElementById('booking-request-mode');
+var bookingLockmeMode = document.getElementById('booking-lockme-mode');
+var bookingLockmeFrame = document.getElementById('booking-lockme-frame');
+var bookingWidgetTitle = document.getElementById('booking-widget-title');
+
+if (BOOKING_MODE === 'lockme') {
+  bookingRequestMode.hidden = true;
+  bookingLockmeMode.hidden = false;
+  bookingWidgetTitle.textContent = 'System rezerwacji online';
+  bookingLockmeFrame.src = bookingLockmeFrame.dataset.src;
+} else {
+  bookingRequestMode.hidden = false;
+  bookingLockmeMode.hidden = true;
+  bookingWidgetTitle.textContent = 'Zgłoszenie rezerwacji';
+}
+
+var bookingPrices = {
+  'Starzik': [
+    { players: '2 osoby', price: 250 },
+    { players: '3 osoby', price: 310 },
+    { players: '4 osoby', price: 360 },
+    { players: '5 osób', price: 400 }
+  ]
+};
+
+var bookingRoom = document.getElementById('booking-room');
+var bookingPlayers = document.getElementById('booking-players');
+var bookingPriceValue = document.getElementById('booking-price-value');
+var bookingPriceInput = document.getElementById('booking-price-input');
+var bookingDate = document.getElementById('booking-date');
+var bookingTime = document.getElementById('booking-time');
+
+function updateBookingPrice() {
+  var selected = bookingPlayers.options[bookingPlayers.selectedIndex];
+  var price = selected ? selected.dataset.price : '';
+  var label = price ? price + ' zł' : 'Wybierz liczbę graczy';
+  bookingPriceValue.textContent = label;
+  bookingPriceInput.value = label;
+}
+
+function updateBookingPlayers() {
+  var options = bookingPrices[bookingRoom.value] || [];
+  bookingPlayers.innerHTML = '';
+  options.forEach(function(item) {
+    var option = document.createElement('option');
+    option.value = item.players;
+    option.textContent = item.players;
+    option.dataset.price = item.price;
+    bookingPlayers.appendChild(option);
+  });
+  updateBookingPrice();
+}
+
+if (bookingRoom && bookingPlayers) {
+  bookingRoom.addEventListener('change', updateBookingPlayers);
+  bookingPlayers.addEventListener('change', updateBookingPrice);
+  updateBookingPlayers();
+}
+
+var BOOKING_START_DATE = new Date(2026, 8, 10, 12, 0, 0);
+var BOOKING_HOURS = ['18:00', '21:00'];
+var bookingCalendarMonth = document.getElementById('booking-calendar-month');
+var bookingCalendarDays = document.getElementById('booking-calendar-days');
+var bookingCalendarPrev = document.getElementById('booking-calendar-prev');
+var bookingCalendarNext = document.getElementById('booking-calendar-next');
+var bookingSelectedDate = document.getElementById('booking-selected-date');
+var bookingTimeList = document.getElementById('booking-time-list');
+var bookingSelectionError = document.getElementById('booking-selection-error');
+var bookingViewDate = new Date(BOOKING_START_DATE.getFullYear(), BOOKING_START_DATE.getMonth(), 1, 12, 0, 0);
+var bookingChosenDate = null;
+
+function bookingIsoDate(date) {
+  return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+}
+
+function bookingSameDay(a, b) {
+  return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+
+function bookingSameMonth(a, b) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
+}
+
+function renderBookingTimes() {
+  bookingTimeList.innerHTML = '';
+  if (!bookingChosenDate) {
+    bookingSelectedDate.textContent = 'Najpierw wybierz dzień';
+    return;
+  }
+  bookingSelectedDate.textContent = bookingChosenDate.toLocaleDateString('pl-PL', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  });
+  BOOKING_HOURS.forEach(function(hour) {
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'booking-time-btn';
+    button.textContent = hour;
+    button.setAttribute('aria-pressed', bookingTime.value === hour ? 'true' : 'false');
+    if (bookingTime.value === hour) button.classList.add('is-selected');
+    button.addEventListener('click', function() {
+      bookingTime.value = hour;
+      bookingTimeList.querySelectorAll('.booking-time-btn').forEach(function(item) {
+        var active = item === button;
+        item.classList.toggle('is-selected', active);
+        item.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      bookingSelectionError.style.display = 'none';
+    });
+    bookingTimeList.appendChild(button);
+  });
+}
+
+function chooseBookingDate(date) {
+  bookingChosenDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0);
+  bookingDate.value = bookingIsoDate(bookingChosenDate);
+  bookingTime.value = '';
+  bookingSelectionError.style.display = 'none';
+  renderBookingCalendar();
+  renderBookingTimes();
+}
+
+function renderBookingCalendar() {
+  if (!bookingCalendarDays) return;
+  bookingCalendarMonth.textContent = bookingViewDate.toLocaleDateString('pl-PL', { month: 'long', year: 'numeric' });
+  bookingCalendarDays.innerHTML = '';
+  var firstDay = new Date(bookingViewDate.getFullYear(), bookingViewDate.getMonth(), 1, 12, 0, 0);
+  var lastDay = new Date(bookingViewDate.getFullYear(), bookingViewDate.getMonth() + 1, 0, 12, 0, 0);
+  var leadingEmpty = (firstDay.getDay() + 6) % 7;
+  var today = new Date();
+  today = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0, 0);
+
+  for (var empty = 0; empty < leadingEmpty; empty += 1) {
+    var emptyCell = document.createElement('span');
+    emptyCell.className = 'booking-calendar-day is-empty';
+    emptyCell.setAttribute('aria-hidden', 'true');
+    bookingCalendarDays.appendChild(emptyCell);
+  }
+
+  for (var day = 1; day <= lastDay.getDate(); day += 1) {
+    (function(dayNumber) {
+      var date = new Date(bookingViewDate.getFullYear(), bookingViewDate.getMonth(), dayNumber, 12, 0, 0);
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'booking-calendar-day';
+      button.textContent = dayNumber;
+      button.disabled = date < BOOKING_START_DATE;
+      button.setAttribute('aria-label', date.toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }));
+      if (bookingSameDay(date, today)) button.classList.add('is-today');
+      if (bookingSameDay(date, bookingChosenDate)) {
+        button.classList.add('is-selected');
+        button.setAttribute('aria-pressed', 'true');
+      } else {
+        button.setAttribute('aria-pressed', 'false');
+      }
+      button.addEventListener('click', function() { chooseBookingDate(date); });
+      bookingCalendarDays.appendChild(button);
+    })(day);
+  }
+
+  var firstAllowedMonth = new Date(BOOKING_START_DATE.getFullYear(), BOOKING_START_DATE.getMonth(), 1, 12, 0, 0);
+  bookingCalendarPrev.disabled = bookingSameMonth(bookingViewDate, firstAllowedMonth);
+  bookingCalendarNext.disabled = false;
+}
+
+function resetBookingCalendar() {
+  bookingChosenDate = null;
+  bookingDate.value = '';
+  bookingTime.value = '';
+  bookingViewDate = new Date(BOOKING_START_DATE.getFullYear(), BOOKING_START_DATE.getMonth(), 1, 12, 0, 0);
+  bookingSelectionError.style.display = 'none';
+  renderBookingCalendar();
+  renderBookingTimes();
+}
+
+if (bookingCalendarPrev && bookingCalendarNext) {
+  bookingCalendarPrev.addEventListener('click', function() {
+    bookingViewDate = new Date(bookingViewDate.getFullYear(), bookingViewDate.getMonth() - 1, 1, 12, 0, 0);
+    renderBookingCalendar();
+  });
+  bookingCalendarNext.addEventListener('click', function() {
+    bookingViewDate = new Date(bookingViewDate.getFullYear(), bookingViewDate.getMonth() + 1, 1, 12, 0, 0);
+    renderBookingCalendar();
+  });
+  resetBookingCalendar();
+}
+
+var bookingForm = document.getElementById('booking-request-form');
+var bookingFormOk = document.getElementById('booking-form-ok');
+var bookingFormErr = document.getElementById('booking-form-err');
+if (bookingForm) {
+  bookingForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    bookingFormOk.style.display = 'none';
+    bookingFormErr.style.display = 'none';
+    if (!bookingDate.value || !bookingTime.value) {
+      bookingSelectionError.style.display = 'block';
+      bookingSelectionError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    try {
+      var response = await fetch(bookingForm.action, { method: bookingForm.method, body: new FormData(bookingForm), headers: { Accept: 'application/json' } });
+      if (response.ok) {
+        bookingFormOk.style.display = 'block';
+        bookingForm.reset();
+        updateBookingPlayers();
+        resetBookingCalendar();
+      } else {
+        bookingFormErr.style.display = 'block';
+      }
+    } catch(e) {
+      bookingFormErr.style.display = 'block';
+    }
+  });
 }
 
 var contactForm = document.getElementById('contact-form');
