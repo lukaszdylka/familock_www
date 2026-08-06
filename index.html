@@ -908,18 +908,19 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
     <div>
       <p class="form-title">Napisz do nas</p>
       <form id="contact-form" action="https://formspree.io/f/mreanydg" method="POST">
+        <input type="hidden" name="subject" value="Familock.pl | Nowa wiadomość od {{ imie }}" />
         <div class="f-row">
-          <div class="f-group"><label>Imię</label><input type="text" name="imie" placeholder="np. Józef" required /></div>
-          <div class="f-group"><label>Telefon</label><input type="tel" name="telefon" placeholder="+48 000 000 000" /></div>
+          <div class="f-group"><label>Imię</label><input type="text" name="imie" placeholder="np. Józef" autocomplete="name" required /></div>
+          <div class="f-group"><label>Telefon</label><input type="tel" name="telefon" placeholder="+48 000 000 000" autocomplete="tel" /></div>
         </div>
-        <div class="f-group"><label>E-mail</label><input type="email" name="email" placeholder="twoj@email.pl" required /></div>
+        <div class="f-group"><label>E-mail</label><input type="email" name="email" placeholder="twoj@email.pl" autocomplete="email" required /></div>
         <div class="f-group">
           <label>Temat</label>
-          <select name="temat"><option value="">Wybierz temat...</option><option value="Pytanie ogólne">Pytanie ogólne</option><option value="Voucher">Voucher</option><option value="Starzik">Starzik</option><option value="Tesla Escape Box">Tesla Escape Box</option></select>
+          <select name="temat" required><option value="">Wybierz temat...</option><option value="Pytanie ogólne">Pytanie ogólne</option><option value="Voucher">Voucher</option><option value="Starzik">Starzik</option><option value="Tesla Escape Box">Tesla Escape Box</option></select>
         </div>
         <div class="f-group"><label>Wiadomość</label><textarea name="wiadomosc" placeholder="Zapytaj o co chcesz" required></textarea></div>
         <div class="f-check">
-          <input type="checkbox" id="rodo" name="zgoda_rodo" required />
+          <input type="checkbox" id="rodo" name="Zgoda RODO" value="Tak" required />
           <label for="rodo">Wyrażam zgodę na przetwarzanie moich danych osobowych przez Łukasz Dyłka Familock zgodnie z <a href="javascript:void(0)" onclick="showModal('polityka')" style="color:var(--red-glow)">Polityką Prywatności</a>.</label>
         </div>
         <button type="submit" class="btn-primary" style="width:100%;justify-content:center">Wyślij wiadomość <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg></button>
