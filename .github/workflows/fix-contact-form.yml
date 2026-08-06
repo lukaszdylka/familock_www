@@ -1,22 +1,22 @@
 name: Aktualizacja formularza kontaktowego
 
 on:
-  push:
-    paths:
-      - '.github/workflows/fix-contact-form.yml'
-  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
 
 jobs:
   update-contact-form:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-      - name: Pobierz repozytorium
+      - name: Pobierz gałąź zmian
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
 
       - name: Popraw formularz Formspree
         shell: python
@@ -53,17 +53,24 @@ jobs:
               ),
           ]
 
+          changed = False
           for old, new in replacements:
+              if new in content:
+                  continue
               if old not in content:
                   raise SystemExit(f"Nie znaleziono oczekiwanego fragmentu: {old}")
               content = content.replace(old, new, 1)
+              changed = True
 
-          path.write_text(content, encoding="utf-8")
+          if changed:
+              path.write_text(content, encoding="utf-8")
 
-      - name: Zapisz zmianę
+      - name: Zapisz poprawkę na gałęzi
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet || git commit -m "Popraw formularz kontaktowy Formspree"
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m "Popraw formularz kontaktowy Formspree"
+            git push origin HEAD:${{ github.head_ref }}
+          fi
