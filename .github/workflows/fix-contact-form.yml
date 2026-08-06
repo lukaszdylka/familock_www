@@ -74,3 +74,5 @@ jobs:
             git commit -m "Popraw formularz kontaktowy Formspree"
             git push origin HEAD:${{ github.head_ref }}
           fi
+
+# Tymczasowy znacznik uruchamiający poprawkę.
