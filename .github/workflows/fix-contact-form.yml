@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/fix-contact-form.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
