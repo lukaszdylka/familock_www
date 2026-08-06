@@ -365,6 +365,36 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
 .modal-box p{font-size:.88rem;color:var(--cream2);line-height:1.9;margin-bottom:.8rem}
 .modal-box a{color:var(--red-glow)}
 .modal-box ul{color:var(--cream2);font-size:.88rem;line-height:1.9;padding-left:1.5rem;margin-bottom:.8rem}
+.opening-popup{position:fixed;inset:0;z-index:10020;display:grid;place-items:center;padding:1.25rem;background:rgba(4,4,4,.86);backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}
+.opening-popup.open{opacity:1;visibility:visible}
+.opening-card{width:min(720px,100%);position:relative;overflow:hidden;background:linear-gradient(145deg,#211a1b 0%,#120f10 58%,#0c0b0b 100%);border:1px solid var(--border3);border-top:3px solid var(--red);box-shadow:0 28px 90px rgba(0,0,0,.7);padding:clamp(1.7rem,5vw,3.5rem)}
+.opening-card::before{content:"F";position:absolute;right:-.04em;bottom:-.28em;font-family:var(--fd);font-size:22rem;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(192,72,88,.11);pointer-events:none}
+.opening-card::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 42%,rgba(139,37,48,.08) 42%,rgba(139,37,48,.08) 43%,transparent 43%);pointer-events:none}
+.opening-close{position:absolute;top:1rem;right:1rem;z-index:2;width:42px;height:42px;display:grid;place-items:center;background:rgba(13,13,13,.65);border:1px solid var(--border3);color:var(--cream2);font-size:1.25rem;line-height:1;cursor:pointer;transition:.2s}
+.opening-close:hover,.opening-close:focus-visible{color:#fff;border-color:var(--red);background:var(--red-deep);outline:none}
+.opening-eyebrow{position:relative;z-index:1;display:flex;align-items:center;gap:.8rem;font-family:var(--fd);font-size:.66rem;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:var(--gray-light);margin-bottom:1.5rem}
+.opening-eyebrow::before{content:"";width:34px;height:1px;background:var(--red)}
+.opening-date{position:relative;z-index:1;display:flex;align-items:center;gap:1rem;margin-bottom:1.4rem}
+.opening-day{font-family:var(--fd);font-size:clamp(5.2rem,15vw,8.4rem);font-weight:900;line-height:.72;letter-spacing:-.05em;color:var(--red-glow);text-shadow:0 0 45px rgba(139,37,48,.35)}
+.opening-month{font-family:var(--fd);font-size:clamp(1.3rem,4vw,2rem);font-weight:900;line-height:.95;letter-spacing:.08em;text-transform:uppercase;color:var(--cream)}
+.opening-year{display:block;margin-top:.42rem;font-size:.76em;letter-spacing:.32em;color:var(--muted)}
+.opening-title{position:relative;z-index:1;font-family:var(--fd);font-size:clamp(2.2rem,6vw,4rem);font-weight:900;line-height:.95;text-transform:uppercase;color:var(--cream);margin-bottom:1rem}
+.opening-copy{position:relative;z-index:1;max-width:530px;font-family:var(--fs);font-style:italic;font-size:clamp(.96rem,2.4vw,1.12rem);line-height:1.75;color:var(--cream2);margin-bottom:1.8rem}
+.opening-actions{position:relative;z-index:1;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.opening-later{font-family:var(--fd);font-size:.76rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:transparent;border:0;padding:.8rem 1rem;cursor:pointer;transition:color .2s}
+.opening-later:hover,.opening-later:focus-visible{color:var(--cream);outline:none}
+.opening-note{position:relative;z-index:1;margin-top:1.25rem;font-size:.72rem;line-height:1.55;color:var(--muted)}
+@media(max-width:600px){
+  .opening-card{padding:1.6rem 1.3rem 1.4rem}
+  .opening-close{top:.7rem;right:.7rem;width:38px;height:38px}
+  .opening-eyebrow{padding-right:3rem;letter-spacing:.22em;margin-bottom:1.3rem}
+  .opening-date{gap:.75rem}
+  .opening-day{font-size:5.5rem}
+  .opening-month{font-size:1.35rem}
+  .opening-actions{align-items:stretch;flex-direction:column}
+  .opening-actions .btn-primary{width:100%;justify-content:center;text-align:center;padding:.95rem 1rem}
+  .opening-later{width:100%}
+}
 @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 .fade-up{opacity:0;animation:fadeUp .7s ease forwards}
 .d1{animation-delay:.1s}.d2{animation-delay:.25s}.d25{animation-delay:.35s}.d3{animation-delay:.45s}.d4{animation-delay:.6s}
@@ -400,6 +430,24 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
 </style>
 </head>
 <body>
+<div class="opening-popup" id="opening-popup" role="dialog" aria-modal="true" aria-labelledby="opening-title" aria-describedby="opening-copy" aria-hidden="true">
+  <div class="opening-card">
+    <button class="opening-close" id="opening-close" type="button" aria-label="Zamknij informację o otwarciu">&#10005;</button>
+    <p class="opening-eyebrow">Świętochłowice · Cmentarna 5</p>
+    <div class="opening-date" aria-label="20 sierpnia 2026">
+      <span class="opening-day">20</span>
+      <span class="opening-month">sierpnia<span class="opening-year">2026</span></span>
+    </div>
+    <h2 class="opening-title" id="opening-title">Familock otwiera drzwi</h2>
+    <p class="opening-copy" id="opening-copy">Po prawie czterech latach przygotowań uruchamiamy pierwszy pokój. Starzik już czeka.</p>
+    <div class="opening-actions">
+      <a class="btn-primary" id="opening-book" href="#rezerwacja">Zarezerwuj Starzika</a>
+      <button class="opening-later" id="opening-later" type="button">Zobacz stronę</button>
+    </div>
+    <p class="opening-note">Rezerwacja odbywa się przez bezpieczny widget LockMe.</p>
+  </div>
+</div>
+
 
 <nav id="navbar">
   <a href="#home" class="nav-logo">FAMI<span class="dot"></span><span class="lock">LOCK</span></a>
@@ -1374,6 +1422,70 @@ document.addEventListener('keydown', function(e) {
 });
 
 </script>
+<script>
+var OPENING_POPUP_KEY = 'familock_opening_2026_08_20_seen';
+var OPENING_POPUP_LAST_DAY = new Date(2026, 7, 20, 23, 59, 59);
+var openingPopup = document.getElementById('opening-popup');
+var openingPopupLastFocus = null;
+var openingPopupPending = false;
+
+try {
+  openingPopupPending = new Date() <= OPENING_POPUP_LAST_DAY && !localStorage.getItem(OPENING_POPUP_KEY);
+} catch(e) {
+  openingPopupPending = new Date() <= OPENING_POPUP_LAST_DAY;
+}
+
+function openingShow() {
+  if (!openingPopupPending || !openingPopup) return;
+  openingPopupLastFocus = document.activeElement;
+  openingPopup.classList.add('open');
+  openingPopup.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  try { localStorage.setItem(OPENING_POPUP_KEY, 'shown'); } catch(e) {}
+  document.getElementById('opening-close').focus();
+}
+
+function openingShowCookiesLater() {
+  if (typeof cookieGetPrefs !== 'function' || cookieGetPrefs()) return;
+  window.setTimeout(function() {
+    var banner = document.getElementById('cookie-banner');
+    if (banner) banner.classList.add('cookie-visible');
+  }, 450);
+}
+
+function openingClose(scrollToBooking) {
+  if (!openingPopup || !openingPopup.classList.contains('open')) return;
+  openingPopupPending = false;
+  openingPopup.classList.remove('open');
+  openingPopup.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (scrollToBooking) {
+    window.setTimeout(function() {
+      var booking = document.getElementById('rezerwacja');
+      if (booking) booking.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
+  } else if (openingPopupLastFocus && typeof openingPopupLastFocus.focus === 'function') {
+    openingPopupLastFocus.focus();
+  }
+  openingShowCookiesLater();
+}
+
+document.getElementById('opening-close').addEventListener('click', function() { openingClose(false); });
+document.getElementById('opening-later').addEventListener('click', function() { openingClose(false); });
+document.getElementById('opening-book').addEventListener('click', function(e) {
+  e.preventDefault();
+  openingClose(true);
+});
+openingPopup.addEventListener('click', function(e) {
+  if (e.target === openingPopup) openingClose(false);
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && openingPopup.classList.contains('open')) openingClose(false);
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (openingPopupPending) window.setTimeout(openingShow, 350);
+});
+</script>
 <!-- ============================================================
      COOKIE CONSENT BANNER — Familock (poprawiona wersja)
      Wklej tuż przed </body>
@@ -1639,7 +1751,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var prefs = cookieGetPrefs();
   if (prefs) {
     cookieApply(prefs.analytics, prefs.marketing);
-  } else {
+  } else if (!openingPopupPending) {
     setTimeout(function() {
       document.getElementById('cookie-banner').classList.add('cookie-visible');
     }, 700);
