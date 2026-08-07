@@ -94,16 +94,27 @@ section{padding:5.5rem 3rem}
 #pokoje{background:var(--bg2);position:relative}
 #pokoje::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red-dark),transparent)}
 .pokoje-header{max-width:1200px;margin:0 auto 3rem}
-.pokoje-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:1.5px;background:var(--border);align-items: stretch;}
+.pokoje-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:1.5px;background:var(--border);align-items:stretch}
+.pokoje-grid-featured{grid-template-columns:1fr}
+.pokoje-grid-teasers{margin-top:1.5px}
 .pokoje-grid>.pokoj-card:only-child{grid-column:1/-1}
 .pokoj-card{position:relative;min-height:580px;display:flex;flex-direction:column;justify-content:flex-end;padding:2.5rem;overflow:hidden}
+.pokoj-card-featured{min-height:580px}
+.pokoj-card-teaser{aspect-ratio:1/1;min-height:0;padding:2rem}
+.pokoj-card-teaser .pokoj-name{font-size:clamp(2.35rem,3.7vw,3.6rem)}
+.pokoj-card-teaser .pokoj-desc{max-width:100%;margin-bottom:1.35rem}
+.pokoj-card-teaser .pokoj-meta{gap:1.25rem}
 .pokoj-bg{position:absolute;inset:0;transition:transform .7s cubic-bezier(.25,.46,.45,.94)}
 .pokoj-card:hover .pokoj-bg{transform:scale(1.04)}
 .pokoj-card.is-unavailable{filter:grayscale(78%) brightness(.62);cursor:default}
-.pokoj-card.is-unavailable:hover .pokoj-bg{transform:none}
+.pokoj-card.is-unavailable:hover .pokoj-bg,.pokoj-card.is-coming-soon:hover .pokoj-bg{transform:none}
 .pokoj-card.is-unavailable .pokoj-line{background:var(--border3);transform:none}
-.unavailable-badge{display:inline-flex;align-items:center;width:max-content;position:relative;margin-top:1.5rem;padding:.6rem 1rem;border:1px solid var(--border3);background:rgba(13,13,13,.72);font-family:var(--fd);font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gray-light)}
+.pokoj-card.is-coming-soon{cursor:default}
+.pokoj-card.is-coming-soon .pokoj-line{background:var(--red-dark);transform:none}
+.unavailable-badge{display:inline-flex;align-items:center;width:max-content;max-width:100%;position:relative;margin-top:1.5rem;padding:.6rem 1rem;border:1px solid var(--border3);background:rgba(13,13,13,.72);font-family:var(--fd);font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gray-light)}
+.coming-soon-badge{border-color:var(--red-dark);color:var(--cream);background:rgba(38,18,20,.9)}
 .bg-starzik{background:linear-gradient(to top,rgba(13,13,13,.98) 0%,rgba(13,13,13,.72) 42%,rgba(13,13,13,.2) 100%),radial-gradient(ellipse 80% 60% at 20% 30%,rgba(90,42,46,.28) 0%,transparent 70%),url("img/starzik/starzik-kafelek-familock-swietochlowice.webp") 61% center/cover no-repeat;background-color:#151010}
+.bg-frelka{background:linear-gradient(to top,rgba(8,8,8,.99) 0%,rgba(8,8,8,.78) 45%,rgba(8,8,8,.28) 100%),radial-gradient(circle at 72% 20%,rgba(90,42,46,.22),transparent 45%),repeating-linear-gradient(135deg,#121111 0,#121111 18px,#0c0c0c 18px,#0c0c0c 36px);background-color:#080808}
 .bg-tesla{background:linear-gradient(to top,rgba(13,13,13,.98) 0%,rgba(13,13,13,.72) 40%,rgba(13,13,13,.18) 100%),radial-gradient(ellipse 70% 50% at 80% 20%,rgba(40,60,140,.22) 0%,transparent 65%),url("img/tesla/tesla-escape-box-kafelek-familock-swietochlowice.webp") center/cover no-repeat;background-color:#0c0d1a}
 .pokoj-number{position:absolute;top:2rem;left:2.5rem;font-family:var(--fd);font-size:.65rem;font-weight:700;letter-spacing:.35em;color:var(--gray);opacity:.8}
 .pokoj-big-icon{position:absolute;top:1.5rem;right:2rem;font-family:var(--fd);font-size:9rem;font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(90,42,46,.14);line-height:1;pointer-events:none;user-select:none}
@@ -301,6 +312,10 @@ section{padding:5.5rem 3rem}
 .gallery-lightbox-nav.next{right:1rem}
 .gallery-lightbox-nav:hover,.gallery-lightbox-nav:focus-visible{background:var(--red-deep);border-color:var(--red);color:var(--red-glow);outline:none}
 .gallery-lightbox-counter{color:var(--muted);font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:.14em}
+@media(max-width:760px){
+  .pokoje-grid-teasers{grid-template-columns:1fr!important}
+  .pokoj-card-teaser{aspect-ratio:auto;min-height:500px;padding:2rem}
+}
 @media(max-width:600px){
   .gallery-lightbox{padding:4.5rem .75rem 5rem}
   .gallery-lightbox-img{max-height:calc(100vh - 13rem)}
@@ -432,7 +447,9 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   .hero-stats,.hero-deco,.hero-stripe{display:none}
   section{padding:3.5rem 1.5rem}
   .pokoje-grid,.cennik-panel.active,.historia-grid,.kontakt-wrap,.rez-grid,.rabaty-grid,.voucher-grid{grid-template-columns:1fr!important}
+  .pokoje-grid-teasers{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .pokoj-card{min-height:440px}
+  .pokoj-card-teaser{min-height:0;padding:1.6rem}
   .f-row{grid-template-columns:1fr}
   footer{flex-direction:column;text-align:center}
 }
@@ -492,7 +509,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
     <span class="line1">FAMI</span><span class="line2">LOCK</span>
     <p class="hero-tagline fade-up d25">Śląski Escape Room 🤍</p>
   </h1>
-  <p class="hero-sub fade-up d3">Familock to mała firma escape room, oferująca fabularne, autorskie scenariusze i zagadki.<br>Przekonaj się w pokoju <i>Starzik</i>. Escape Box „Ostatni wynalazek N. Tesli” jest obecnie niedostępny.</p>
+  <p class="hero-sub fade-up d3">Familock to mała firma escape room, oferująca fabularne, autorskie scenariusze i zagadki.<br>Przekonaj się w pokoju <i>Starzik</i>. Rezerwacje na Escape Box „Ostatni wynalazek N. Tesli” pojawią się już wkrótce.</p>
   <div class="hero-actions fade-up d4">
     <a href="#rezerwacja" class="btn-primary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Zarezerwuj termin</a>
     <a href="#pokoje" class="btn-outline">Odkryj pokoje <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg></a>
@@ -510,13 +527,14 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
     <h2 class="section-title">Nasze <em>wyjątkowe</em><br />doświadczenia</h2>
     <p class="section-intro">Śląski klimat, autorska fabuła, zagadki angażujące każdy wiek. Wybierz swoją historię.</p>
   </div>
-  <div class="pokoje-grid">
-    <article class="pokoj-card reveal" id="starzik">
+
+  <div class="pokoje-grid pokoje-grid-featured">
+    <article class="pokoj-card pokoj-card-featured reveal" id="starzik">
       <div class="pokoj-bg bg-starzik"></div>
       <div class="pokoj-number" aria-hidden="true">01 / POKÓJ ZAGADEK</div>
       <div class="pokoj-big-icon" aria-hidden="true" style="-webkit-text-stroke:0;color:initial;opacity:.1">📜</div>
       <p class="pokoj-tag">Pokój zagadek · 2 – 5 osób</p>
-     <h3 class="pokoj-name">Starzik</h3>
+      <h3 class="pokoj-name">Starzik</h3>
       <p class="pokoj-desc">Dziadek Józef zaginął. Nikt nie ma kluczy. Jako pracownicy MOPS musicie dostać się do familoka i odkryć, co mu się przydarzyło.</p>
       <div class="pokoj-meta">
         <div><div class="meta-val">90 min</div><div class="meta-key">Czas gry</div></div>
@@ -527,27 +545,39 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
       <div class="room-actions"><a href="#rezerwacja" class="btn-book">Zarezerwuj</a></div>
     </article>
   </div>
-  <div class="pokoje-header" style="margin-top:6rem;margin-bottom:2rem">
-    <div class="section-eyebrow">Escape Box</div>
-    <h2 class="section-title" style="font-size:clamp(2.2rem,4vw,3.5rem)">Escape <em>Box</em></h2>
-  </div>
-  <div class="pokoje-grid">
-    <article class="pokoj-card reveal is-unavailable" id="escapeboxtesla" aria-label="Tesla Escape Box, tymczasowo niedostępna">
+
+  <div class="pokoje-grid pokoje-grid-teasers" aria-label="Nadchodzące doświadczenia Familock">
+    <article class="pokoj-card pokoj-card-teaser reveal is-unavailable" id="frelka" aria-label="Frelka, pokój w przygotowaniu">
+      <div class="pokoj-bg bg-frelka"></div>
+      <div class="pokoj-number" aria-hidden="true">02 / POKÓJ ZAGADEK</div>
+      <div class="pokoj-big-icon" aria-hidden="true" style="font-size:6rem;top:3rem;opacity:.5">🔒</div>
+      <p class="pokoj-tag">Premiera w 2029</p>
+      <h3 class="pokoj-name">Frelka</h3>
+      <p class="pokoj-desc">Kolejna śląska tajemnica czeka na odkrycie. Fabularny thriller i następna historia z familoka. Planowane otwarcie w 2029 roku.</p>
+      <div class="pokoj-meta">
+        <div><div class="meta-val">???</div><div class="meta-key">Czas gry</div></div>
+        <div><div class="meta-val">???</div><div class="meta-key">Cena</div></div>
+        <div><div class="meta-val">???</div><div class="meta-key">Wiek</div></div>
+      </div>
+      <div class="pokoj-line"></div>
+      <div class="unavailable-badge">W przygotowaniu</div>
+    </article>
+
+    <article class="pokoj-card pokoj-card-teaser reveal is-coming-soon" id="escapeboxtesla" aria-label="Tesla Escape Box, rezerwacje już wkrótce">
       <div class="pokoj-bg bg-tesla"></div>
       <div class="pokoj-number" aria-hidden="true">01 / ESCAPE BOX</div>
       <div class="pokoj-big-icon" aria-hidden="true">⚡</div>
-      <p class="pokoj-tag">Escape Box · tymczasowo niedostępny</p>
+      <p class="pokoj-tag">Escape Box · 1 – 2 osoby</p>
       <h3 class="pokoj-name">Ostatni wynalazek<br />Nikoli Tesli</h3>
-      <p class="pokoj-desc">„Ostatni wynalazek Nikoli Tesli" – zamknięta skrzynia, specjalnie zaaranżowane pomieszczenie. Ostatnia tajemnica wielkiego wizjonera.</p>
+      <p class="pokoj-desc">„Ostatni wynalazek Nikoli Tesli” to zamknięta skrzynia i specjalnie zaaranżowane pomieszczenie. Ostatnia tajemnica wielkiego wizjonera.</p>
       <div class="pokoj-meta">
         <div><div class="meta-val">60 min</div><div class="meta-key">Czas gry</div></div>
         <div><div class="meta-val">od 80 zł</div><div class="meta-key">Cena</div></div>
         <div><div class="meta-val">1 – 2</div><div class="meta-key">Osoby</div></div>
       </div>
       <div class="pokoj-line"></div>
-      <div class="unavailable-badge">Rezerwacje chwilowo wyłączone</div>
+      <div class="unavailable-badge coming-soon-badge">Rezerwacje już wkrótce</div>
     </article>
-    <div style="background:var(--bg2)"></div>
   </div>
 </section>
 <section id="theszpil" class="online-hub">
