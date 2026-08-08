@@ -1305,8 +1305,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 var COOKIE_KEY = 'familock_cookies_acknowledged';
+var cookieAcknowledgedThisVisit = false;
 
 function cookieGetPrefs() {
+  if (cookieAcknowledgedThisVisit) return true;
   try { return localStorage.getItem(COOKIE_KEY) === '1'; }
   catch(e) { return false; }
 }
@@ -1330,6 +1332,7 @@ function cookieHide() {
 }
 
 function cookieAcknowledge() {
+  cookieAcknowledgedThisVisit = true;
   try { localStorage.setItem(COOKIE_KEY, '1'); } catch(e) {}
   cookieHide();
 }
