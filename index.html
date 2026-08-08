@@ -1166,7 +1166,9 @@ function openingShow() {
 function openingShowCookiesLater() {
   if (typeof cookieGetPrefs !== 'function' || cookieGetPrefs()) return;
   window.setTimeout(function() {
-    if (typeof cookieSetVisible === 'function') cookieSetVisible(true);
+    if (typeof cookieSetVisible === 'function' && !cookieGetPrefs()) {
+      cookieSetVisible(true);
+    }
   }, 450);
 }
 
@@ -1345,7 +1347,9 @@ if (cookieSettingsLink) {
 document.addEventListener('DOMContentLoaded', function() {
   if (!cookieGetPrefs() && !openingPopupPending) {
     setTimeout(function() {
-      cookieSetVisible(true);
+      if (!cookieGetPrefs() && !openingPopupPending) {
+        cookieSetVisible(true);
+      }
     }, 700);
   }
 });
