@@ -857,7 +857,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   <div class="f-links">
     <a href="/polityka.html">Polityka prywatności</a>
     <a href="/regulamin.html">Regulamin</a>
-    <button type="button" id="cookie-settings-link" aria-haspopup="dialog" onclick="window.familockCookies.open()">Ustawienia cookies</button>
+    <button type="button" id="cookie-settings-link" aria-controls="cookie-dialog" aria-expanded="false">Ustawienia cookies</button>
     <a href="mailto:kontakt@familock.pl">kontakt@familock.pl</a>
   </div>
 </footer>
@@ -1164,10 +1164,9 @@ function openingShow() {
 }
 
 function openingShowCookiesLater() {
-  if (typeof cookieGetPrefs !== 'function' || cookieGetPrefs()) return;
   window.setTimeout(function() {
-    if (typeof cookieSetVisible === 'function' && !cookieGetPrefs()) {
-      cookieSetVisible(true);
+    if (window.familockCookies && typeof window.familockCookies.maybeOpen === 'function') {
+      window.familockCookies.maybeOpen();
     }
   }, 450);
 }
@@ -1208,19 +1207,19 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- COOKIE INFORMATION — Familock -->
 <style>
 #cookie-dialog {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10050;
   width: 100%;
-  max-width: none;
-  margin: auto 0 0;
   padding: 1.5rem 2rem;
-  border: 0;
   border-top: 2px solid #5a2a2e;
   background: #1a1517;
   color: #f0ecec;
+  box-shadow: 0 -16px 40px rgba(0,0,0,.42);
 }
-#cookie-dialog::backdrop {
-  background: rgba(4,4,4,.72);
-  backdrop-filter: blur(3px);
-}
+#cookie-dialog[hidden] { display: none !important; }
 .cookie-inner {
   max-width: 1100px;
   margin: 0 auto;
@@ -1270,7 +1269,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 </style>
 
-<dialog id="cookie-dialog" aria-labelledby="cookie-title" aria-describedby="cookie-description">
+<aside id="cookie-dialog" hidden aria-hidden="true" aria-labelledby="cookie-title" aria-describedby="cookie-description" role="dialog">
   <div class="cookie-inner">
     <div class="cookie-text">
       <div class="cookie-title" id="cookie-title">
@@ -1284,10 +1283,10 @@ document.addEventListener('DOMContentLoaded', function() {
       </p>
     </div>
     <div class="cookie-actions">
-      <button class="cookie-btn" type="button" onclick="window.familockCookies.acknowledge()">Rozumiem</button>
+      <button class="cookie-btn" id="cookie-acknowledge" type="button">Rozumiem</button>
     </div>
   </div>
-</dialog>
+</aside>
 
 <script>
 (function() {
@@ -1295,6 +1294,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var acknowledgedThisVisit = false;
   var dialog = document.getElementById('cookie-dialog');
   var settingsButton = document.getElementById('cookie-settings-link');
+  var acknowledgeButton = document.getElementById('cookie-acknowledge');
 
   function isAcknowledged() {
     if (acknowledgedThisVisit) return true;
@@ -1302,18 +1302,19 @@ document.addEventListener('DOMContentLoaded', function() {
     catch (e) { return false; }
   }
 
-  function updateButtonState() {
-    if (settingsButton) settingsButton.setAttribute('aria-expanded', dialog.open ? 'true' : 'false');
+  function setVisible(visible) {
+    if (!dialog) return;
+    dialog.hidden = !visible;
+    dialog.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    if (settingsButton) settingsButton.setAttribute('aria-expanded', visible ? 'true' : 'false');
   }
 
   function open() {
-    if (!dialog.open) dialog.showModal();
-    updateButtonState();
+    setVisible(true);
   }
 
   function close() {
-    if (dialog.open) dialog.close();
-    updateButtonState();
+    setVisible(false);
   }
 
   function acknowledge() {
@@ -1322,28 +1323,26 @@ document.addEventListener('DOMContentLoaded', function() {
     close();
   }
 
-  window.familockCookies = {
-    open: open,
-    close: close,
-    acknowledge: acknowledge
-  };
-
-  dialog.addEventListener('close', updateButtonState);
-
-  function showOnFirstVisit() {
+  function maybeOpen() {
     if (isAcknowledged()) return;
     var opening = document.getElementById('opening-popup');
     var openingVisible = opening && opening.classList.contains('open');
     var openingWaiting = typeof openingPopupPending !== 'undefined' && openingPopupPending;
-    if (openingVisible || openingWaiting) {
-      window.setTimeout(showOnFirstVisit, 400);
-      return;
-    }
-    open();
+    if (!openingVisible && !openingWaiting) open();
   }
 
+  if (settingsButton) settingsButton.addEventListener('click', open);
+  if (acknowledgeButton) acknowledgeButton.addEventListener('click', acknowledge);
+
+  window.familockCookies = {
+    open: open,
+    close: close,
+    acknowledge: acknowledge,
+    maybeOpen: maybeOpen
+  };
+
   window.addEventListener('load', function() {
-    window.setTimeout(showOnFirstVisit, 700);
+    window.setTimeout(maybeOpen, 700);
   });
 })();
 </script>
