@@ -857,7 +857,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   <div class="f-links">
     <a href="javascript:void(0)" onclick="showModal('polityka')">Polityka prywatności</a>
     <a href="javascript:void(0)" onclick="showModal('regulamin')">Regulamin</a>
-    <button type="button" id="cookie-settings-link">Informacje o cookies</button>
+    <button type="button" id="cookie-settings-link" aria-controls="cookie-banner" aria-expanded="false">Ustawienia cookies</button>
     <a href="mailto:kontakt@familock.pl">kontakt@familock.pl</a>
   </div>
 </footer>
@@ -1283,7 +1283,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 </style>
 
-<div id="cookie-banner" role="dialog" aria-label="Informacje o plikach cookies">
+<div id="cookie-banner" role="dialog" aria-label="Informacje o plikach cookies" aria-hidden="true">
   <div class="cookie-inner">
     <div class="cookie-text">
       <div class="cookie-title">
@@ -1310,8 +1310,22 @@ function cookieGetPrefs() {
   catch(e) { return false; }
 }
 
+function cookieSetVisible(visible) {
+  var banner = document.getElementById('cookie-banner');
+  var settingsButton = document.getElementById('cookie-settings-link');
+
+  if (!banner) return;
+
+  banner.classList.toggle('cookie-visible', visible);
+  banner.setAttribute('aria-hidden', visible ? 'false' : 'true');
+
+  if (settingsButton) {
+    settingsButton.setAttribute('aria-expanded', visible ? 'true' : 'false');
+  }
+}
+
 function cookieHide() {
-  document.getElementById('cookie-banner').classList.remove('cookie-visible');
+  cookieSetVisible(false);
 }
 
 function cookieAcknowledge() {
@@ -1319,8 +1333,9 @@ function cookieAcknowledge() {
   cookieHide();
 }
 
-function cookieOpenSettings() {
-  document.getElementById('cookie-banner').classList.add('cookie-visible');
+function cookieOpenSettings(event) {
+  if (event) event.preventDefault();
+  cookieSetVisible(true);
 }
 
 var cookieSettingsLink = document.getElementById('cookie-settings-link');
