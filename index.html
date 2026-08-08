@@ -1166,8 +1166,7 @@ function openingShow() {
 function openingShowCookiesLater() {
   if (typeof cookieGetPrefs !== 'function' || cookieGetPrefs()) return;
   window.setTimeout(function() {
-    var banner = document.getElementById('cookie-banner');
-    if (banner) banner.classList.add('cookie-visible');
+    if (typeof cookieSetVisible === 'function') cookieSetVisible(true);
   }, 450);
 }
 
@@ -1346,7 +1345,7 @@ if (cookieSettingsLink) {
 document.addEventListener('DOMContentLoaded', function() {
   if (!cookieGetPrefs() && !openingPopupPending) {
     setTimeout(function() {
-      document.getElementById('cookie-banner').classList.add('cookie-visible');
+      cookieSetVisible(true);
     }, 700);
   }
 });
