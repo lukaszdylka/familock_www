@@ -945,7 +945,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   <p>Masz prawo dostępu, sprostowania, usunięcia, ograniczenia przetwarzania danych, wniesienia sprzeciwu, cofnięcia zgody oraz skargi do Prezesa UODO.</p>
 
   <h3>Cookies</h3>
-  <p>Strona używa danych niezbędnych do działania. Kalendarz LockMe i mapa Google są uruchamiane wyłącznie zgodnie z wyborem użytkownika w ustawieniach cookies. Obecnie nie korzystamy z Google Analytics ani Meta Pixel.</p>
+  <p>Strona używa danych niezbędnych do działania. Kalendarz LockMe, mapa Google i Google Analytics są uruchamiane wyłącznie zgodnie z wyborem użytkownika w ustawieniach cookies. Nie korzystamy z Meta Pixel ani innych narzędzi marketingowych.</p>
 
   <div style="margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem">
     <p style="font-size:.75rem;color:var(--muted);margin-bottom:0">To jest skrócone podsumowanie.</p>
@@ -1421,7 +1421,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="cookie-consent-kicker">Twoja prywatność</div>
           <h2 class="cookie-consent-title" id="cookie-consent-title">Ty decydujesz, które usługi uruchomić</h2>
           <p class="cookie-consent-copy">
-            Niezbędne dane pozwalają zapamiętać Twój wybór. Za Twoją zgodą możemy też załadować kalendarz LockMe i mapę Google. Usługi te mogą zapisywać własne cookies oraz otrzymać informacje o urządzeniu. Bez zgody strona nadal działa. Szczegóły znajdziesz w <a href="/polityka.html#s15">Polityce Cookies</a>.
+            Niezbędne dane pozwalają zapamiętać Twój wybór. Za Twoją zgodą możemy też uruchomić Google Analytics, kalendarz LockMe i mapę Google. Usługi te mogą zapisywać własne cookies oraz otrzymać informacje o urządzeniu. Bez zgody strona nadal działa. Szczegóły znajdziesz w <a href="/polityka.html#s15">Polityce Cookies</a>.
           </p>
         </div>
       </div>
@@ -1440,7 +1440,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div>
           <div class="cookie-consent-kicker">Ustawienia cookies</div>
           <h2 class="cookie-consent-title">Wybierz usługi zewnętrzne</h2>
-          <p class="cookie-consent-copy">Możesz wyrazić zgodę osobno dla każdej usługi. Analityka i marketing nie są obecnie używane.</p>
+          <p class="cookie-consent-copy">Możesz wyrazić zgodę osobno na analitykę, kalendarz LockMe i mapę Google. Narzędzia marketingowe nie są obecnie używane.</p>
         </div>
       </div>
 
@@ -1478,9 +1478,12 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="cookie-category">
           <div>
             <div class="cookie-category-name">Analityczne</div>
-            <div class="cookie-category-copy">Google Analytics i podobne narzędzia nie są obecnie używane.</div>
+            <div class="cookie-category-copy">Google Analytics pomaga nam sprawdzać liczbę odwiedzin i sposób korzystania ze strony.</div>
           </div>
-          <span class="cookie-status">Nieużywane</span>
+          <label class="cookie-toggle">
+            <input id="cookie-analytics" type="checkbox" aria-label="Zezwól na Google Analytics">
+            <span class="cookie-switch" aria-hidden="true"></span>
+          </label>
         </div>
 
         <div class="cookie-category">
@@ -1506,10 +1509,12 @@ document.addEventListener('DOMContentLoaded', function() {
 (function() {
   'use strict';
 
-  var STORAGE_KEY = 'familock_cookie_consent_v2';
-  var CONSENT_VERSION = 2;
+  var STORAGE_KEY = 'familock_cookie_consent_v3';
+  var CONSENT_VERSION = 3;
   var CONSENT_MAX_AGE = 180 * 24 * 60 * 60 * 1000;
+  var GA_MEASUREMENT_ID = 'G-LY7D7XH1K3';
   var currentConsent = null;
+  var analyticsLoaded = false;
 
   var banner = document.getElementById('cookie-consent');
   var summaryView = document.getElementById('cookie-summary-view');
@@ -1517,6 +1522,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var footerSettings = document.getElementById('cookie-settings-link');
   var lockmeChoice = document.getElementById('cookie-lockme');
   var mapsChoice = document.getElementById('cookie-google-maps');
+  var analyticsChoice = document.getElementById('cookie-analytics');
 
   function emptyConsent() {
     return {
@@ -1524,6 +1530,7 @@ document.addEventListener('DOMContentLoaded', function() {
       necessary: true,
       lockme: false,
       googleMaps: false,
+      analytics: false,
       updatedAt: null
     };
   }
@@ -1539,6 +1546,7 @@ document.addEventListener('DOMContentLoaded', function() {
         saved.necessary !== true ||
         typeof saved.lockme !== 'boolean' ||
         typeof saved.googleMaps !== 'boolean' ||
+        typeof saved.analytics !== 'boolean' ||
         !isFinite(savedAt) ||
         Date.now() - savedAt > CONSENT_MAX_AGE
       ) {
@@ -1557,6 +1565,7 @@ document.addEventListener('DOMContentLoaded', function() {
       necessary: true,
       lockme: !!choice.lockme,
       googleMaps: !!choice.googleMaps,
+      analytics: !!choice.analytics,
       updatedAt: new Date().toISOString()
     };
     currentConsent = saved;
@@ -1584,10 +1593,71 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  function deleteAnalyticsCookies() {
+    var names = document.cookie.split(';').map(function(cookie) {
+      return cookie.split('=')[0].trim();
+    }).filter(function(name) {
+      return name === '_ga' || name.indexOf('_ga_') === 0;
+    });
+    var domains = ['', location.hostname, '.' + location.hostname, '.familock.pl'];
+    names.forEach(function(name) {
+      domains.forEach(function(domain) {
+        var domainPart = domain ? '; domain=' + domain : '';
+        document.cookie = name + '=; Max-Age=0; path=/' + domainPart + '; SameSite=Lax';
+      });
+    });
+  }
+
+  function loadGoogleAnalytics() {
+    window['ga-disable-' + GA_MEASUREMENT_ID] = false;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function() { window.dataLayer.push(arguments); };
+
+    if (analyticsLoaded || document.getElementById('familock-ga4')) {
+      analyticsLoaded = true;
+      window.gtag('consent', 'update', { analytics_storage: 'granted' });
+      window.gtag('config', GA_MEASUREMENT_ID, {
+        anonymize_ip: true,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false
+      });
+      return;
+    }
+
+    analyticsLoaded = true;
+    var script = document.createElement('script');
+    script.id = 'familock-ga4';
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_MEASUREMENT_ID);
+    script.onload = function() {
+      window.gtag('js', new Date());
+      window.gtag('consent', 'update', { analytics_storage: 'granted' });
+      window.gtag('config', GA_MEASUREMENT_ID, {
+        anonymize_ip: true,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false
+      });
+    };
+    document.head.appendChild(script);
+  }
+
+  function applyAnalytics(enabled) {
+    if (enabled) {
+      loadGoogleAnalytics();
+      return;
+    }
+    window['ga-disable-' + GA_MEASUREMENT_ID] = true;
+    if (typeof window.gtag === 'function') {
+      window.gtag('consent', 'update', { analytics_storage: 'denied' });
+    }
+    deleteAnalyticsCookies();
+  }
+
   function applyConsent(choice) {
     var effective = choice || emptyConsent();
     applyService('lockme', effective.lockme);
     applyService('googleMaps', effective.googleMaps);
+    applyAnalytics(effective.analytics);
   }
 
   function setView(showSettings) {
@@ -1597,6 +1667,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var base = currentConsent || emptyConsent();
       lockmeChoice.checked = !!base.lockme;
       mapsChoice.checked = !!base.googleMaps;
+      analyticsChoice.checked = !!base.analytics;
     }
   }
 
@@ -1627,6 +1698,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var choice = emptyConsent();
     choice.lockme = true;
     choice.googleMaps = true;
+    choice.analytics = true;
     writeConsent(choice);
   }
 
@@ -1634,6 +1706,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var choice = emptyConsent();
     choice.lockme = !!lockmeChoice.checked;
     choice.googleMaps = !!mapsChoice.checked;
+    choice.analytics = !!analyticsChoice.checked;
     writeConsent(choice);
   }
 
@@ -1643,6 +1716,7 @@ document.addEventListener('DOMContentLoaded', function() {
       necessary: true,
       lockme: currentConsent.lockme,
       googleMaps: currentConsent.googleMaps,
+      analytics: currentConsent.analytics,
       updatedAt: currentConsent.updatedAt
     } : emptyConsent();
     choice[service] = true;
