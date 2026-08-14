@@ -35,8 +35,8 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0d0d0d;--bg2:#121212;--bg3:#161616;--card:#1c1a1a;--card2:#211f1f;
-  --red:#8b2530;--red-dark:#5a2a2e;--red-deep:#261214;--red-light:#a03340;--red-glow:#c04858;
-  --cream:#f0ecec;--cream2:#b0a8a5;--muted:#6b6260;
+  --red:#8b2530;--red-dark:#5a2a2e;--red-deep:#261214;--red-light:#a03340;--red-glow:#d2606f;
+  --cream:#f0ecec;--cream2:#b0a8a5;--muted:#9a918f;
   --gray:#888;--gray-dark:#555;--gray-light:#bbb;
   --border:#252222;--border2:#353030;--border3:#4a4244;
   --fd:"Barlow Condensed",sans-serif;--fb:"Barlow",sans-serif;--fs:"Playfair Display",serif;
@@ -89,7 +89,7 @@ section{padding:5.5rem 3rem}
 .section-eyebrow{font-family:var(--fd);font-size:.7rem;font-weight:700;letter-spacing:.42em;text-transform:uppercase;color:var(--gray);margin-bottom:.8rem;display:flex;align-items:center;gap:.9rem}
 .section-eyebrow::before{content:"";width:28px;height:1px;background:var(--gray-dark);flex-shrink:0}
 .section-title{font-family:var(--fd);font-weight:900;font-size:clamp(2.8rem,5vw,5rem);line-height:.95;letter-spacing:-.01em;margin-bottom:1.2rem}
-.section-title em{color:var(--red);font-style:normal}
+.section-title em{color:var(--red-glow);font-style:normal}
 .section-intro{font-family:var(--fs);font-style:italic;color:var(--cream2);max-width:520px;line-height:1.9;margin-bottom:3rem;font-size:.98rem}
 #pokoje{background:var(--bg2);position:relative}
 #pokoje::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red-dark),transparent)}
@@ -189,7 +189,7 @@ section{padding:5.5rem 3rem}
 #rezerwacja::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent)}
 .rez-inner{max-width:1100px;margin:0 auto;position:relative}
 .rez-title{font-family:var(--fd);font-weight:900;font-size:clamp(3rem,6vw,5.5rem);line-height:.95}
-.rez-title em{color:var(--red);font-style:normal}
+.rez-title em{color:var(--red-glow);font-style:normal}
 .rez-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
 .booking-widget-wrap{background:var(--card);border:1px solid var(--border2);border-top:2px solid var(--red);overflow:hidden}
 .booking-widget-head{padding:1.2rem 1.5rem;background:var(--red-deep);display:flex;align-items:center;gap:.7rem}
@@ -215,7 +215,8 @@ section{padding:5.5rem 3rem}
 .voucher-section{background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .voucher-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
 .voucher-img-wrap{position:relative;perspective:1000px}
-.voucher-img-wrap img{width:100%;border-radius:6px;box-shadow:0 20px 50px rgba(0,0,0,.8);transform:rotateY(-10deg) rotateZ(2deg);transition:transform .5s ease;border:1px solid var(--border3)}
+.voucher-img-wrap picture,.voucher-img-wrap img{display:block}
+.voucher-img-wrap img{width:100%;height:auto;border-radius:6px;box-shadow:0 20px 50px rgba(0,0,0,.8);transform:rotateY(-10deg) rotateZ(2deg);transition:transform .5s ease;border:1px solid var(--border3)}
 .voucher-img-wrap:hover img{transform:rotateY(0deg) rotateZ(0deg) scale(1.02)}
 .voucher-list{list-style:none;margin-bottom:2.5rem}
 .voucher-list li{display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem;color:var(--cream2);font-size:.95rem}
@@ -368,7 +369,7 @@ section{padding:5.5rem 3rem}
 }
 footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
 .f-logo{font-family:var(--fd);font-size:1.5rem;font-weight:900;text-decoration:none;color:var(--cream)}
-.f-logo span{color:var(--red)}
+.f-logo span{color:var(--red-glow)}
 .f-copy{font-size:.75rem;color:var(--muted)}
 .f-links{display:flex;gap:1.5rem;flex-wrap:wrap}
 .f-links a,.f-links button{font-family:inherit;font-size:.75rem;line-height:inherit;color:var(--muted);text-decoration:none;transition:color .2s;cursor:pointer;background:none;border:0;padding:0}
@@ -726,7 +727,12 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
 
 <section id="voucher" class="voucher-section">
   <div class="voucher-grid">
-    <div class="voucher-img-wrap reveal"><img src="img/voucher-familock-escape-room.webp" alt="Voucher podarunkowy Familock" /></div>
+    <div class="voucher-img-wrap reveal">
+      <picture>
+        <source media="(max-width:600px)" srcset="img/voucher-familock-escape-room-400.webp" />
+        <img src="img/voucher-familock-escape-room.webp" width="631" height="353" loading="lazy" decoding="async" alt="Voucher podarunkowy Familock" />
+      </picture>
+    </div>
     <div class="reveal" style="transition-delay:.2s">
       <div class="section-eyebrow">Voucher idealny na prezent</div>
       <h2 class="section-title" style="font-size:clamp(2.5rem,4vw,3.5rem)">Podaruj <em>emocje</em></h2>
@@ -769,15 +775,9 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
     <div class="rez-grid" style="grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem">
       <div style="background:var(--card);border:1px solid var(--border2);border-top:2px solid var(--red-dark);padding:1.5rem">
         <p style="font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem">Inne sposoby rezerwacji</p>
-        <a href="mailto:kontakt@familock.pl?subject=Rezerwacja" class="alt-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>kontakt@familock.pl</a>
+        <a href="mailto:kontakt@familock.pl?subject=Rezerwacja" class="alt-link" aria-label="Napisz w sprawie rezerwacji na adres kontakt@familock.pl"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>kontakt@familock.pl</a>
         <a href="https://www.facebook.com/escaperoomfamilock" target="_blank" rel="noopener noreferrer" class="alt-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>Messenger / Facebook</a>
-       <a href="javascript:void(0)"
-   class="alt-link"
-   data-t="573"
-   data-n="955"
-   data-r="316"
-   onclick="this.href='tel:'+this.dataset.t+this.dataset.n+this.dataset.r;return true;"
-   style="margin-bottom:0">
+       <a href="tel:+48573955316" class="alt-link" style="margin-bottom:0">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.82 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
   Zadzwoń do nas
 </a>
@@ -874,15 +874,15 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
       <form id="contact-form" action="https://formspree.io/f/mreanydg" method="POST">
         <input type="hidden" name="subject" value="Familock.pl | Nowa wiadomość od {{ imie }}" />
         <div class="f-row">
-          <div class="f-group"><label>Imię</label><input type="text" name="imie" placeholder="np. Józef" autocomplete="name" required /></div>
-          <div class="f-group"><label>Telefon</label><input type="tel" name="telefon" placeholder="+48 000 000 000" autocomplete="tel" /></div>
+          <div class="f-group"><label for="contact-name">Imię</label><input id="contact-name" type="text" name="imie" placeholder="np. Józef" autocomplete="name" required /></div>
+          <div class="f-group"><label for="contact-phone">Telefon</label><input id="contact-phone" type="tel" name="telefon" placeholder="+48 000 000 000" autocomplete="tel" /></div>
         </div>
-        <div class="f-group"><label>E-mail</label><input type="email" name="email" placeholder="twoj@email.pl" autocomplete="email" required /></div>
+        <div class="f-group"><label for="contact-email">E-mail</label><input id="contact-email" type="email" name="email" placeholder="twoj@email.pl" autocomplete="email" required /></div>
         <div class="f-group">
-          <label>Temat</label>
-          <select name="temat" required><option value="">Wybierz temat...</option><option value="Pytanie ogólne">Pytanie ogólne</option><option value="Voucher">Voucher</option><option value="Starzik">Starzik</option><option value="Tesla Escape Box">Tesla Escape Box</option></select>
+          <label for="contact-subject">Temat</label>
+          <select id="contact-subject" name="temat" required><option value="">Wybierz temat...</option><option value="Pytanie ogólne">Pytanie ogólne</option><option value="Voucher">Voucher</option><option value="Starzik">Starzik</option><option value="Tesla Escape Box">Tesla Escape Box</option></select>
         </div>
-        <div class="f-group"><label>Wiadomość</label><textarea name="wiadomosc" placeholder="Zapytaj o co chcesz" required></textarea></div>
+        <div class="f-group"><label for="contact-message">Wiadomość</label><textarea id="contact-message" name="wiadomosc" placeholder="Zapytaj o co chcesz" required></textarea></div>
         <div class="f-check">
           <input type="checkbox" id="rodo" name="Zapoznanie z polityką prywatności" value="Tak" required />
           <label for="rodo">Zapoznałem się z <a href="/polityka.html" style="color:var(--red-glow)">Polityką Prywatności</a>.</label>
@@ -1413,7 +1413,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 </style>
 
-<aside id="cookie-consent" hidden aria-hidden="true" aria-labelledby="cookie-consent-title" role="dialog">
+<div id="cookie-consent" hidden aria-hidden="true" aria-labelledby="cookie-consent-title" role="dialog">
   <div class="cookie-consent-inner">
     <div class="cookie-consent-view" id="cookie-summary-view">
       <div class="cookie-consent-top">
@@ -1503,7 +1503,7 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </div>
   </div>
-</aside>
+</div>
 
 <script>
 (function() {
