@@ -1,4 +1,4 @@
-name: Test workflow SEO
+name: Jednorazowe poprawki SEO
 
 on:
   push:
@@ -8,8 +8,22 @@ permissions:
   contents: write
 
 jobs:
-  test:
+  patch:
     runs-on: ubuntu-latest
     steps:
-      - name: Test
-        run: echo OK
+      - name: Pobierz repozytorium
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Popraw SEO
+        run: python .github/seo_patch.py
+
+      - name: Zapisz zmiany
+        run: |
+          git config user.name "Familock SEO bot"
+          git config user.email "actions@users.noreply.github.com"
+          git rm .github/workflows/seo-quick-fixes.yml .github/seo_patch.py
+          git add index.html sitemap.xml
+          git commit -m "Popraw podstawowe SEO strony Familock"
+          git push origin HEAD:seo-quick-fixes-2026-08-15
