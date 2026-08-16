@@ -92,15 +92,15 @@ nav.scrolled{background:rgba(13,13,13,.96);backdrop-filter:blur(12px);border-bot
 .hero-grid{position:absolute;inset:0;opacity:.025;background-image:linear-gradient(var(--red) 1px,transparent 1px),linear-gradient(90deg,var(--red) 1px,transparent 1px);background-size:80px 80px}
 .hero-stripe{position:absolute;right:38%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--border3) 30%,var(--border3) 70%,transparent)}
 .hero-deco{position:absolute;right:1%;top:50%;transform:translateY(-52%);font-family:var(--fd);font-size:55vh;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(90,42,46,.12);pointer-events:none;user-select:none}
-.hero-eyebrow{font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.45em;text-transform:uppercase;color:var(--gray);margin-bottom:1.2rem;position:relative;display:flex;align-items:center;gap:1rem}
+.hero-eyebrow{font-family:var(--fd);font-size:.66rem;font-weight:700;letter-spacing:.38em;text-transform:uppercase;color:var(--gray);margin-bottom:1.45rem;position:relative;display:flex;align-items:center;gap:1rem}
 .hero-eyebrow::before{content:"";width:36px;height:1px;background:var(--gray-dark)}
-h1.hero-title{font-family:var(--fd);font-weight:900;font-size:clamp(5.5rem,11vw,12rem);line-height:.88;letter-spacing:-.025em;margin-bottom:.9rem;position:relative}
+h1.hero-title{font-family:var(--fd);font-weight:900;font-size:clamp(4.6rem,9vw,9.5rem);line-height:.9;letter-spacing:-.025em;margin-bottom:1.05rem;position:relative}
 .hero-brand{display:block}
 .hero-title .line1{display:inline;color:var(--cream)}
 .hero-title .line2{display:inline;color:var(--red);text-shadow:0 0 70px rgba(139,37,48,.4)}
-.hero-seo-title{display:block;font-size:clamp(1.35rem,2.5vw,2.45rem);line-height:1.08;letter-spacing:.1em;text-transform:uppercase;color:var(--cream2);margin-top:1.15rem}
-.hero-sub{font-family:var(--fs);font-style:italic;font-size:1.05rem;color:var(--cream2);max-width:560px;margin-bottom:2.8rem;line-height:1.9;position:relative}
-.hero-tagline{font-family:var(--fd);font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.28em;color:var(--muted);margin-top:0;margin-bottom:1.35rem;position:relative;opacity:0}
+.hero-seo-title{display:block;font-size:clamp(1.1rem,1.8vw,1.9rem);line-height:1.12;letter-spacing:.075em;text-transform:uppercase;color:var(--cream2);margin-top:1.45rem}
+.hero-sub{font-family:var(--fs);font-style:italic;font-size:.98rem;color:var(--cream2);max-width:540px;margin-bottom:2.5rem;line-height:1.85;position:relative}
+.hero-tagline{font-family:var(--fb);font-size:.9rem;font-weight:400;text-transform:none;letter-spacing:.035em;color:var(--muted);margin-top:.15rem;margin-bottom:1.55rem;position:relative;opacity:0}
 .hero-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;position:relative}
 .btn-primary{display:inline-flex;align-items:center;gap:.6rem;background:var(--red);color:#fff;font-family:var(--fd);font-weight:700;font-size:.88rem;letter-spacing:.15em;text-transform:uppercase;padding:1rem 2.2rem;text-decoration:none;border:none;cursor:pointer;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));transition:background .2s,transform .2s}
 .btn-primary:hover{background:var(--red-light);transform:translateY(-2px)}
@@ -461,7 +461,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   footer{flex-direction:column;text-align:center}
 }
 @media(max-width:600px){
-  .hero-title{font-size:clamp(4.5rem,20vw,7rem)}
+  .hero-title{font-size:clamp(3.5rem,16vw,5.2rem)}
   .hero-actions{flex-direction:column;align-items:flex-start}
   .galeria-grid{grid-template-columns:1fr;gap:1rem}
   .gal-item img{height:auto;aspect-ratio:3/2}
@@ -510,7 +510,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
     <span class="hero-brand"><span class="line1">FAMI</span><span class="line2">LOCK</span></span>
     <span class="hero-seo-title">Escape Room w Świętochłowicach</span>
   </h1>
-  <p class="hero-tagline fade-up d25">Śląski klimat · autorskie zagadki · 90 minut historii</p>
+  <p class="hero-tagline fade-up d25">Śląski klimat, autorskie zagadki i 90 minut gry.</p>
   <p class="hero-sub fade-up d3">Familock to fabularny escape room w Świętochłowicach. W pokoju <i>Starzik</i> czeka na Was 90 minut autorskich zagadek i historii osadzonej w klimacie śląskiego familoka. Rezerwacje online są już dostępne.</p>
   <div class="hero-actions fade-up d4">
     <a href="#rezerwacja" class="btn-primary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Zarezerwuj termin</a>
