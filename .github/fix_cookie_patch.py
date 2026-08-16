@@ -21,5 +21,11 @@ if 'Otwórz w Google Maps →' not in block:
     block = block.replace(close, replacement, 1)
     text = text[:start] + block + text[end:]
 
+old_category_pattern = "pat = rf'''        <div class=\"cookie-category\">\\s*<div>\\s*<div class=\"cookie-category-name\">{re.escape(name)}</div>.*?</div>\\s*</div>'''"
+new_category_pattern = "pat = rf'''        <div class=\"cookie-category\">\\s*<div>\\s*<div class=\"cookie-category-name\">{re.escape(name)}</div>.*?</label>\\s*</div>'''"
+if text.count(old_category_pattern) != 1:
+    raise SystemExit(f'expected one category pattern, found {text.count(old_category_pattern)}')
+text = text.replace(old_category_pattern, new_category_pattern, 1)
+
 path.write_text(text, encoding='utf-8')
-print('Map selector fixed')
+print('Map and category selectors fixed')
