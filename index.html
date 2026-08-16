@@ -791,11 +791,11 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
             <p class="service-consent-copy">Kalendarz rezerwacji otworzy się tutaj po kliknięciu. Możesz od razu wybrać termin i przejść do rezerwacji.</p>
             <div class="service-consent-actions">
               <button class="service-consent-btn" id="load-lockme" type="button">Pokaż dostępne terminy</button>
-              <a class="service-consent-link" href="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html?month=1" target="_blank" rel="noopener noreferrer">Otwórz w nowej karcie</a>
+              <a class="service-consent-link" href="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html" target="_blank" rel="noopener noreferrer">Otwórz w nowej karcie</a>
             </div>
           </div>
         </div>
-        <iframe id="booking-lockme-frame" class="booking-lockme-frame" data-src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html?month=1" loading="lazy" height="450" scrolling="auto" allowtransparency="true" title="Rezerwacja Familock" hidden></iframe>
+        <iframe id="booking-lockme-frame" class="booking-lockme-frame" data-src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html" loading="lazy" height="450" scrolling="auto" allowtransparency="true" title="Rezerwacja Familock" hidden></iframe>
       </div>
     </div>
     <div class="rez-grid" style="grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem">
@@ -1039,7 +1039,7 @@ function switchTab(id, btn) {
   btn.classList.add('active');
 }
 
-var LOCKME_WIDGET_URL = 'https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html?month=1';
+var LOCKME_WIDGET_URL = 'https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html';
 function loadLockmeWidget() {
   var frame = document.getElementById('booking-lockme-frame');
   var loaderBox = document.getElementById('lockme-loader');
