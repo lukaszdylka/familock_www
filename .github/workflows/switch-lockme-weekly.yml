@@ -1,0 +1,50 @@
+name: Switch LockMe to weekly view
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/switch-lockme-weekly.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Switch widget URLs
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          files = [Path('index.html'), Path('starzik/index.html')]
+          old = 'https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html?month=1'
+          new = 'https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html'
+          total = 0
+          for path in files:
+              text = path.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count == 0:
+                  raise SystemExit(f'{path}: monthly URL not found')
+              path.write_text(text.replace(old, new), encoding='utf-8')
+              total += count
+              print(f'{path}: replaced {count}')
+          print(f'total replacements: {total}')
+          PY
+      - name: Validate
+        run: |
+          git diff --check
+          ! grep -R -q 'fd5ace6aab33825bcc05880372c4f7b0_750_14685.html?month=1' index.html starzik/index.html
+          grep -q 'data-src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html"' index.html
+          grep -q 'data-src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html"' starzik/index.html
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html starzik/index.html
+          git commit -m "Przełącz LockMe na widok tygodniowy"
+          git push origin HEAD:main
