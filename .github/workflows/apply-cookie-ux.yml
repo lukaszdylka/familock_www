@@ -1,0 +1,42 @@
+name: Apply cookie UX simplification
+
+on:
+  push:
+    branches:
+      - agent/simplify-cookie-ux
+    paths:
+      - .github/apply_cookie_ux.py
+      - .github/workflows/apply-cookie-ux.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: agent/simplify-cookie-ux
+      - name: Apply patch
+        run: python3 .github/apply_cookie_ux.py
+      - name: Validate diff
+        run: |
+          git diff --check
+          grep -q "familock_cookie_consent_v5" index.html
+          grep -q "loadLockmeWidget" index.html
+          ! grep -q 'data-cookie-service="lockme"' index.html
+          ! grep -q 'data-cookie-service="googleMaps"' index.html
+          grep -q "art. 399 ust. 3 pkt 2" polityka.html
+      - name: Commit patched files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html polityka.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Uprość rezerwację i zgody cookies"
+            git push origin HEAD:agent/simplify-cookie-ux
+          fi
