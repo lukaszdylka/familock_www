@@ -1,0 +1,99 @@
+name: Restore Google Maps embed
+
+on:
+  push:
+    branches:
+      - agent/restore-google-map-embed
+    paths:
+      - .github/workflows/restore-google-map.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: agent/restore-google-map-embed
+
+      - name: Restore embedded map and update privacy copy
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          index_path = Path('index.html')
+          index = index_path.read_text(encoding='utf-8')
+
+          map_pattern = r'''\n        <div class="service-consent-placeholder">\s*<div class="service-consent-box">.*?<div class="service-consent-title">Familock · Cmentarna 5/3</div>.*?</div>\s*</div>\s*(<a href="https://maps\.google\.com/\?q=Cmentarna\+5\+%C5%9Awi%C4%99toch%C5%82owice" target="_blank" rel="noopener noreferrer" class="map-link">Otwórz w Google Maps →</a>)'''
+          map_repl = '''
+        <iframe title="Mapa dojazdu do Familocka" src="https://www.google.com/maps?q=Cmentarna+5%2C+41-600+%C5%9Awi%C4%99toch%C5%82owice&output=embed" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        \\1'''
+          index, count = re.subn(map_pattern, map_repl, index, count=1, flags=re.S)
+          if count != 1:
+              raise SystemExit(f'map block: expected 1 match, found {count}')
+
+          replacements = [
+              (
+                  'Niezbędne dane pozwalają zapamiętać Twój wybór. Za Twoją zgodą możemy uruchomić Google Analytics i pomiar Google Ads. Kalendarz rezerwacji LockMe ładuje się dopiero po działaniu związanym z rezerwacją, a Google Maps dopiero po kliknięciu linku. Bez zgody strona nadal działa. Szczegóły znajdziesz w <a href="/polityka.html#s15">Polityce Cookies</a>.',
+                  'Niezbędne dane pozwalają zapamiętać Twój wybór. Za Twoją zgodą możemy uruchomić Google Analytics i pomiar Google Ads. Kalendarz rezerwacji LockMe ładuje się dopiero po działaniu związanym z rezerwacją. W sekcji kontaktu znajduje się osadzona mapa Google Maps. Bez zgody na analitykę lub pomiar reklam strona nadal działa. Szczegóły znajdziesz w <a href="/polityka.html#s15">Polityce Cookies</a>.'
+              ),
+              (
+                  'Strona używa danych niezbędnych do działania. Kalendarz LockMe jest uruchamiany dopiero, gdy użytkownik wybierze rezerwację lub poprosi o pokazanie terminów. Google Maps otwiera się dopiero po kliknięciu linku. Zgoda w ustawieniach cookies dotyczy Google Analytics i pomiaru Google Ads. Nie korzystamy z Meta Pixel, a personalizacja reklam Google pozostaje wyłączona.',
+                  'Strona używa danych niezbędnych do działania. Kalendarz LockMe jest uruchamiany dopiero, gdy użytkownik wybierze rezerwację lub poprosi o pokazanie terminów. W sekcji kontaktu znajduje się osadzona mapa Google Maps. Zgoda w ustawieniach cookies dotyczy Google Analytics i pomiaru Google Ads. Nie korzystamy z Meta Pixel, a personalizacja reklam Google pozostaje wyłączona.'
+              )
+          ]
+          for old, new in replacements:
+              if old not in index:
+                  raise SystemExit('expected privacy/cookie copy not found in index.html')
+              index = index.replace(old, new, 1)
+
+          index_path.write_text(index, encoding='utf-8')
+
+          policy_path = Path('polityka.html')
+          policy = policy_path.read_text(encoding='utf-8')
+          old_maps = '<h3>Google Maps</h3>\n    <p>Familock nie osadza automatycznie interaktywnej mapy Google. Na stronie znajduje się wyłącznie link do Google Maps. Dane są przekazywane do Google dopiero wtedy, gdy użytkownik sam otworzy ten zewnętrzny serwis.</p>'
+          new_maps = '<h3>Google Maps</h3>\n    <p>W sekcji kontaktu Familock osadza interaktywną mapę Google Maps w elemencie iframe. Mapa jest ładowana leniwie, gdy użytkownik zbliży się do tej części strony. Po załadowaniu przeglądarka łączy się z usługami Google, które mogą otrzymać dane techniczne, takie jak adres IP, informacje o przeglądarce i domenie strony. Mapa służy wyłącznie prezentacji lokalizacji Familocka.</p>'
+          if old_maps not in policy:
+              raise SystemExit('Google Maps policy paragraph not found')
+          policy = policy.replace(old_maps, new_maps, 1)
+
+          old_basis = 'Dane niezbędne są stosowane w zakresie potrzebnym do zapamiętania wyboru użytkownika i wykonania funkcji, o które użytkownik sam poprosił. Google Analytics i Google Ads są uruchamiane wyłącznie po dobrowolnej, świadomej i jednoznacznej zgodzie wyrażonej w banerze cookies. Kalendarz LockMe ładuje się dopiero po działaniu użytkownika związanym z rezerwacją, a Google Maps otwiera się jako zewnętrzny serwis dopiero po kliknięciu linku.'
+          new_basis = 'Dane niezbędne są stosowane w zakresie potrzebnym do zapamiętania wyboru użytkownika i wykonania funkcji, o które użytkownik sam poprosił. Google Analytics i Google Ads są uruchamiane wyłącznie po dobrowolnej, świadomej i jednoznacznej zgodzie wyrażonej w banerze cookies. Kalendarz LockMe ładuje się dopiero po działaniu użytkownika związanym z rezerwacją. Interaktywna mapa Google Maps jest osadzona w sekcji kontaktu i ładowana leniwie.'
+          if old_basis not in policy:
+              raise SystemExit('policy basis paragraph not found')
+          policy = policy.replace(old_basis, new_basis, 1)
+
+          old_service = '<li>Google Maps, jako zewnętrzny serwis mapowy otwierany wyłącznie po kliknięciu linku przez użytkownika,</li>'
+          new_service = '<li>Google Maps, jako dostawca osadzonej interaktywnej mapy dojazdu,</li>'
+          if old_service not in policy:
+              raise SystemExit('Google Maps services item not found')
+          policy = policy.replace(old_service, new_service, 1)
+
+          old_third = 'Uruchomienie kalendarza LockMe powoduje połączenie z usługą zewnętrzną, a otwarcie linku do Google Maps powoduje przejście do serwisu Google. W obu przypadkach obowiązują również zasady prywatności danego dostawcy.'
+          new_third = 'Uruchomienie kalendarza LockMe oraz załadowanie osadzonej mapy Google Maps powodują połączenie z usługami zewnętrznymi. W obu przypadkach obowiązują również zasady prywatności danego dostawcy.'
+          if old_third not in policy:
+              raise SystemExit('third-party paragraph not found')
+          policy = policy.replace(old_third, new_third, 1)
+
+          policy_path.write_text(policy, encoding='utf-8')
+          PY
+
+      - name: Validate
+        run: |
+          git diff --check
+          grep -q 'src="https://www.google.com/maps?q=Cmentarna+5%2C+41-600' index.html
+          grep -q 'loading="lazy" referrerpolicy="strict-origin-when-cross-origin"' index.html
+          ! grep -q 'Familock nie osadza automatycznie interaktywnej mapy Google' polityka.html
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html polityka.html
+          git commit -m "Przywróć osadzoną mapę Google Maps"
+          git push origin HEAD:agent/restore-google-map-embed
