@@ -782,20 +782,20 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
     <div style="margin-bottom:2rem">
       <div class="booking-widget-wrap">
         <div class="booking-widget-head"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>System rezerwacji online</span></div>
-        <div class="service-consent-placeholder booking-placeholder" data-cookie-placeholder="lockme">
+        <div class="service-consent-placeholder booking-placeholder" id="lockme-loader">
           <div class="service-consent-box">
             <div class="service-consent-icon" aria-hidden="true">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             </div>
-            <div class="service-consent-title">Kalendarz rezerwacji LockMe</div>
-            <p class="service-consent-copy">Aby wyświetlić terminy na stronie, włącz usługę LockMe. Dostawca może używać własnych plików cookies i podobnych technologii.</p>
+            <div class="service-consent-title">Sprawdź wolne terminy</div>
+            <p class="service-consent-copy">Kalendarz rezerwacji otworzy się tutaj po kliknięciu. Możesz od razu wybrać termin i przejść do rezerwacji.</p>
             <div class="service-consent-actions">
-              <button class="service-consent-btn" type="button" data-cookie-enable="lockme">Włącz kalendarz</button>
+              <button class="service-consent-btn" id="load-lockme" type="button">Pokaż dostępne terminy</button>
               <a class="service-consent-link" href="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html?month=1" target="_blank" rel="noopener noreferrer">Otwórz w nowej karcie</a>
             </div>
           </div>
         </div>
-        <iframe id="booking-lockme-frame" class="booking-lockme-frame" data-cookie-service="lockme" data-src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html?month=1" loading="lazy" height="450" scrolling="auto" allowtransparency="true" title="Rezerwacja Familock" hidden></iframe>
+        <iframe id="booking-lockme-frame" class="booking-lockme-frame" data-src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html?month=1" loading="lazy" height="450" scrolling="auto" allowtransparency="true" title="Rezerwacja Familock" hidden></iframe>
       </div>
     </div>
     <div class="rez-grid" style="grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem">
@@ -875,19 +875,15 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
       <div class="info-block"><div class="info-label">Parking i dojazd</div><div class="info-val">Bezpłatny parking na ul. Cmentarnej i ul. Dulcissimy Hoffmann. Przystanki autobusowe i tramwajowe w pobliżu. Dworzec kolejowy &lt;1 km.</div></div>
       <div class="map-wrap reveal">
         <div class="map-head"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>ul. Cmentarna 5/3, Świętochłowice</div>
-        <div class="service-consent-placeholder" data-cookie-placeholder="googleMaps">
-        <div class="service-consent-box">
-          <div class="service-consent-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div class="service-consent-title">Mapa Google</div>
-          <p class="service-consent-copy">Aby wyświetlić mapę na stronie, włącz usługę Google Maps. Możesz też otworzyć adres bezpośrednio w nowej karcie.</p>
-          <div class="service-consent-actions">
-            <button class="service-consent-btn" type="button" data-cookie-enable="googleMaps">Włącz mapę</button>
+        <div class="service-consent-placeholder">
+          <div class="service-consent-box">
+            <div class="service-consent-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="service-consent-title">Familock · Cmentarna 5/3</div>
+            <p class="service-consent-copy">Wejście przez klatkę schodową. Kliknięcie w mapę otworzy trasę w Google Maps w nowej karcie.</p>
           </div>
         </div>
-      </div>
-      <iframe title="Mapa dojazdu do Familocka" data-cookie-service="googleMaps" data-src="https://www.google.com/maps?q=Cmentarna+5%2C+41-600+%C5%9Awi%C4%99toch%C5%82owice&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" hidden></iframe>
         <a href="https://maps.google.com/?q=Cmentarna+5+%C5%9Awi%C4%99toch%C5%82owice" target="_blank" rel="noopener noreferrer" class="map-link">Otwórz w Google Maps →</a>
       </div>
       <div class="socials" style="margin-top:1.5rem">
@@ -971,7 +967,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   <p>Masz prawo dostępu, sprostowania, usunięcia, ograniczenia przetwarzania danych, wniesienia sprzeciwu, cofnięcia zgody oraz skargi do Prezesa UODO.</p>
 
   <h3>Cookies</h3>
-  <p>Strona używa danych niezbędnych do działania. Kalendarz LockMe, mapa Google, Google Analytics i pomiar Google Ads są uruchamiane wyłącznie zgodnie z wyborem użytkownika w ustawieniach cookies. Nie korzystamy z Meta Pixel, a personalizacja reklam Google pozostaje wyłączona.</p>
+  <p>Strona używa danych niezbędnych do działania. Kalendarz LockMe jest uruchamiany dopiero, gdy użytkownik wybierze rezerwację lub poprosi o pokazanie terminów. Google Maps otwiera się dopiero po kliknięciu linku. Zgoda w ustawieniach cookies dotyczy Google Analytics i pomiaru Google Ads. Nie korzystamy z Meta Pixel, a personalizacja reklam Google pozostaje wyłączona.</p>
 
   <div style="margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem">
     <p style="font-size:.75rem;color:var(--muted);margin-bottom:0">To jest skrócone podsumowanie.</p>
@@ -1050,6 +1046,21 @@ function switchTab(id, btn) {
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
 }
+
+var LOCKME_WIDGET_URL = 'https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html?month=1';
+function loadLockmeWidget() {
+  var frame = document.getElementById('booking-lockme-frame');
+  var loaderBox = document.getElementById('lockme-loader');
+  if (!frame) return;
+  if (!frame.getAttribute('src')) frame.setAttribute('src', LOCKME_WIDGET_URL);
+  frame.hidden = false;
+  if (loaderBox) loaderBox.hidden = true;
+}
+var lockmeLoadButton = document.getElementById('load-lockme');
+if (lockmeLoadButton) lockmeLoadButton.addEventListener('click', loadLockmeWidget);
+document.querySelectorAll('a[href="#rezerwacja"]').forEach(function(link) {
+  link.addEventListener('click', loadLockmeWidget);
+});
 
 var contactForm = document.getElementById('contact-form');
 var formOk = document.getElementById('form-ok');
@@ -1249,6 +1260,7 @@ function openingClose(scrollToBooking) {
   openingPopup.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
   if (scrollToBooking) {
+    loadLockmeWidget();
     window.setTimeout(function() {
       var booking = document.getElementById('rezerwacja');
       if (booking) booking.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1447,7 +1459,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="cookie-consent-kicker">Twoja prywatność</div>
           <h2 class="cookie-consent-title" id="cookie-consent-title">Ty decydujesz, które usługi uruchomić</h2>
           <p class="cookie-consent-copy">
-            Niezbędne dane pozwalają zapamiętać Twój wybór. Za Twoją zgodą możemy też uruchomić Google Analytics, pomiar Google Ads, kalendarz LockMe i mapę Google. Usługi te mogą zapisywać własne cookies oraz otrzymać informacje o urządzeniu. Bez zgody strona nadal działa. Szczegóły znajdziesz w <a href="/polityka.html#s15">Polityce Cookies</a>.
+            Niezbędne dane pozwalają zapamiętać Twój wybór. Za Twoją zgodą możemy uruchomić Google Analytics i pomiar Google Ads. Kalendarz rezerwacji LockMe ładuje się dopiero po działaniu związanym z rezerwacją, a Google Maps dopiero po kliknięciu linku. Bez zgody strona nadal działa. Szczegóły znajdziesz w <a href="/polityka.html#s15">Polityce Cookies</a>.
           </p>
         </div>
       </div>
@@ -1466,7 +1478,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div>
           <div class="cookie-consent-kicker">Ustawienia cookies</div>
           <h2 class="cookie-consent-title">Wybierz usługi zewnętrzne</h2>
-          <p class="cookie-consent-copy">Możesz wyrazić zgodę osobno na analitykę, pomiar Google Ads, kalendarz LockMe i mapę Google.</p>
+          <p class="cookie-consent-copy">Możesz wyrazić zgodę osobno na analitykę i pomiar Google Ads.</p>
         </div>
       </div>
 
@@ -1479,27 +1491,9 @@ document.addEventListener('DOMContentLoaded', function() {
           <span class="cookie-status cookie-status-active">Zawsze aktywne</span>
         </div>
 
-        <div class="cookie-category">
-          <div>
-            <div class="cookie-category-name">Kalendarz LockMe</div>
-            <div class="cookie-category-copy">Wyświetla dostępne terminy i umożliwia przejście do rezerwacji bez opuszczania strony.</div>
-          </div>
-          <label class="cookie-toggle">
-            <input id="cookie-lockme" type="checkbox" aria-label="Zezwól na kalendarz LockMe">
-            <span class="cookie-switch" aria-hidden="true"></span>
-          </label>
-        </div>
 
-        <div class="cookie-category">
-          <div>
-            <div class="cookie-category-name">Mapa Google</div>
-            <div class="cookie-category-copy">Wyświetla interaktywną mapę dojazdu do Familocka.</div>
-          </div>
-          <label class="cookie-toggle">
-            <input id="cookie-google-maps" type="checkbox" aria-label="Zezwól na mapę Google">
-            <span class="cookie-switch" aria-hidden="true"></span>
-          </label>
-        </div>
+
+
 
         <div class="cookie-category">
           <div>
@@ -1538,8 +1532,8 @@ document.addEventListener('DOMContentLoaded', function() {
 (function() {
   'use strict';
 
-  var STORAGE_KEY = 'familock_cookie_consent_v4';
-  var CONSENT_VERSION = 4;
+  var STORAGE_KEY = 'familock_cookie_consent_v5';
+  var CONSENT_VERSION = 5;
   var CONSENT_MAX_AGE = 180 * 24 * 60 * 60 * 1000;
   var GA_MEASUREMENT_ID = 'G-LY7D7XH1K3';
   var GOOGLE_ADS_ID = 'AW-969004050';
@@ -1563,8 +1557,6 @@ document.addEventListener('DOMContentLoaded', function() {
   var summaryView = document.getElementById('cookie-summary-view');
   var settingsView = document.getElementById('cookie-settings-view');
   var footerSettings = document.getElementById('cookie-settings-link');
-  var lockmeChoice = document.getElementById('cookie-lockme');
-  var mapsChoice = document.getElementById('cookie-google-maps');
   var analyticsChoice = document.getElementById('cookie-analytics');
   var marketingChoice = document.getElementById('cookie-marketing');
 
@@ -1572,8 +1564,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return {
       version: CONSENT_VERSION,
       necessary: true,
-      lockme: false,
-      googleMaps: false,
       analytics: false,
       marketing: false,
       updatedAt: null
@@ -1589,8 +1579,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (
         saved.version !== CONSENT_VERSION ||
         saved.necessary !== true ||
-        typeof saved.lockme !== 'boolean' ||
-        typeof saved.googleMaps !== 'boolean' ||
         typeof saved.analytics !== 'boolean' ||
         typeof saved.marketing !== 'boolean' ||
         !isFinite(savedAt) ||
@@ -1609,8 +1597,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var saved = {
       version: CONSENT_VERSION,
       necessary: true,
-      lockme: !!choice.lockme,
-      googleMaps: !!choice.googleMaps,
       analytics: !!choice.analytics,
       marketing: !!choice.marketing,
       updatedAt: new Date().toISOString()
@@ -1622,22 +1608,6 @@ document.addEventListener('DOMContentLoaded', function() {
     } catch (e) {}
     applyConsent(saved);
     closeBanner();
-  }
-
-  function applyService(service, enabled) {
-    document.querySelectorAll('[data-cookie-service="' + service + '"]').forEach(function(frame) {
-      var source = frame.getAttribute('data-src');
-      if (enabled) {
-        if (source && frame.getAttribute('src') !== source) frame.setAttribute('src', source);
-        frame.hidden = false;
-      } else {
-        frame.hidden = true;
-        if (frame.hasAttribute('src')) frame.setAttribute('src', 'about:blank');
-      }
-    });
-    document.querySelectorAll('[data-cookie-placeholder="' + service + '"]').forEach(function(placeholder) {
-      placeholder.hidden = !!enabled;
-    });
   }
 
   function deleteAnalyticsCookies() {
@@ -1723,8 +1693,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function applyConsent(choice) {
     var effective = choice || emptyConsent();
-    applyService('lockme', effective.lockme);
-    applyService('googleMaps', effective.googleMaps);
     updateGoogleConsent(effective);
     applyAnalytics(effective.analytics);
     applyMarketing(effective.marketing);
@@ -1735,8 +1703,6 @@ document.addEventListener('DOMContentLoaded', function() {
     settingsView.hidden = !showSettings;
     if (showSettings) {
       var base = currentConsent || emptyConsent();
-      lockmeChoice.checked = !!base.lockme;
-      mapsChoice.checked = !!base.googleMaps;
       analyticsChoice.checked = !!base.analytics;
       marketingChoice.checked = !!base.marketing;
     }
@@ -1767,8 +1733,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function acceptAll() {
     var choice = emptyConsent();
-    choice.lockme = true;
-    choice.googleMaps = true;
     choice.analytics = true;
     choice.marketing = true;
     writeConsent(choice);
@@ -1776,24 +1740,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function saveSettings() {
     var choice = emptyConsent();
-    choice.lockme = !!lockmeChoice.checked;
-    choice.googleMaps = !!mapsChoice.checked;
     choice.analytics = !!analyticsChoice.checked;
     choice.marketing = !!marketingChoice.checked;
-    writeConsent(choice);
-  }
-
-  function enableService(service) {
-    var choice = currentConsent ? {
-      version: currentConsent.version,
-      necessary: true,
-      lockme: currentConsent.lockme,
-      googleMaps: currentConsent.googleMaps,
-      analytics: currentConsent.analytics,
-      marketing: currentConsent.marketing,
-      updatedAt: currentConsent.updatedAt
-    } : emptyConsent();
-    choice[service] = true;
     writeConsent(choice);
   }
 
@@ -1817,11 +1765,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('cookie-settings-all').addEventListener('click', acceptAll);
   document.getElementById('cookie-save-settings').addEventListener('click', saveSettings);
 
-  document.querySelectorAll('[data-cookie-enable]').forEach(function(button) {
-    button.addEventListener('click', function() {
-      enableService(button.getAttribute('data-cookie-enable'));
-    });
-  });
 
   window.familockCookies = {
     open: function() { openBanner(true); },
