@@ -1,0 +1,119 @@
+name: Show homepage calendar directly
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/show-home-calendar.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Show calendar directly
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          widget = 'https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html'
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          old_booking = '''        <div class="service-consent-placeholder booking-placeholder" id="lockme-loader">
+          <div class="service-consent-box">
+            <div class="service-consent-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="service-consent-title">Sprawdź wolne terminy</div>
+            <p class="service-consent-copy">Kalendarz rezerwacji otworzy się tutaj po kliknięciu. Możesz od razu wybrać termin i przejść do rezerwacji.</p>
+            <div class="service-consent-actions">
+              <button class="service-consent-btn" id="load-lockme" type="button">Pokaż dostępne terminy</button>
+              <a class="service-consent-link" href="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html" target="_blank" rel="noopener noreferrer">Otwórz w nowej karcie</a>
+            </div>
+          </div>
+        </div>
+        <iframe id="booking-lockme-frame" class="booking-lockme-frame" data-src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html" loading="lazy" height="450" scrolling="auto" allowtransparency="true" title="Rezerwacja Familock" hidden></iframe>'''
+          new_booking = f'''        <iframe id="booking-lockme-frame" class="booking-lockme-frame" src="{widget}" loading="lazy" height="450" scrolling="auto" allowtransparency="true" title="Rezerwacja Familock"></iframe>'''
+          if s.count(old_booking) != 1:
+              raise SystemExit(f'booking block count: {s.count(old_booking)}')
+          s = s.replace(old_booking, new_booking, 1)
+
+          old_js = '''var LOCKME_WIDGET_URL = 'https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html';
+function loadLockmeWidget() {
+  var frame = document.getElementById('booking-lockme-frame');
+  var loaderBox = document.getElementById('lockme-loader');
+  if (!frame) return;
+  if (!frame.getAttribute('src')) frame.setAttribute('src', LOCKME_WIDGET_URL);
+  frame.hidden = false;
+  if (loaderBox) loaderBox.hidden = true;
+}
+var lockmeLoadButton = document.getElementById('load-lockme');
+if (lockmeLoadButton) lockmeLoadButton.addEventListener('click', loadLockmeWidget);
+document.querySelectorAll('a[href="#rezerwacja"]').forEach(function(link) {
+  link.addEventListener('click', loadLockmeWidget);
+});
+
+'''
+          if s.count(old_js) != 1:
+              raise SystemExit(f'lockme JS block count: {s.count(old_js)}')
+          s = s.replace(old_js, '', 1)
+
+          s = s.replace(
+              'Kalendarz LockMe jest uruchamiany dopiero, gdy użytkownik wybierze rezerwację lub poprosi o pokazanie terminów.',
+              'Kalendarz LockMe jest osadzony bezpośrednio w sekcji rezerwacji i ładowany leniwie przez przeglądarkę.'
+          )
+          s = s.replace(
+              'Kalendarz rezerwacji LockMe ładuje się dopiero po działaniu związanym z rezerwacją, a Google Maps dopiero po kliknięciu linku.',
+              'Kalendarz rezerwacji LockMe jest osadzony bezpośrednio w sekcji rezerwacji. Google Analytics i pomiar Google Ads pozostają opcjonalne.'
+          )
+          p.write_text(s, encoding='utf-8')
+
+          p = Path('polityka.html')
+          s = p.read_text(encoding='utf-8')
+          replacements = [
+              (
+                  '<p><strong>a) Niezbędne</strong>. Obejmują zapis decyzji dotyczącej prywatności w pamięci przeglądarki oraz informacje technicznie potrzebne do wykonania funkcji, o które użytkownik sam poprosił, np. procesu rezerwacji po uruchomieniu kalendarza LockMe. Nie są wykorzystywane przez Familock do analizy zachowania ani profilowania reklamowego.</p>',
+                  '<p><strong>a) Niezbędne</strong>. Obejmują zapis decyzji dotyczącej prywatności w pamięci przeglądarki oraz informacje technicznie potrzebne do działania funkcji rezerwacji i innych podstawowych elementów serwisu. Nie są wykorzystywane przez Familock do analizy zachowania ani profilowania reklamowego.</p>'
+              ),
+              (
+                  '<p>Na stronie głównej kalendarz LockMe ładuje się po kliknięciu przycisku związanego z rezerwacją albo po wybraniu „Pokaż dostępne terminy”. Na podstronie Starzika kalendarz jest osadzony bezpośrednio w sekcji rezerwacji i ładowany leniwie, dlatego po zbliżeniu się do tej części strony przeglądarka może połączyć się z domeną LockMe. Usługa może wtedy otrzymać dane techniczne, takie jak adres IP i informacje o przeglądarce, oraz korzystać z informacji niezbędnych do procesu rezerwacji.</p>',
+                  '<p>Na stronie głównej oraz na podstronie Starzika kalendarz LockMe jest osadzony bezpośrednio w sekcji rezerwacji i ładowany leniwie. Po załadowaniu przeglądarka łączy się z domeną LockMe. Usługa może wtedy otrzymać dane techniczne, takie jak adres IP i informacje o przeglądarce, oraz korzystać z informacji niezbędnych do procesu rezerwacji.</p>'
+              ),
+              (
+                  '<p>Dane niezbędne są stosowane w zakresie potrzebnym do zapamiętania wyboru użytkownika i wykonania funkcji, o które użytkownik sam poprosił. Google Analytics i Google Ads są uruchamiane wyłącznie po dobrowolnej, świadomej i jednoznacznej zgodzie wyrażonej w banerze cookies. Na stronie głównej kalendarz LockMe ładuje się po działaniu użytkownika związanym z rezerwacją, a na podstronie Starzika jest osadzony bezpośrednio w sekcji rezerwacji i ładowany leniwie. Interaktywna mapa Google Maps jest osadzona w sekcji kontaktu i ładowana leniwie.</p>',
+                  '<p>Dane niezbędne są stosowane w zakresie potrzebnym do zapamiętania wyboru użytkownika i działania podstawowych funkcji serwisu. Google Analytics i Google Ads są uruchamiane wyłącznie po dobrowolnej, świadomej i jednoznacznej zgodzie wyrażonej w banerze cookies. Kalendarz LockMe jest osadzony bezpośrednio w sekcji rezerwacji i ładowany leniwie. Interaktywna mapa Google Maps jest osadzona w sekcji kontaktu i ładowana leniwie.</p>'
+              ),
+              (
+                  '<p>Dostawcy usług mogą przetwarzać dane zgodnie z własnymi zasadami prywatności. Przed skorzystaniem z usługi użytkownik może zapoznać się z polityką odpowiedniego dostawcy. Uruchomienie kalendarza LockMe oraz załadowanie osadzonej mapy Google Maps powodują połączenie z usługami zewnętrznymi. W obu przypadkach obowiązują również zasady prywatności danego dostawcy.</p>',
+                  '<p>Dostawcy usług mogą przetwarzać dane zgodnie z własnymi zasadami prywatności. Przed skorzystaniem z usługi użytkownik może zapoznać się z polityką odpowiedniego dostawcy. Załadowanie osadzonego kalendarza LockMe oraz mapy Google Maps powoduje połączenie z usługami zewnętrznymi. W obu przypadkach obowiązują również zasady prywatności danego dostawcy.</p>'
+              )
+          ]
+          for old, new in replacements:
+              if s.count(old) != 1:
+                  raise SystemExit(f'policy replacement count {s.count(old)} for {old[:60]}')
+              s = s.replace(old, new, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Validate
+        run: |
+          git diff --check
+          grep -q 'booking-lockme-frame" src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html"' index.html
+          ! grep -q 'id="load-lockme"' index.html
+          ! grep -q 'id="lockme-loader"' index.html
+          ! grep -q 'function loadLockmeWidget' index.html
+          grep -q 'Na stronie głównej oraz na podstronie Starzika kalendarz LockMe jest osadzony bezpośrednio' polityka.html
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html polityka.html
+          git commit -m "Pokaż kalendarz LockMe bezpośrednio"
+          git push origin HEAD:main
