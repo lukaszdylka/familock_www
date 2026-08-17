@@ -54,7 +54,59 @@
 <footer><div class="shell footer-inner"><div><a class="logo" href="/">FAMI<span>LOCK</span></a><div class="footer-copy">© 2017–2026 Łukasz Dyłka Familock · Świętochłowice</div></div><div class="footer-links"><a href="/regulamin.html">Regulamin</a><a href="/polityka.html">Polityka prywatności</a><button type="button" id="cookie-settings-link">Ustawienia cookies</button></div></div></footer>
 <div id="cookie-consent" hidden role="dialog" aria-label="Ustawienia cookies"><div class="cookie-title">Twoja prywatność</div><p class="cookie-copy">Niezbędne dane pozwalają zapamiętać Twój wybór. Za Twoją zgodą możemy uruchomić Google Analytics i pomiar Google Ads. Na stronie Starzika kalendarz LockMe jest osadzony bezpośrednio w sekcji rezerwacji i ładowany leniwie przez przeglądarkę.</p><div class="cookie-settings" id="cookie-settings" hidden><div class="cookie-setting-copy"><strong>Analityczne</strong>Google Analytics pomaga nam sprawdzać liczbę odwiedzin i sposób korzystania ze strony.</div><input class="cookie-check" id="cookie-analytics" type="checkbox" aria-label="Zezwól na Google Analytics"><div class="cookie-setting-copy"><strong>Reklamowe</strong>Google Ads służy do pomiaru skuteczności reklam i konwersji. Personalizacja reklam pozostaje wyłączona.</div><input class="cookie-check" id="cookie-marketing" type="checkbox" aria-label="Zezwól na pomiar Google Ads"></div><div class="cookie-actions"><button class="cookie-btn" id="cookie-necessary" type="button">Tylko niezbędne</button><button class="cookie-btn" id="cookie-toggle-settings" type="button">Ustawienia</button><button class="cookie-btn primary" id="cookie-accept-all" type="button">Akceptuję wszystkie</button><button class="cookie-btn primary" id="cookie-save" type="button" hidden>Zapisz wybór</button></div></div>
 <script>
-(function(){'use strict';document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){q.parentElement.classList.toggle('open')})});var KEY='familock_cookie_consent_v5',VERSION=5,MAX=180*24*60*60*1000,GA='G-LY7D7XH1K3',ADS='AW-969004050';var banner=document.getElementById('cookie-consent'),settings=document.getElementById('cookie-settings'),analytics=document.getElementById('cookie-analytics'),marketing=document.getElementById('cookie-marketing');window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){dataLayer.push(arguments)};gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});gtag('set','ads_data_redaction',true);gtag('js',new Date());function read(){try{var s=JSON.parse(localStorage.getItem(KEY));var t=Date.parse(s.updatedAt||'');if(s.version===VERSION&&typeof s.analytics==='boolean'&&typeof s.marketing==='boolean'&&isFinite(t)&&Date.now()-t<MAX)return s}catch(e){}return null}function tag(){if(document.getElementById('familock-google-tag'))return;var s=document.createElement('script');s.id='familock-google-tag';s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+GA;document.head.appendChild(s)}function apply(c){gtag('consent','update',{analytics_storage:c.analytics?'granted':'denied',ad_storage:c.marketing?'granted':'denied',ad_user_data:c.marketing?'granted':'denied',ad_personalization:'denied'});if(c.analytics||c.marketing)tag();if(c.analytics)gtag('config',GA,{allow_google_signals:false,allow_ad_personalization_signals:false});if(c.marketing)gtag('config',ADS,{allow_ad_personalization_signals:false})}function save(a,m){var c={version:VERSION,necessary:true,analytics:!!a,marketing:!!m,updatedAt:new Date().toISOString()};try{localStorage.setItem(KEY,JSON.stringify(c))}catch(e){}apply(c);banner.hidden=true}var current=read();if(current){apply(current)}else{banner.hidden=false}document.getElementById('cookie-necessary').onclick=function(){save(false,false)};document.getElementById('cookie-accept-all').onclick=function(){save(true,true)};document.getElementById('cookie-toggle-settings').onclick=function(){settings.hidden=!settings.hidden;document.getElementById('cookie-save').hidden=settings.hidden};document.getElementById('cookie-save').onclick=function(){save(analytics.checked,marketing.checked)};document.getElementById('cookie-settings-link').onclick=function(){var c=read()||{analytics:false,marketing:false};analytics.checked=c.analytics;marketing.checked=c.marketing;banner.hidden=false;settings.hidden=false;document.getElementById('cookie-save').hidden=false};})();
+(function(){'use strict';document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){q.parentElement.classList.toggle('open')})});var KEY='familock_cookie_consent_v5',VERSION=5,MAX=180*24*60*60*1000,GA='G-LY7D7XH1K3',ADS='AW-969004050';var banner=document.getElementById('cookie-consent'),settings=document.getElementById('cookie-settings'),analytics=document.getElementById('cookie-analytics'),marketing=document.getElementById('cookie-marketing');window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){dataLayer.push(arguments)};gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});gtag('set','ads_data_redaction',true);gtag('js',new Date());function read(){try{var s=JSON.parse(localStorage.getItem(KEY));var t=Date.parse(s.updatedAt||'');if(s.version===VERSION&&typeof s.analytics==='boolean'&&typeof s.marketing==='boolean'&&isFinite(t)&&Date.now()-t<MAX)return s}catch(e){}return null}function tag(){if(document.getElementById('familock-google-tag'))return;var s=document.createElement('script');s.id='familock-google-tag';s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+GA;document.head.appendChild(s)}function apply(c){gtag('consent','update',{analytics_storage:c.analytics?'granted':'denied',ad_storage:c.marketing?'granted':'denied',ad_user_data:c.marketing?'granted':'denied',ad_personalization:'denied'});if(c.analytics||c.marketing)tag();if(c.analytics)gtag('config',GA,{allow_google_signals:false,allow_ad_personalization_signals:false});if(c.marketing)gtag('config',ADS,{allow_ad_personalization_signals:false})}function save(a,m){var c={version:VERSION,necessary:true,analytics:!!a,marketing:!!m,updatedAt:new Date().toISOString()};try{localStorage.setItem(KEY,JSON.stringify(c))}catch(e){}apply(c);banner.hidden=true}var current=read();if(current){apply(current)}else{banner.hidden=false}document.getElementById('cookie-necessary').onclick=function(){save(false,false)};document.getElementById('cookie-accept-all').onclick=function(){save(true,true)};document.getElementById('cookie-toggle-settings').onclick=function(){settings.hidden=!settings.hidden;document.getElementById('cookie-save').hidden=settings.hidden};document.getElementById('cookie-save').onclick=function(){save(analytics.checked,marketing.checked)};document.getElementById('cookie-settings-link').onclick=function(){var c=read()||{analytics:false,marketing:false};analytics.checked=c.analytics;marketing.checked=c.marketing;banner.hidden=false;settings.hidden=false;document.getElementById('cookie-save').hidden=false};
+
+function reservationAnalyticsConsentGranted(){
+  try{
+    var choice=JSON.parse(localStorage.getItem(KEY));
+    return !!(choice&&choice.version===VERSION&&choice.analytics===true);
+  }catch(e){return false}
+}
+function sendReservationAnalyticsEvent(eventName,params){
+  if(!reservationAnalyticsConsentGranted()||typeof window.gtag!=='function')return false;
+  var eventParams=params||{};
+  eventParams.send_to=GA;
+  window.gtag('event',eventName,eventParams);
+  return true;
+}
+document.addEventListener('click',function(event){
+  var target=event.target;
+  if(!target||!target.closest)return;
+  var link=target.closest('a[href]');
+  if(!link)return;
+  try{
+    var url=new URL(link.href,window.location.href);
+    var host=url.hostname.toLowerCase();
+    if(host==='lock.me'||host.endsWith('.lock.me')){
+      sendReservationAnalyticsEvent('lockme_click',{room:'starzik',page_path:'/starzik',link_url:url.href});
+    }
+  }catch(e){}
+},true);
+
+var reservationViewSeen=false,reservationViewSent=false,reservationObserver=null;
+function maybeSendReservationView(){
+  if(!reservationViewSeen||reservationViewSent)return;
+  reservationViewSent=sendReservationAnalyticsEvent('reservation_view',{room:'starzik',page_path:'/starzik'});
+  if(reservationViewSent&&reservationObserver)reservationObserver.disconnect();
+}
+var reservationSection=document.getElementById('rezerwacja');
+if(reservationSection&&'IntersectionObserver' in window){
+  reservationObserver=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting&&entry.intersectionRatio>=0.35){
+        reservationViewSeen=true;
+        maybeSendReservationView();
+      }
+    });
+  },{threshold:[0.35]});
+  reservationObserver.observe(reservationSection);
+}
+['cookie-accept-all','cookie-save'].forEach(function(id){
+  var button=document.getElementById(id);
+  if(button)button.addEventListener('click',function(){setTimeout(maybeSendReservationView,0)});
+});
+
+})();
 </script>
 </body>
 </html>
