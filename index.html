@@ -782,20 +782,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
     <div style="margin-bottom:2rem">
       <div class="booking-widget-wrap">
         <div class="booking-widget-head"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>System rezerwacji online</span></div>
-        <div class="service-consent-placeholder booking-placeholder" id="lockme-loader">
-          <div class="service-consent-box">
-            <div class="service-consent-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            </div>
-            <div class="service-consent-title">Sprawdź wolne terminy</div>
-            <p class="service-consent-copy">Kalendarz rezerwacji otworzy się tutaj po kliknięciu. Możesz od razu wybrać termin i przejść do rezerwacji.</p>
-            <div class="service-consent-actions">
-              <button class="service-consent-btn" id="load-lockme" type="button">Pokaż dostępne terminy</button>
-              <a class="service-consent-link" href="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html" target="_blank" rel="noopener noreferrer">Otwórz w nowej karcie</a>
-            </div>
-          </div>
-        </div>
-        <iframe id="booking-lockme-frame" class="booking-lockme-frame" data-src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html" loading="lazy" height="450" scrolling="auto" allowtransparency="true" title="Rezerwacja Familock" hidden></iframe>
+        <iframe id="booking-lockme-frame" class="booking-lockme-frame" src="https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html" loading="lazy" height="450" scrolling="auto" allowtransparency="true" title="Rezerwacja Familock"></iframe>
       </div>
     </div>
     <div class="rez-grid" style="grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem">
@@ -959,7 +946,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   <p>Masz prawo dostępu, sprostowania, usunięcia, ograniczenia przetwarzania danych, wniesienia sprzeciwu, cofnięcia zgody oraz skargi do Prezesa UODO.</p>
 
   <h3>Cookies</h3>
-  <p>Strona używa danych niezbędnych do działania. Kalendarz LockMe jest uruchamiany dopiero, gdy użytkownik wybierze rezerwację lub poprosi o pokazanie terminów. W sekcji kontaktu znajduje się osadzona mapa Google Maps. Zgoda w ustawieniach cookies dotyczy Google Analytics i pomiaru Google Ads. Nie korzystamy z Meta Pixel, a personalizacja reklam Google pozostaje wyłączona.</p>
+  <p>Strona używa danych niezbędnych do działania. Kalendarz LockMe jest osadzony bezpośrednio w sekcji rezerwacji i ładowany leniwie przez przeglądarkę. W sekcji kontaktu znajduje się osadzona mapa Google Maps. Zgoda w ustawieniach cookies dotyczy Google Analytics i pomiaru Google Ads. Nie korzystamy z Meta Pixel, a personalizacja reklam Google pozostaje wyłączona.</p>
 
   <div style="margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem">
     <p style="font-size:.75rem;color:var(--muted);margin-bottom:0">To jest skrócone podsumowanie.</p>
@@ -1038,21 +1025,6 @@ function switchTab(id, btn) {
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
 }
-
-var LOCKME_WIDGET_URL = 'https://widget.lock.me/pl/calendar/fd5ace6aab33825bcc05880372c4f7b0_750_14685.html';
-function loadLockmeWidget() {
-  var frame = document.getElementById('booking-lockme-frame');
-  var loaderBox = document.getElementById('lockme-loader');
-  if (!frame) return;
-  if (!frame.getAttribute('src')) frame.setAttribute('src', LOCKME_WIDGET_URL);
-  frame.hidden = false;
-  if (loaderBox) loaderBox.hidden = true;
-}
-var lockmeLoadButton = document.getElementById('load-lockme');
-if (lockmeLoadButton) lockmeLoadButton.addEventListener('click', loadLockmeWidget);
-document.querySelectorAll('a[href="#rezerwacja"]').forEach(function(link) {
-  link.addEventListener('click', loadLockmeWidget);
-});
 
 var contactForm = document.getElementById('contact-form');
 var formOk = document.getElementById('form-ok');
