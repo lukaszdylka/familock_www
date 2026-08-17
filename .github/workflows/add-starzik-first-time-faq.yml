@@ -1,0 +1,49 @@
+name: Add Starzik first-time FAQ
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/add-starzik-first-time-faq.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Add FAQ
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('starzik/index.html')
+          s = p.read_text(encoding='utf-8')
+          anchor = '<div class="faq-item"><button class="faq-q" type="button"><span>Czy Starzik jest horrorem?</span><span>+</span></button><div class="faq-a">Nie. Starzik nie jest horrorem, ale zawiera elementy napięcia i zaskoczenia.</div></div>'
+          item = '<div class="faq-item"><button class="faq-q" type="button"><span>Czy Starzik nadaje się na pierwszy escape room?</span><span>+</span></button><div class="faq-a">Tak. Starzik potrafi być wymagający i osoby, które mają już kilka escape roomów za sobą, mogą mieć trochę łatwiej. Nie oznacza to jednak, że nie nadaje się na pierwszy raz. Dobra współpraca, uważność i korzystanie z podpowiedzi wystarczą, żeby również początkująca grupa dobrze się bawiła i dotarła do końca historii.</div></div>'
+          if s.count(anchor) != 1:
+              raise SystemExit(f'visible anchor count: {s.count(anchor)}')
+          s = s.replace(anchor, item + anchor, 1)
+          janchor = '{"@type":"Question","name":"Czy Starzik jest horrorem?","acceptedAnswer":{"@type":"Answer","text":"Nie. Starzik nie jest horrorem, ale zawiera elementy napięcia i zaskoczenia."}}'
+          jitem = '{"@type":"Question","name":"Czy Starzik nadaje się na pierwszy escape room?","acceptedAnswer":{"@type":"Answer","text":"Tak. Starzik potrafi być wymagający i osoby, które mają już kilka escape roomów za sobą, mogą mieć trochę łatwiej. Nie oznacza to jednak, że nie nadaje się na pierwszy raz. Dobra współpraca, uważność i korzystanie z podpowiedzi wystarczą, żeby również początkująca grupa dobrze się bawiła i dotarła do końca historii."}},'
+          if s.count(janchor) != 1:
+              raise SystemExit(f'json anchor count: {s.count(janchor)}')
+          s = s.replace(janchor, jitem + janchor, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Validate
+        run: |
+          git diff --check
+          test "$(grep -o 'Czy Starzik nadaje się na pierwszy escape room?' starzik/index.html | wc -l)" -eq 2
+          grep -q 'Dobra współpraca, uważność i korzystanie z podpowiedzi' starzik/index.html
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add starzik/index.html
+          git commit -m "Dodaj FAQ o pierwszym escape roomie"
+          git push origin HEAD:main
