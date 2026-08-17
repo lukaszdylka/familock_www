@@ -1741,6 +1741,43 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('load', function() {
     window.setTimeout(maybeOpen, 700);
   });
+
+
+  function reservationAnalyticsConsentGranted() {
+    try {
+      var choice = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      return !!(choice && choice.version === CONSENT_VERSION && choice.analytics === true);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function sendReservationAnalyticsEvent(eventName, params) {
+    if (!reservationAnalyticsConsentGranted() || typeof window.gtag !== 'function') return false;
+    var eventParams = params || {};
+    eventParams.send_to = GA_MEASUREMENT_ID;
+    window.gtag('event', eventName, eventParams);
+    return true;
+  }
+
+  document.addEventListener('click', function(event) {
+    var target = event.target;
+    if (!target || !target.closest) return;
+    var link = target.closest('a[href]');
+    if (!link) return;
+    try {
+      var url = new URL(link.href, window.location.href);
+      var host = url.hostname.toLowerCase();
+      if (host === 'lock.me' || host.endsWith('.lock.me')) {
+        sendReservationAnalyticsEvent('lockme_click', {
+          room: 'starzik',
+          page_path: '/',
+          link_url: url.href
+        });
+      }
+    } catch (e) {}
+  }, true);
+
 })();
 </script>
 
