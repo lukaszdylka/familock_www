@@ -1,17 +1,17 @@
 name: Build Familock wallpapers
 
 on:
-  push:
+  pull_request:
+    types: [opened]
     branches:
       - main
-    paths:
-      - '.wallpapers-build-trigger'
 
 permissions:
   contents: write
 
 jobs:
   build:
+    if: github.head_ref == 'wallpapers-4k-jpg-v2-2026-08-18'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
