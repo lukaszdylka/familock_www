@@ -1,0 +1,64 @@
+name: Build 4K wallpapers
+
+on:
+  push:
+    branches:
+      - wallpapers-4k-jpg-v2-2026-08-18
+    paths:
+      - '.tmp_wallpapers/READY'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: wallpapers-4k-jpg-v2-2026-08-18
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Pillow
+        run: pip install pillow
+
+      - name: Rebuild source images
+        run: |
+          cat .tmp_wallpapers/desktop.*.b64 > /tmp/desktop.b64
+          cat .tmp_wallpapers/mobile.*.b64 > /tmp/mobile.b64
+          base64 -d /tmp/desktop.b64 > /tmp/desktop.webp
+          base64 -d /tmp/mobile.b64 > /tmp/mobile.webp
+          echo "400d1203c14621e332caca0e849ecb2ec87fbec80f3012eb3b28962899fe43be  /tmp/desktop.webp" | sha256sum -c -
+          echo "e1133fdd4b3c49c98a739eabc9a002c891576b96ade9877b5cf684588fd8d876  /tmp/mobile.webp" | sha256sum -c -
+
+      - name: Create large JPG wallpapers
+        run: |
+          python - <<'PY'
+          from PIL import Image, ImageFilter
+          from pathlib import Path
+
+          Path('img/wallpapers').mkdir(parents=True, exist_ok=True)
+
+          def build(src, out, size):
+              im = Image.open(src).convert('RGB')
+              im = im.resize(size, Image.Resampling.LANCZOS)
+              im = im.filter(ImageFilter.UnsharpMask(radius=1.2, percent=105, threshold=3))
+              im.save(out, 'JPEG', quality=95, subsampling=0, optimize=True, progressive=True)
+              print(out, Image.open(out).size)
+
+          build('/tmp/desktop.webp', 'img/wallpapers/familock-desktop-4k.jpg', (3840, 2160))
+          build('/tmp/mobile.webp', 'img/wallpapers/familock-mobile-4k.jpg', (2160, 3840))
+          PY
+
+      - name: Clean temporary files and commit
+        run: |
+          rm -rf .tmp_wallpapers
+          rm -f .github/workflows/build-wallpapers.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Dodaj tapety Familock 4K JPG"
+          git push
