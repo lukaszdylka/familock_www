@@ -23,6 +23,49 @@ jobs:
 
       - run: pip install pillow
 
+      - name: Rebuild source images
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64, hashlib
+
+          tmp = Path('.tmp_wallpapers')
+
+          # Desktop: desktop.01 contains one duplicated 10k block.
+          d64 = (
+              (tmp/'desktop.00.b64').read_text().strip()
+              + (tmp/'desktop.01.b64').read_text().strip()[:10000]
+              + (tmp/'desktop.02.b64').read_text().strip()
+              + (tmp/'desktop.03.b64').read_text().strip()
+              + (tmp/'desktop.04.b64').read_text().strip()
+          )
+          desktop = base64.b64decode(d64, validate=True)
+          assert hashlib.sha256(desktop).hexdigest() == '400d1203c14621e332caca0e849ecb2ec87fbec80f3012eb3b28962899fe43be'
+          Path('/tmp/desktop.webp').write_bytes(desktop)
+
+          # Mobile: one extra base64 character landed in mobile.01.
+          parts = [(tmp/f'mobile.{i:02d}.b64').read_text().strip() for i in range(7)]
+          m64 = ''.join(parts)
+          expected = 'e1133fdd4b3c49c98a739eabc9a002c891576b96ade9877b5cf684588fd8d876'
+          found = None
+          start = len(parts[0])
+          end = start + len(parts[1])
+          for pos in range(start, end):
+              candidate = m64[:pos] + m64[pos+1:]
+              try:
+                  raw = base64.b64decode(candidate, validate=True)
+              except Exception:
+                  continue
+              if hashlib.sha256(raw).hexdigest() == expected:
+                  found = raw
+                  print('Fixed mobile base64 at position', pos)
+                  break
+          if found is None:
+              raise RuntimeError('Could not reconstruct mobile source')
+          Path('/tmp/mobile.webp').write_bytes(found)
+          print('Sources OK:', len(desktop), len(found))
+          PY
+
       - name: Create large JPG wallpapers
         run: |
           python - <<'PY'
@@ -34,18 +77,18 @@ jobs:
           def build(src, out, size):
               im = Image.open(src).convert('RGB')
               im = im.resize(size, Image.Resampling.LANCZOS)
-              im = im.filter(ImageFilter.UnsharpMask(radius=1.1, percent=110, threshold=3))
+              im = im.filter(ImageFilter.UnsharpMask(radius=1.15, percent=115, threshold=3))
               im.save(out, 'JPEG', quality=95, subsampling=0, optimize=True, progressive=True)
               check = Image.open(out)
               print(f'{out}: {check.size[0]}x{check.size[1]}, {check.format}')
 
-          build('img/wallpapers/familock-desktop.webp', 'img/wallpapers/familock-desktop-4k.jpg', (3840, 2160))
-          build('img/wallpapers/familock-mobile.webp', 'img/wallpapers/familock-mobile-4k.jpg', (2160, 3840))
+          build('/tmp/desktop.webp', 'img/wallpapers/familock-desktop-4k.jpg', (3840, 2160))
+          build('/tmp/mobile.webp', 'img/wallpapers/familock-mobile-4k.jpg', (2160, 3840))
           PY
 
       - name: Commit generated files
         run: |
-          rm -rf .tmp_wallpapers .wallpaper-trigger
+          rm -rf .tmp_wallpapers .wallpaper-trigger img/wallpapers/debug-wallpapers.txt
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A img/wallpapers .tmp_wallpapers .wallpaper-trigger
