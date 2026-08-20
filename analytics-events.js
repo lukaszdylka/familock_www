@@ -5,6 +5,7 @@
   var CONSENT_VERSION = 5;
   var leadSentAt = 0;
   var bookingViewSent = false;
+  var lockmeClickSent = false;
 
   function analyticsAllowed() {
     try {
@@ -19,6 +20,15 @@
     if (!analyticsAllowed() || typeof window.gtag !== 'function') return false;
     window.gtag('event', eventName, Object.assign({ page_path: window.location.pathname }, params || {}));
     return true;
+  }
+
+  function sendLockmeClick(params) {
+    if (lockmeClickSent) return false;
+    if (send('lockme_click', Object.assign({ booking_method: 'lockme_widget' }, params || {}))) {
+      lockmeClickSent = true;
+      return true;
+    }
+    return false;
   }
 
   function locationLabel(element) {
@@ -61,6 +71,11 @@
         return;
       }
 
+      if (host === 'lock.me' || host === 'www.lock.me' || host === 'widget.lock.me' || host.slice(-8) === '.lock.me') {
+        sendLockmeClick({ interaction_type: 'external_link', cta_location: where });
+        return;
+      }
+
       if ((host === 'facebook.com' || host === 'www.facebook.com') && text.indexOf('messenger') !== -1) {
         send('contact_click', { method: 'messenger', cta_location: where });
         return;
@@ -90,6 +105,17 @@
       });
     }, { threshold: [0.35] });
     reservationObserver.observe(reservation);
+  }
+
+  var lockmeFrame = document.getElementById('booking-lockme-frame');
+  if (lockmeFrame) {
+    window.addEventListener('blur', function () {
+      window.setTimeout(function () {
+        if (document.activeElement === lockmeFrame) {
+          sendLockmeClick({ interaction_type: 'iframe_focus', cta_location: 'reservation' });
+        }
+      }, 50);
+    });
   }
 
   var formOk = document.getElementById('form-ok');
