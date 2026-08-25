@@ -16,6 +16,7 @@ const googleAdsIdShim = `<script>
 })();
 </script>`;
 
+const lockMeConnectScript = '<script src="https://widget.lock.me/connect.js" type="text/javascript" crossorigin="anonymous" async></script>';
 const lateNightPriceNote = '<p class="price-note" style="margin-top:.85rem;color:var(--red-glow)">Piątek i sobota, godz. 23:30: obowiązuje dopłata 20 zł do ceny grupy.</p>';
 
 export default {
@@ -27,12 +28,17 @@ export default {
       return response;
     }
 
+    const pathname = new URL(request.url).pathname;
+    const shouldLoadLockMe = pathname === '/' || pathname === '/starzik' || pathname.startsWith('/starzik/');
     let starzikPriceBlockIndex = 0;
 
     return new HTMLRewriter()
       .on('head', {
         element(head) {
           head.append(googleAdsIdShim, { html: true });
+          if (shouldLoadLockMe) {
+            head.append(lockMeConnectScript, { html: true });
+          }
         }
       })
       .on('#tab-starzik .price-block', {
