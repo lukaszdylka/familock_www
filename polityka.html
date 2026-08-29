@@ -202,12 +202,12 @@ nav{position:sticky;top:0;z-index:100;background:rgba(13,13,13,.97);backdrop-fil
     <strong>Podstawa prawna:</strong> <span class="basis-tag">art. 6 ust. 1 lit. a RODO</span> — zgoda osoby, której dane dotyczą.</p>
 
     <h3>g) Analiza korzystania ze strony</h3>
-    <p>Po wyrażeniu zgody Google Analytics służy do tworzenia statystyk odwiedzin, oceny sposobu korzystania ze strony i jej ulepszania.<br>
-    <strong>Podstawa prawna:</strong> <span class="basis-tag">art. 6 ust. 1 lit. a RODO</span> — zgoda osoby, której dane dotyczą. Zgoda obejmuje również zapis i odczyt informacji w urządzeniu użytkownika.</p>
+    <p>Tag Google działa w trybie Consent Mode. Przed wyrażeniem zgody stan <code>analytics_storage</code> pozostaje ustawiony na <code>denied</code>, dlatego nie zapisujemy ani nie odczytujemy cookies Google Analytics. Google może otrzymywać ograniczone sygnały techniczne bez identyfikatorów cookies. Po wyrażeniu zgody Google Analytics służy do tworzenia statystyk odwiedzin, oceny sposobu korzystania ze strony i jej ulepszania.<br>
+    <strong>Podstawa prawna dla pełnego pomiaru i zapisu/odczytu informacji w urządzeniu:</strong> <span class="basis-tag">art. 6 ust. 1 lit. a RODO</span> — zgoda osoby, której dane dotyczą.</p>
 
     <h3>h) Pomiar skuteczności reklam</h3>
-    <p>Po wyrażeniu odrębnej zgody tag Google Ads służy do pomiaru skuteczności kampanii reklamowych i konwersji. Personalizacja reklam pozostaje wyłączona.<br>
-    <strong>Podstawa prawna:</strong> <span class="basis-tag">art. 6 ust. 1 lit. a RODO</span> — zgoda osoby, której dane dotyczą. Zgoda obejmuje również zapis i odczyt informacji w urządzeniu użytkownika.</p>
+    <p>Tag Google Ads działa w trybie Consent Mode. Przed wyrażeniem zgody stany <code>ad_storage</code> i <code>ad_user_data</code> pozostają ustawione na <code>denied</code>, dlatego nie zapisujemy ani nie odczytujemy cookies reklamowych. Google może otrzymywać ograniczone sygnały techniczne bez identyfikatorów cookies. Po wyrażeniu odrębnej zgody Google Ads służy do pełnego pomiaru skuteczności kampanii i konwersji. Personalizacja reklam pozostaje wyłączona.<br>
+    <strong>Podstawa prawna dla pełnego pomiaru i zapisu/odczytu informacji w urządzeniu:</strong> <span class="basis-tag">art. 6 ust. 1 lit. a RODO</span> — zgoda osoby, której dane dotyczą.</p>
   </div>
 
   <div class="doc-section" id="s5">
@@ -232,7 +232,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(13,13,13,.97);backdrop-fil
       <li>operatorowi formularzy kontaktowych i zgłoszeń rezerwacji, w tym <strong>Formspree, Inc.</strong></li>
       <li>operatorowi płatności lub systemu księgowego, w zakresie niezbędnym do rozliczeń, w tym <strong>ING Księgowość</strong></li>
       <li>operatorowi systemu rezerwacji, w tym <strong>lock.me</strong></li>
-      <li>dostawcy usług pomiarowych <strong>Google Analytics i Google Ads, Google Ireland Limited</strong>, wyłącznie po wyrażeniu odpowiedniej zgody</li>
+      <li>dostawcy usług pomiarowych <strong>Google Analytics i Google Ads, Google Ireland Limited</strong>; przed zgodą tag działa w ograniczonym trybie Consent Mode bez cookies analitycznych i reklamowych, a pełny pomiar jest uruchamiany po odpowiedniej zgodzie</li>
       <li>dostawcy usług wysyłki powiadomień SMS, w tym <strong>SMSAPI.pl</strong></li>
       <li>podmiotom świadczącym usługi prawne, księgowe, informatyczne lub organizacyjne</li>
       <li>uprawnionym organom publicznym, jeżeli obowiązek udostępnienia danych wynika z przepisów prawa</li>

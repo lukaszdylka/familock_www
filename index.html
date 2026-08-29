@@ -51,6 +51,20 @@
   ],
   "priceRange": "100–450 PLN"
 }</script>
+<script>
+window.dataLayer = window.dataLayer || [];
+window.gtag = window.gtag || function() { window.dataLayer.push(arguments); };
+window.gtag('consent', 'default', {
+  analytics_storage: 'denied',
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
+  wait_for_update: 500
+});
+window.gtag('set', 'ads_data_redaction', true);
+window.gtag('js', new Date());
+</script>
+<script id="familock-google-tag" async src="https://www.googletagmanager.com/gtag/js?id=AW-969004050"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" media="print" onload="this.media='all'" />
@@ -1423,7 +1437,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="cookie-consent-kicker">Twoja prywatność</div>
           <h2 class="cookie-consent-title" id="cookie-consent-title">Ty decydujesz, które usługi uruchomić</h2>
           <p class="cookie-consent-copy">
-            Niezbędne dane pozwalają zapamiętać Twój wybór. Za Twoją zgodą możemy uruchomić Google Analytics i pomiar Google Ads. Kalendarz rezerwacji LockMe ładuje się dopiero po działaniu związanym z rezerwacją. W sekcji kontaktu znajduje się osadzona mapa Google Maps. Bez zgody na analitykę lub pomiar reklam strona nadal działa. Szczegóły znajdziesz w <a href="/polityka.html#s15">Polityce Cookies</a>.
+            Niezbędne dane pozwalają zapamiętać Twój wybór. Tag Google działa w trybie Consent Mode. Za Twoją zgodą włączamy pełny pomiar Google Analytics i Google Ads; bez zgody nie zapisujemy cookies analitycznych ani reklamowych. Kalendarz rezerwacji LockMe ładuje się dopiero po działaniu związanym z rezerwacją. W sekcji kontaktu znajduje się osadzona mapa Google Maps. Bez zgody na analitykę lub pomiar reklam strona nadal działa. Szczegóły znajdziesz w <a href="/polityka.html#s15">Polityce Cookies</a>.
           </p>
         </div>
       </div>
@@ -1506,16 +1520,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var analyticsConfigured = false;
   var adsConfigured = false;
 
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function() { window.dataLayer.push(arguments); };
-  window.gtag('consent', 'default', {
-    analytics_storage: 'denied',
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied'
-  });
-  window.gtag('set', 'ads_data_redaction', true);
-  window.gtag('js', new Date());
+  // Google tag i domyślne stany Consent Mode są inicjalizowane w <head>.
 
   var banner = document.getElementById('cookie-consent');
   var summaryView = document.getElementById('cookie-summary-view');
@@ -1611,7 +1616,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var script = document.createElement('script');
     script.id = 'familock-google-tag';
     script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_MEASUREMENT_ID);
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GOOGLE_ADS_ID);
     document.head.appendChild(script);
   }
 
@@ -1625,34 +1630,30 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function applyAnalytics(enabled) {
-    window['ga-disable-' + GA_MEASUREMENT_ID] = !enabled;
-    if (enabled) {
-      ensureGoogleTag();
-      if (!analyticsConfigured) {
-        analyticsConfigured = true;
-        window.gtag('config', GA_MEASUREMENT_ID, {
-          anonymize_ip: true,
-          allow_google_signals: false,
-          allow_ad_personalization_signals: false
-        });
-      }
-      return;
+    // Advanced Consent Mode: tag pozostaje aktywny także przy odmowie,
+    // ale analytics_storage=denied blokuje zapis/odczyt cookies analitycznych.
+    ensureGoogleTag();
+    if (!analyticsConfigured) {
+      analyticsConfigured = true;
+      window.gtag('config', GA_MEASUREMENT_ID, {
+        anonymize_ip: true,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false
+      });
     }
-    deleteAnalyticsCookies();
+    if (!enabled) deleteAnalyticsCookies();
   }
 
   function applyMarketing(enabled) {
-    if (enabled) {
-      ensureGoogleTag();
-      if (!adsConfigured) {
-        adsConfigured = true;
-        window.gtag('config', GOOGLE_ADS_ID, {
-          allow_ad_personalization_signals: false
-        });
-      }
-      return;
+    // Google Ads jest skonfigurowany od razu; przy ad_storage=denied działa bez cookies reklamowych.
+    ensureGoogleTag();
+    if (!adsConfigured) {
+      adsConfigured = true;
+      window.gtag('config', GOOGLE_ADS_ID, {
+        allow_ad_personalization_signals: false
+      });
     }
-    deleteAdvertisingCookies();
+    if (!enabled) deleteAdvertisingCookies();
   }
 
   function applyConsent(choice) {
