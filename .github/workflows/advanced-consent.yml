@@ -1,0 +1,30 @@
+name: Advanced Consent Mode patch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.advanced-consent-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Apply patch
+        run: python .github/advanced_consent_patch.py
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Włącz zaawansowany Consent Mode dla Google Ads"
+            git push
+          fi
