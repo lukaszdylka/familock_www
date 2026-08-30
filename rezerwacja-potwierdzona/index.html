@@ -1,22 +1,4 @@
-from pathlib import Path
-
-CONNECT = '<script src="https://widget.lock.me/connect.js" type="text/javascript" crossorigin="anonymous" async></script>'
-GOOGLE_TAG = '<script id="familock-google-tag" async src="https://www.googletagmanager.com/gtag/js?id=AW-969004050"></script>'
-
-
-def add_connect(path_str):
-    path = Path(path_str)
-    text = path.read_text(encoding='utf-8')
-    if 'https://widget.lock.me/connect.js' in text:
-        return False
-    if GOOGLE_TAG not in text:
-        raise RuntimeError(f'{path_str}: nie znaleziono tagu Google')
-    text = text.replace(GOOGLE_TAG, GOOGLE_TAG + '\n' + CONNECT, 1)
-    path.write_text(text, encoding='utf-8')
-    return True
-
-
-THANK_YOU = '''<!doctype html>
+<!doctype html>
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
@@ -106,22 +88,3 @@ window.gtag('config','AW-969004050',{
 </script>
 </body>
 </html>
-'''
-
-add_connect('index.html')
-add_connect('starzik/index.html')
-
-tp = Path('rezerwacja-potwierdzona/index.html')
-tp.parent.mkdir(parents=True, exist_ok=True)
-tp.write_text(THANK_YOU, encoding='utf-8')
-
-# Pliki techniczne są usuwane po wykonaniu, żeby repo pozostało czyste.
-for temporary in [
-    Path('.lockme-tracking-trigger'),
-    Path('.github/workflows/lockme-tracking.yml'),
-    Path('.github/lockme_tracking_patch.py')
-]:
-    if temporary.exists():
-        temporary.unlink()
-
-print('LockMe connect.js i thank-you page wdrożone.')
