@@ -17,6 +17,7 @@ const googleAdsIdShim = `<script>
 </script>`;
 
 const lockMeConnectScript = '<script src="https://widget.lock.me/connect.js" type="text/javascript" crossorigin="anonymous" async></script>';
+const lockMeProfileLink = '<div class="lockme-profile-link" style="margin-top:.85rem;text-align:right"><a href="https://lock.me/pl/poland/slaskie/swietochlowice/escape-room/tajemnica-garazu/14685-starzik" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.45rem;padding:.2rem 0;color:var(--cream2);font-family:var(--fd);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--border3);transition:color .2s,border-color .2s">Zobacz Starzika na LockMe <span aria-hidden="true">↗</span></a></div>';
 const lateNightPriceNote = '<p class="price-note" style="margin-top:.85rem;color:var(--red-glow)">Piątek i sobota, godz. 23:30: obowiązuje dopłata 20 zł do ceny grupy.</p>';
 
 export default {
@@ -38,6 +39,20 @@ export default {
           head.append(googleAdsIdShim, { html: true });
           if (shouldLoadLockMe) {
             head.append(lockMeConnectScript, { html: true });
+          }
+        }
+      })
+      .on('.booking-widget-wrap', {
+        element(bookingWidget) {
+          if (shouldLoadLockMe) {
+            bookingWidget.after(lockMeProfileLink, { html: true });
+          }
+        }
+      })
+      .on('.booking-wrap', {
+        element(bookingWidget) {
+          if (shouldLoadLockMe) {
+            bookingWidget.after(lockMeProfileLink, { html: true });
           }
         }
       })
