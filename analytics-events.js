@@ -4,11 +4,8 @@
   var STORAGE_KEY = 'familock_cookie_consent_v5';
   var CONSENT_VERSION = 5;
   var GA_MEASUREMENT_ID = 'G-LY7D7XH1K3';
-  var GOOGLE_ADS_ID = 'AW-18392650191';
   var leadSentAt = 0;
   var bookingViewSent = false;
-  var lockmeAnalyticsSent = false;
-  var lockmeAdsSent = false;
 
   function readConsent() {
     try {
@@ -25,11 +22,6 @@
     return !!(choice && choice.analytics === true);
   }
 
-  function marketingAllowed() {
-    var choice = readConsent();
-    return !!(choice && choice.marketing === true);
-  }
-
   function sendAnalytics(eventName, params) {
     if (!analyticsAllowed() || typeof window.gtag !== 'function') return false;
     window.gtag('event', eventName, Object.assign({
@@ -37,32 +29,6 @@
       send_to: GA_MEASUREMENT_ID
     }, params || {}));
     return true;
-  }
-
-  function sendAds(eventName, params) {
-    if (!marketingAllowed() || typeof window.gtag !== 'function') return false;
-    window.gtag('event', eventName, Object.assign({
-      page_path: window.location.pathname,
-      send_to: GOOGLE_ADS_ID
-    }, params || {}));
-    return true;
-  }
-
-  function sendLockmeClick(params) {
-    var eventParams = Object.assign({ booking_method: 'lockme_widget' }, params || {});
-    var sent = false;
-
-    if (!lockmeAnalyticsSent && sendAnalytics('lockme_click', eventParams)) {
-      lockmeAnalyticsSent = true;
-      sent = true;
-    }
-
-    if (!lockmeAdsSent && sendAds('lockme_click', eventParams)) {
-      lockmeAdsSent = true;
-      sent = true;
-    }
-
-    return sent;
   }
 
   function locationLabel(element) {
@@ -105,8 +71,10 @@
         return;
       }
 
+      // Zdarzenia wewnątrz widgetu LockMe obsługuje connect.js.
+      // Nie próbujemy już zgadywać kliknięcia przez fokus iframe ani wysyłać
+      // własnego zdarzenia bezpośrednio do Google Ads.
       if (host === 'lock.me' || host === 'www.lock.me' || host === 'widget.lock.me' || host.slice(-8) === '.lock.me') {
-        sendLockmeClick({ interaction_type: 'external_link', cta_location: where });
         return;
       }
 
@@ -126,7 +94,9 @@
     }
   }, true);
 
-  var reservation = document.getElementById('rezerwacja');
+  // Na stronie Starzika istnieje już własny reservation_view. booking_view
+  // zostawiamy wyłącznie na stronie głównej, aby nie mnożyć tych samych sygnałów.
+  var reservation = window.location.pathname === '/' ? document.getElementById('rezerwacja') : null;
   if (reservation && 'IntersectionObserver' in window) {
     var reservationObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -139,17 +109,6 @@
       });
     }, { threshold: [0.35] });
     reservationObserver.observe(reservation);
-  }
-
-  var lockmeFrame = document.getElementById('booking-lockme-frame');
-  if (lockmeFrame) {
-    window.addEventListener('blur', function () {
-      window.setTimeout(function () {
-        if (document.activeElement === lockmeFrame) {
-          sendLockmeClick({ interaction_type: 'iframe_focus', cta_location: 'reservation' });
-        }
-      }, 50);
-    });
   }
 
   var formOk = document.getElementById('form-ok');

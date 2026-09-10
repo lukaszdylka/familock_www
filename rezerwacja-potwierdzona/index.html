@@ -35,12 +35,11 @@ window.gtag('config','G-LY7D7XH1K3',{
   allow_google_signals:false,
   allow_ad_personalization_signals:false
 });
-window.gtag('config','AW-969004050',{
+window.gtag('config','AW-18392650191',{
   allow_ad_personalization_signals:false
 });
 </script>
-<script id="familock-google-tag" async src="https://www.googletagmanager.com/gtag/js?id=AW-969004050"></script>
-<script src="https://widget.lock.me/connect.js" type="text/javascript" crossorigin="anonymous" async></script>
+<script id="familock-google-tag" async src="https://www.googletagmanager.com/gtag/js?id=AW-18392650191"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:#0d0d0d;color:#f0ecec;font-family:Barlow,Arial,sans-serif;display:grid;place-items:center;padding:24px}.box{width:min(720px,100%);border:1px solid #353030;border-top:3px solid #8b2530;background:#171515;padding:clamp(28px,6vw,54px)}.logo{font-family:'Barlow Condensed',Arial,sans-serif;font-size:1.45rem;font-weight:900;letter-spacing:.04em;text-decoration:none;color:#f0ecec}.logo span{color:#8b2530}.kicker{margin:42px 0 8px;font-family:'Barlow Condensed',Arial,sans-serif;font-size:.72rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#d2606f}h1{font-family:'Barlow Condensed',Arial,sans-serif;font-size:clamp(2.8rem,9vw,5rem);line-height:.9;margin:0 0 18px}p{color:#b0a8a5;line-height:1.75;margin:0 0 14px}.details{margin:28px 0;border-top:1px solid #353030}.row{display:grid;grid-template-columns:150px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid #353030}.label{font-family:'Barlow Condensed',Arial,sans-serif;font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8f8583}.value{color:#f0ecec}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 16px;text-decoration:none;border:1px solid #4a4244;color:#f0ecec;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:.78rem}.btn.primary{background:#8b2530;border-color:#8b2530}@media(max-width:560px){.row{grid-template-columns:1fr;gap:2px}.box{padding:28px 22px}}
 </style>
@@ -64,16 +63,18 @@ window.gtag('config','AW-969004050',{
   var date = q.get('date');
   var hour = q.get('h');
   var price = q.get('price');
-  var currency = q.get('currency') || 'PLN';
+  var currency = (q.get('currency') || 'PLN').toUpperCase();
   var id = q.get('id');
+  var roomId = q.get('roomid') || '14685';
+  var numeric = price ? Number(String(price).replace(',', '.')) : NaN;
   var any = false;
+
   if (date || hour) {
     document.getElementById('date-value').textContent = [date, hour].filter(Boolean).join(' · ');
     document.getElementById('date-row').hidden = false;
     any = true;
   }
   if (price) {
-    var numeric = Number(String(price).replace(',', '.'));
     document.getElementById('price-value').textContent = Number.isFinite(numeric) ? new Intl.NumberFormat('pl-PL',{style:'currency',currency:currency}).format(numeric) : price + ' ' + currency;
     document.getElementById('price-row').hidden = false;
     any = true;
@@ -84,6 +85,43 @@ window.gtag('config','AW-969004050',{
     any = true;
   }
   document.getElementById('details').hidden = !any;
+
+  function analyticsAllowed() {
+    try {
+      var consent = JSON.parse(localStorage.getItem('familock_cookie_consent_v5'));
+      return !!(consent && consent.version === 5 && consent.analytics === true);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  if (!id || !Number.isFinite(numeric) || numeric < 0 || !analyticsAllowed() || typeof window.gtag !== 'function') return;
+
+  var dedupeKey = 'familock_purchase_sent_v1:' + id;
+  try {
+    if (localStorage.getItem(dedupeKey)) return;
+  } catch (e) {}
+
+  window.gtag('event','purchase',{
+    send_to:'G-LY7D7XH1K3',
+    transaction_id:String(id),
+    value:numeric,
+    currency:currency,
+    affiliation:'LockMe',
+    booking_date:date || undefined,
+    booking_hour:hour || undefined,
+    items:[{
+      item_id:String(roomId),
+      item_name:'Starzik',
+      item_category:'Escape room',
+      price:numeric,
+      quantity:1
+    }]
+  });
+
+  try {
+    localStorage.setItem(dedupeKey, new Date().toISOString());
+  } catch (e) {}
 })();
 </script>
 </body>
