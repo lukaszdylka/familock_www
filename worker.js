@@ -5,6 +5,12 @@ const lockMeProfileLink = '<div class="lockme-profile-link" style="margin-top:.8
 const lockMeSocialButton = '<a href="https://lock.me/pl/poland/slaskie/swietochlowice/escape-room/tajemnica-garazu/14685-starzik" target="_blank" rel="noopener noreferrer" class="soc-btn" aria-label="LockMe"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07.07l2-2a5 5 0 0 0-7.07-7.07l-1.15 1.15"/><path d="M14 11a5 5 0 0 0-7.07-.07l-2 2A5 5 0 0 0 12 20l1.15-1.15"/></svg>Lockme</a>';
 const lateNightPriceNote = '<p class="price-note" style="margin-top:.85rem;color:var(--red-glow)">Piątek i sobota, godz. 23:30: obowiązuje dopłata 20 zł do ceny grupy.</p>';
 
+const oldGroupInfo = 'Grupy szkolne i firmowe – <strong style="color:var(--cream)">specjalne warunki.</strong>';
+const newGroupInfo = 'Urodziny, szkoły i małe zespoły – <strong style="color:var(--cream)"><a href="/dla-szkol-i-firm/" style="color:inherit;text-decoration:underline;text-underline-offset:3px">sprawdź zasady dla grup</a>.</strong>';
+
+const oldGroupFaq = '<div class="faq-item"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-12" onclick="toggleFaq(this)"><span>Czy organizujecie gry dla szkół i firm?</span><span class="faq-ico" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a-12">Tak. Dla grup szkolnych i firmowych możemy ustalić odpowiednią godzinę oraz szczegóły wizyty. Skontaktujcie się z nami przed rezerwacją.</div></div>';
+const newGroupFaq = '<div class="faq-item"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-12" onclick="toggleFaq(this)"><span>Czy Familock nadaje się na urodziny, wyjście szkolne lub firmowe?</span><span class="faq-ico" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a-12">Tak, jeśli chodzi o małą grupę. Starzik jest przeznaczony standardowo dla 2–5 osób. Przy urodzinach po wcześniejszym uzgodnieniu może zagrać maksymalnie 6 osób. Nie mamy sali urodzinowej, cateringu ani przestrzeni na większe imprezy. W przypadku szkoły zapraszamy np. niewielką grupę uczniów w ramach nagrody, koła zainteresowań lub samorządu. <a href="/dla-szkol-i-firm/">Zobacz szczegóły dla grup i okazji.</a></div></div>';
+
 export default {
   async fetch(request, env) {
     const response = await env.ASSETS.fetch(request);
@@ -25,7 +31,15 @@ export default {
     headers.delete('content-encoding');
     headers.delete('etag');
 
-    const html = (await response.text()).split(LEGACY_GOOGLE_ADS_ID).join(GOOGLE_ADS_ID);
+    let html = (await response.text()).split(LEGACY_GOOGLE_ADS_ID).join(GOOGLE_ADS_ID);
+
+    if (pathname === '/') {
+      html = html
+        .replace(oldGroupInfo, newGroupInfo)
+        .replace(oldGroupFaq, newGroupFaq)
+        .replace('<a href="/dla-szkol-i-firm/">Szkoły i firmy</a>', '<a href="/dla-szkol-i-firm/">Grupy i okazje</a>');
+    }
+
     const normalizedResponse = new Response(html, {
       status: response.status,
       statusText: response.statusText,
