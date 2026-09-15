@@ -64,7 +64,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <p>Rezerwacja została zakończona. Potwierdzenie i szczegóły rezerwacji znajdziesz również w wiadomości wysłanej przez LockMe.</p>
 <div class="details" id="details" hidden>
   <div class="row" id="date-row" hidden><div class="label">Termin</div><div class="value" id="date-value"></div></div>
-  <div class="row" id="price-row" hidden><div class="label">Cena</div><div class="value" id="price-value"></div></div>
+  <div class="row" id="price-row" hidden><div class="label">Cena</div><div class="value"><span id="price-value"></span> <span id="currency-value"></span></div></div>
   <div class="row" id="id-row" hidden><div class="label">Numer rezerwacji</div><div class="value" id="id-value"></div></div>
 </div>
 <div class="actions"><a class="btn primary" href="/">Strona główna</a><a class="btn" href="/starzik/">Starzik</a></div>
@@ -87,7 +87,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     any = true;
   }
   if (price) {
-    document.getElementById('price-value').textContent = Number.isFinite(numeric) ? new Intl.NumberFormat('pl-PL',{style:'currency',currency:currency}).format(numeric) : price + ' ' + currency;
+    document.getElementById('price-value').textContent = Number.isFinite(numeric) ? numeric.toFixed(2) : price;
+    document.getElementById('currency-value').textContent = currency;
     document.getElementById('price-row').hidden = false;
     any = true;
   }
