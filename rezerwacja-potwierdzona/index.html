@@ -99,42 +99,66 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
   document.getElementById('details').hidden = !any;
 
-  function analyticsAllowed() {
+  function getConsent() {
     try {
       var consent = JSON.parse(localStorage.getItem('familock_cookie_consent_v5'));
-      return !!(consent && consent.version === 5 && consent.analytics === true);
-    } catch (e) {
-      return false;
-    }
+      if (consent && consent.version === 5) {
+        return {
+          analytics: consent.analytics === true,
+          marketing: consent.marketing === true
+        };
+      }
+    } catch (e) {}
+    return { analytics:false, marketing:false };
   }
 
-  if (!id || !Number.isFinite(numeric) || numeric < 0 || !analyticsAllowed() || typeof window.gtag !== 'function') return;
+  function sendOnce(key, sendEvent) {
+    try {
+      if (localStorage.getItem(key)) return;
+    } catch (e) {}
 
-  var dedupeKey = 'familock_purchase_sent_v1:' + id;
-  try {
-    if (localStorage.getItem(dedupeKey)) return;
-  } catch (e) {}
+    sendEvent();
 
-  window.gtag('event','purchase',{
-    send_to:'G-LY7D7XH1K3',
-    transaction_id:String(id),
-    value:numeric,
-    currency:currency,
-    affiliation:'LockMe',
-    booking_date:date || undefined,
-    booking_hour:hour || undefined,
-    items:[{
-      item_id:String(roomId),
-      item_name:'Starzik',
-      item_category:'Escape room',
-      price:numeric,
-      quantity:1
-    }]
-  });
+    try {
+      localStorage.setItem(key, new Date().toISOString());
+    } catch (e) {}
+  }
 
-  try {
-    localStorage.setItem(dedupeKey, new Date().toISOString());
-  } catch (e) {}
+  if (!id || !Number.isFinite(numeric) || numeric < 0 || typeof window.gtag !== 'function') return;
+
+  var consent = getConsent();
+
+  if (consent.analytics) {
+    sendOnce('familock_purchase_sent_v1:' + id, function(){
+      window.gtag('event','purchase',{
+        send_to:'G-LY7D7XH1K3',
+        transaction_id:String(id),
+        value:numeric,
+        currency:currency,
+        affiliation:'LockMe',
+        booking_date:date || undefined,
+        booking_hour:hour || undefined,
+        items:[{
+          item_id:String(roomId),
+          item_name:'Starzik',
+          item_category:'Escape room',
+          price:numeric,
+          quantity:1
+        }]
+      });
+    });
+  }
+
+  if (consent.marketing) {
+    sendOnce('familock_ads_purchase_sent_v1:' + id, function(){
+      window.gtag('event','conversion',{
+        send_to:'AW-18392650191/vTwtCMGEseUcEM-jpsJE',
+        value:numeric,
+        currency:currency,
+        transaction_id:String(id)
+      });
+    });
+  }
 })();
 </script>
 </body>
