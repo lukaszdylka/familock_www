@@ -1,0 +1,28 @@
+name: Validate Familock Site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          cp worker.js /tmp/familock-worker.mjs
+          node --check /tmp/familock-worker.mjs
+          node --check site-content-runtime.js
+      - name: Check managed content JSON
+        run: node -e "const x=JSON.parse(require('fs').readFileSync('site-content.json','utf8'));if(x.schemaVersion!==1||!x.baseline||!x.overrides)process.exit(1)"
+      - name: Ensure initial CMS deployment is non-destructive
+        run: node -e "const x=JSON.parse(require('fs').readFileSync('site-content.json','utf8'));if(Object.keys(x.overrides||{}).length)throw new Error('Initial overrides must stay empty')"
