@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "baseline": {
+    "home": {
+      "heroTagline": "Śląski klimat, autorskie zagadki i 90 minut gry.",
+      "heroIntro": "Familock to fabularny escape room w Świętochłowicach. W pokoju Starzik czeka na Was 90 minut autorskich zagadek i historii osadzonej w klimacie śląskiego familoka.",
+      "noticeEyebrow": "Świętochłowice · Cmentarna 5",
+      "noticeTitle": "Familock otwiera drzwi",
+      "noticeText": "Po prawie czterech latach przygotowań uruchamiamy pierwszy pokój. Starzik już czeka.",
+      "noticeButton": "Zarezerwuj Starzika"
+    },
+    "rooms": {
+      "starzik": {
+        "status": "available",
+        "statusText": "Dostępny",
+        "tag": "Pokój zagadek · 2 – 5 osób",
+        "description": "Dziadek Józef zaginął. Nikt nie ma kluczy. Jako pracownicy MOPS musicie dostać się do familoka i odkryć, co mu się przydarzyło.",
+        "priceText": "od 250 zł"
+      },
+      "frelka": {
+        "status": "preparing",
+        "statusText": "W przygotowaniu",
+        "tag": "Premiera w 2029",
+        "description": "Kolejna śląska tajemnica czeka na odkrycie. Fabularny thriller i następna historia z familoka. Planowane otwarcie w 2029 roku."
+      },
+      "tesla": {
+        "status": "coming_soon",
+        "statusText": "Rezerwacje już wkrótce",
+        "tag": "Escape Box · 1 – 2 osoby",
+        "description": "„Ostatni wynalazek Nikoli Tesli” to zamknięta skrzynia i specjalnie zaaranżowane pomieszczenie. Ostatnia tajemnica wielkiego wizjonera.",
+        "priceText": "od 80 zł"
+      }
+    },
+    "prices": {
+      "starzik": {
+        "weekday": {"2": 250, "3": 310, "4": 360, "5": 400},
+        "weekend": {"2": 280, "3": 350, "4": 400, "5": 450},
+        "lateNightSurcharge": 20
+      },
+      "tesla": {"1": 100, "2": 125}
+    },
+    "promotions": {
+      "intro": "Wszystkie promocje obowiązują od poniedziałku do czwartku i wyłącznie przy płatności na miejscu: gotówką, kartą lub BLIK-iem. Przed płatnością zweryfikujemy uprawnienie i naliczymy zniżkę. Promocje nie obowiązują przy płatności online.",
+      "items": {
+        "names": {"title": "Stefa & Józek", "text": "Masz na imię Stefania lub Józef? Grasz za darmo!"},
+        "tme": {"title": "TME Tesla", "text": "Uczysz się w TME im. N. Tesli w Chorzowie? Od poniedziałku do czwartku zapłacisz 30% mniej!"},
+        "workers": {"title": "Pracownicy escape roomów", "text": "Pracujesz w śląskim escape roomie uczestniczącym w programie partnerskim? Otrzymasz 30% zniżki na rezerwację. Zapytaj właściciela swojego ER albo skontaktuj się z nami mailowo lub telefonicznie, aby potwierdzić udział."},
+        "senior": {"title": "Starziki", "text": "Posiadasz Kartę Seniora?"},
+        "theszpil": {"title": "Starzik TheSzpil", "text": "Zagrałeś w Starzik TheSzpil? Odbierz zniżkę na grę w Familocku!"}
+      }
+    },
+    "faq": {
+      "1": {"question": "Ile trwa gra?", "answer": "Gra w Starziku trwa maksymalnie 90 minut. Na całą wizytę, razem z wprowadzeniem i rozmową po grze, zarezerwujcie około 2 godzin. Tesla Escape Box to około 60 minut zabawy."},
+      "2": {"question": "Ile osób może zagrać w Starzika?", "answer": "Standardowo od 2 do 4 osób. Piąta osoba może dołączyć na wyraźne życzenie grupy."},
+      "3": {"question": "Od jakiego wieku można zagrać?", "answer": "Minimalny wiek gracza to 10 lat. Osoby poniżej 16 lat grają z pełnoletnim opiekunem, a osoby w wieku 16–18 lat mogą zagrać bez dorosłego po dostarczeniu pisemnej zgody opiekuna. Jeśli chcecie przyjść z młodszym dzieckiem, skontaktujcie się z nami przed rezerwacją. Starzik nie jest horrorem, ale zawiera elementy napięcia i zaskoczenia."},
+      "4": {"question": "Czy gra jest bezpieczna i czy gracze są zamykani?", "answer": "Gracze nie są zamykani. W każdej chwili można przerwać grę i samodzielnie wyjść, bez rozwiązywania zagadek ani otwierania przejść wykorzystywanych w scenariuszu. Lokal przeszedł wymagane kontrole, odbiór Państwowej Straży Pożarnej i próbną ewakuację. Posiada również oświetlenie awaryjne i ewakuacyjne."},
+      "5": {"question": "Czy Mistrz Gry ma z nami kontakt?", "answer": "Tak. Mistrz Gry przez cały czas nadzoruje przebieg rozgrywki i pozostaje z Wami w kontakcie. Monitoring obejmuje cały lokal z wyłączeniem toalety. Nagrywany jest wyłącznie obraz, bez dźwięku."},
+      "6": {"question": "Czy można korzystać z telefonu lub robić zdjęcia?", "answer": "Nie. Podczas gry obowiązuje zakaz korzystania z telefonów, fotografowania i nagrywania. Telefony oraz pozostałe rzeczy można zostawić w zamykanym miejscu, w którym można również podładować telefon. Po grze Obsługa może zrobić pamiątkowe zdjęcie, a jego publikacja na Facebooku lub Instagramie odbywa się wyłącznie za zgodą graczy."},
+      "7": {"question": "O której godzinie przyjść i co w przypadku spóźnienia?", "answer": "Przyjdźcie punktualnie, o godzinie rezerwacji. Znaczne spóźnienie może skrócić czas gry, aby nie opóźnić wizyty następnej grupy."},
+      "8": {"question": "Co się stanie, jeśli nie ukończymy gry w czasie?", "answer": "Jeżeli po Was nie ma kolejnej grupy i pozwala na to harmonogram, możemy przedłużyć grę lub zaproponować dodatkowe podpowiedzi. Gdy czeka następna grupa, nie możemy przedłużyć czasu rozgrywki."},
+      "9": {"question": "Jak wygląda płatność i odwołanie rezerwacji?", "answer": "Płatność następuje po grze: gotówką, kartą, BLIK-iem lub przelewem. Rezerwację można bezpłatnie odwołać najpóźniej 24 godziny przed rozpoczęciem gry. Późniejsze odwołanie lub nieobecność oznaczają obowiązek zapłaty 100% ceny na podstawie wystawionej faktury."},
+      "10": {"question": "Jak się ubrać i czy potrzebna jest sprawność fizyczna?", "answer": "Najlepiej wybrać wygodny strój. Starzik wymaga minimalnej sprawności fizycznej, a lokal nie jest dostosowany do potrzeb osób z ograniczoną sprawnością ruchową. Osoby z klaustrofobią, epilepsją, chorobami serca, silnymi stanami lękowymi lub innymi problemami zdrowotnymi oraz kobiety w ciąży prosimy o kontakt przed rezerwacją."},
+      "11": {"question": "Czy można kupić voucher i otrzymać fakturę?", "answer": "Tak. Oferujemy vouchery ważne przez 6 miesięcy, w wersji PDF lub jako personalizowany voucher na sklejce. Na życzenie wystawiamy również faktury."},
+      "12": {"question": "Czy Familock nadaje się na urodziny, wyjście szkolne lub firmowe?", "answer": "Tak, jeśli chodzi o małą grupę. Starzik jest przeznaczony standardowo dla 2–5 osób. Przy urodzinach po wcześniejszym uzgodnieniu może zagrać maksymalnie 6 osób. Nie mamy sali urodzinowej, cateringu ani przestrzeni na większe imprezy. W przypadku szkoły zapraszamy np. niewielką grupę uczniów w ramach nagrody, koła zainteresowań lub samorządu. Zobacz szczegóły dla grup i okazji."}
+    }
+  },
+  "overrides": {},
+  "meta": {
+    "publishedAt": null,
+    "publishedBy": null,
+    "note": "Pierwsza wersja modelu treści. Brak override oznacza pełne zachowanie dotychczasowej strony."
+  }
+}
