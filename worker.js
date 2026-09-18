@@ -6,7 +6,7 @@ const oldGroupInfo = 'Grupy szkolne i firmowe – <strong style="color:var(--cre
 const newGroupInfo = 'Urodziny, szkoły i małe zespoły – <strong style="color:var(--cream)"><a href="/dla-szkol-i-firm/" style="color:inherit;text-decoration:underline;text-underline-offset:3px">sprawdź zasady dla grup</a>.</strong>';
 
 const oldGroupFaq = '<div class="faq-item"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-12" onclick="toggleFaq(this)"><span>Czy organizujecie gry dla szkół i firm?</span><span class="faq-ico" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a-12">Tak. Dla grup szkolnych i firmowych możemy ustalić odpowiednią godzinę oraz szczegóły wizyty. Skontaktujcie się z nami przed rezerwacją.</div></div>';
-const newGroupFaq = '<div class="faq-item"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-12" onclick="toggleFaq(this)"><span>Czy Familock nadaje się na urodziny, wyjście szkolne lub firmowe?</span><span class="faq-ico" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a-12">Tak, jeśli chodzi o małą grupę. Starzik jest przeznaczony standardowo dla 2–5 osób. Przy urodzinach po wcześniejszym uzgodnieniu może zagrać maksymalnie 6 osób. Nie mamy sali urodzinowej, cateringu ani przestrzeni na większe imprezy. W przypadku szkoły zapraszamy np. niewielką grupę uczniów w ramach nagrody, koła zainteresowań lub samorządu. <a href="/dla-szkol-i-firm/">Zobacz szczegóły dla grup i okazji.</a></div></div>';
+const newGroupFaq = '<div class="faq-item"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-12" onclick="toggleFaq(this)"><span>Czy Familock nadaje się na urodziny, wyjście szkolne lub firmowe?</span><span class="faq-ico" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a-12">Tak, jeśli chodzi o małą grupę. Starzik jest przeznaczony standardowo dla 2–4 osób. Piąta osoba może dołączyć po wcześniejszym uzgodnieniu. Przy urodzinach po wcześniejszym uzgodnieniu może zagrać maksymalnie 6 osób. Nie mamy sali urodzinowej, cateringu ani przestrzeni na większe imprezy. W przypadku szkoły zapraszamy np. niewielką grupę uczniów w ramach nagrody, koła zainteresowań lub samorządu. <a href="/dla-szkol-i-firm/">Zobacz szczegóły dla grup i okazji.</a></div></div>';
 
 export default {
   async fetch(request, env) {
@@ -73,7 +73,7 @@ export default {
       })
       .on('body', {
         element(body) {
-          body.append('<script src="/analytics-events.js" defer></script><script src="/site-content-runtime.js?v=1" defer></script>', { html: true });
+          body.append('<script src="/analytics-events.js" defer></script><script src="/site-content-runtime.js?v=2" defer></script>', { html: true });
         }
       })
       .transform(normalizedResponse);

@@ -102,7 +102,7 @@
   }
 
   const HOME_PROMO_IDS=['names','tme','workers','senior','theszpil'];
-  const PRICE_PROMO_IDS=['names','tme','senior','theszpil'];
+  const PRICE_PROMO_IDS=['names','tme','workers','senior','theszpil'];
   function applyPromotionCards(cards,ids,overrides){
     ids.forEach((id,index)=>{
       const cfg=byPath(overrides,`promotions.items.${id}`);if(!cfg)return;
@@ -116,10 +116,12 @@
     if(hasPath(overrides,'promotions.intro')){
       const intro=document.querySelector('#cennik .rabaty-grid')?.previousElementSibling;
       if(intro?.classList.contains('section-intro'))text(intro,byPath(overrides,'promotions.intro'));
+      const priceIntro=document.querySelector('#promocje .note');
+      if(priceIntro)text(priceIntro,byPath(overrides,'promotions.intro'));
     }
     const homeCards=[...document.querySelectorAll('#cennik .rabaty-grid .rabat-card')];
     if(homeCards.length)applyPromotionCards(homeCards,HOME_PROMO_IDS,overrides);
-    const priceCards=[...document.querySelectorAll('main .section.alt .cards .card')];
+    const priceCards=[...document.querySelectorAll('#promocje .cards .card')];
     if(priceCards.length)applyPromotionCards(priceCards,PRICE_PROMO_IDS,overrides);
   }
 
