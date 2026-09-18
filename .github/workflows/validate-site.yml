@@ -26,3 +26,10 @@ jobs:
         run: node -e "const x=JSON.parse(require('fs').readFileSync('site-content.json','utf8'));if(x.schemaVersion!==1||!x.baseline||!x.overrides)process.exit(1)"
       - name: Ensure initial CMS deployment is non-destructive
         run: node -e "const x=JSON.parse(require('fs').readFileSync('site-content.json','utf8'));if(Object.keys(x.overrides||{}).length)throw new Error('Initial overrides must stay empty')"
+      - name: Check pricing and games page
+        run: |
+          test -f gry-online/index.html
+          grep -q 'href="/gry-online/"' index.html
+          ! grep -q 'id="theszpil"' index.html
+          grep -q 'od 100 zł' index.html
+          grep -q 'Stefa &amp; Józek' cennik/index.html
