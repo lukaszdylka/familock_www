@@ -70,8 +70,11 @@
     const teslaRows=[...document.querySelectorAll('#tab-tesla .price-block:first-child .price-row')];
     ['1','2'].forEach((id,index)=>{if(Object.prototype.hasOwnProperty.call(tesla,id))text(teslaRows[index]?.querySelector('.price-amount'),money(tesla[id]));});
     if(hasPath(overrides,'prices.starzik.lateNightSurcharge')){
-      const note=[...document.querySelectorAll('#tab-starzik .price-block:nth-child(2) .price-note')].find(x=>/23:30/.test(x.textContent||''));
-      if(note)text(note,`Piątek i sobota, godz. 23:30: obowiązuje dopłata ${Number(byPath(overrides,'prices.starzik.lateNightSurcharge'))||0} zł do ceny grupy.`);
+      const surcharge=Number(byPath(overrides,'prices.starzik.lateNightSurcharge'))||0;
+      const weekdayNote=[...document.querySelectorAll('#tab-starzik .price-block:nth-child(1) .price-note')].find(x=>/Wejście o 21:00/.test(x.textContent||''));
+      if(weekdayNote)text(weekdayNote,`Wejście o 21:00: 2 osoby ${money((Number(weekday['2'])||0)+surcharge)}, 3 osoby ${money((Number(weekday['3'])||0)+surcharge)}, 4 osoby ${money((Number(weekday['4'])||0)+surcharge)}, 5 osób ${money((Number(weekday['5'])||0)+surcharge)}.`);
+      const weekendNote=[...document.querySelectorAll('#tab-starzik .price-block:nth-child(2) .price-note')].find(x=>/Ostatnie wejście/.test(x.textContent||''));
+      if(weekendNote)text(weekendNote,`Ostatnie wejście: piątek i sobota o 21:00, niedziela o 20:30. Ceny: 2 osoby ${money((Number(weekend['2'])||0)+surcharge)}, 3 osoby ${money((Number(weekend['3'])||0)+surcharge)}, 4 osoby ${money((Number(weekend['4'])||0)+surcharge)}, 5 osób ${money((Number(weekend['5'])||0)+surcharge)}.`);
     }
   }
 
@@ -96,7 +99,7 @@
       if(note){
         const base='* Piąta osoba może dołączyć na wyraźne życzenie grupy.';
         const surcharge=Number(byPath(overrides,'prices.starzik.lateNightSurcharge'))||0;
-        text(note,`${base} W piątki i soboty na termin 23:30 obowiązuje dopłata ${surcharge} zł do ceny grupy.`);
+        text(note,`${base} Ostatnie wejścia są droższe o ${surcharge} zł: od poniedziałku do soboty o 21:00, a w niedzielę o 20:30. Ceny ostatnich wejść: 2 osoby ${money((Number(weekday['2'])||0)+surcharge)} od poniedziałku do czwartku i ${money((Number(weekend['2'])||0)+surcharge)} od piątku do niedzieli; 3 osoby ${money((Number(weekday['3'])||0)+surcharge)} i ${money((Number(weekend['3'])||0)+surcharge)}; 4 osoby ${money((Number(weekday['4'])||0)+surcharge)} i ${money((Number(weekend['4'])||0)+surcharge)}; 5 osób ${money((Number(weekday['5'])||0)+surcharge)} i ${money((Number(weekend['5'])||0)+surcharge)}.`);
       }
     }
   }
