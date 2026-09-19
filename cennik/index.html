@@ -17,6 +17,20 @@
 <link rel="icon" href="/favicon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="/subpage.css">
+<style>
+.price-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:1000px}
+.price-group{border:1px solid #353030;border-top:2px solid #5a2a2e;background:#171515}
+.price-group.is-late{border-top-color:#a03340;background:linear-gradient(145deg,rgba(90,42,46,.22),#171515 55%)}
+.price-group-head{padding:18px 18px 14px;border-bottom:1px solid #353030}
+.price-group-days{font-family:'Barlow Condensed',Arial,sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#b0a8a5}
+.price-group-time{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;font-family:'Barlow Condensed',Arial,sans-serif;font-size:1.12rem;font-weight:800;color:#f0ecec}
+.price-group-badge{padding:4px 8px;background:#5a2a2e;color:#fff;font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}
+.price-group .price-table{border:0;max-width:none}
+.price-group .price-table tr:last-child td{border-bottom:0}
+.price-group .price-table td:last-child{text-align:right}
+.price-groups+.note{max-width:1000px}
+@media(max-width:760px){.price-groups{grid-template-columns:1fr}.price-group-time{font-size:1rem}}
+</style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://familock.pl/cennik/#page","url":"https://familock.pl/cennik/","name":"Cennik Escape Room Familock","description":"Cennik pokoju Starzik i gry Tesla Escape Box w Familocku w Świętochłowicach.","inLanguage":"pl-PL","isPartOf":{"@id":"https://familock.pl/#website"},"about":{"@id":"https://familock.pl/#business"}},{"@type":"WebSite","@id":"https://familock.pl/#website","url":"https://familock.pl/","name":"Familock Escape Room"},{"@type":"EntertainmentBusiness","@id":"https://familock.pl/#business","name":"Familock Escape Room","url":"https://familock.pl/","telephone":"+48573955316","email":"kontakt@familock.pl","priceRange":"100–470 PLN","address":{"@type":"PostalAddress","streetAddress":"ul. Cmentarna 5/3","addressLocality":"Świętochłowice","postalCode":"41-600","addressCountry":"PL"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Familock","item":"https://familock.pl/"},{"@type":"ListItem","position":2,"name":"Cennik","item":"https://familock.pl/cennik/"}]}]}
 </script>
@@ -44,7 +58,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <main>
 <section class="hero"><div class="wrap"><div class="crumbs"><a href="/">Familock</a> / Cennik</div><p class="eyebrow">Escape room · Świętochłowice</p><h1>Cennik</h1><p class="lead">Starzik to 90 minut gry dla 2–4 osób. Piąta osoba może dołączyć po wcześniejszym uzgodnieniu. Cena zależy od dnia tygodnia, godziny wejścia i liczby graczy.</p><div class="facts"><div class="fact"><strong>90 min</strong><span>Starzik</span></div><div class="fact"><strong>2–4</strong><span>osoby standardowo</span></div><div class="fact"><strong>od 250 zł</strong><span>Starzik za grupę</span></div><div class="fact"><strong>od 100 zł</strong><span>Tesla Escape Box</span></div></div></div></section>
 
-<section class="section"><div class="wrap"><h2>Starzik</h2><table class="price-table"><thead><tr><th>Liczba osób</th><th>Pon.–czw.<br>wcześniejsze wejścia</th><th>Pt.–niedz. i święta<br>wcześniejsze wejścia</th></tr></thead><tbody><tr><td>2 osoby</td><td><strong>250 zł</strong></td><td><strong>280 zł</strong></td></tr><tr><td>3 osoby</td><td><strong>310 zł</strong></td><td><strong>350 zł</strong></td></tr><tr><td>4 osoby</td><td><strong>360 zł</strong></td><td><strong>400 zł</strong></td></tr><tr><td>5 osób*</td><td><strong>400 zł</strong></td><td><strong>450 zł</strong></td></tr></tbody></table><div class="note">* Standardowo grają 2–4 osoby. Piąta osoba może dołączyć na wyraźne życzenie grupy. Ostatnie wejścia są droższe o 20 zł: od poniedziałku do soboty o 21:00, a w niedzielę o 20:30. Ceny ostatnich wejść: 2 osoby 270 zł od poniedziałku do czwartku i 300 zł od piątku do niedzieli; 3 osoby 330 zł i 370 zł; 4 osoby 380 zł i 420 zł; 5 osób 420 zł i 470 zł.</div><div class="actions"><a class="btn primary" data-booking-link href="/starzik/#rezerwacja">Sprawdź wolne terminy</a><a class="btn" href="/starzik/">O pokoju Starzik</a></div></div></section>
+<section class="section" id="starzik-prices"><div class="wrap"><h2>Starzik</h2>
+  <div class="price-groups">
+    <article class="price-group" data-price-tier="weekday-standard">
+      <div class="price-group-head"><div class="price-group-days">Poniedziałek – Czwartek</div><div class="price-group-time"><span>16:00 i 18:30</span><span class="price-group-badge">Wcześniejsze wejścia</span></div></div>
+      <table class="price-table"><tbody><tr><td>2 osoby</td><td><strong>250 zł</strong></td></tr><tr><td>3 osoby</td><td><strong>310 zł</strong></td></tr><tr><td>4 osoby</td><td><strong>360 zł</strong></td></tr><tr><td>5 osób*</td><td><strong>400 zł</strong></td></tr></tbody></table>
+    </article>
+    <article class="price-group is-late" data-price-tier="weekday-late">
+      <div class="price-group-head"><div class="price-group-days">Poniedziałek – Czwartek</div><div class="price-group-time"><span>21:00</span><span class="price-group-badge">Późne wejście</span></div></div>
+      <table class="price-table"><tbody><tr><td>2 osoby</td><td><strong>270 zł</strong></td></tr><tr><td>3 osoby</td><td><strong>330 zł</strong></td></tr><tr><td>4 osoby</td><td><strong>380 zł</strong></td></tr><tr><td>5 osób*</td><td><strong>420 zł</strong></td></tr></tbody></table>
+    </article>
+    <article class="price-group" data-price-tier="weekend-standard">
+      <div class="price-group-head"><div class="price-group-days">Piątek – Niedziela i święta</div><div class="price-group-time"><span>Wcześniejsze godziny</span><span class="price-group-badge">Cena standardowa</span></div></div>
+      <table class="price-table"><tbody><tr><td>2 osoby</td><td><strong>280 zł</strong></td></tr><tr><td>3 osoby</td><td><strong>350 zł</strong></td></tr><tr><td>4 osoby</td><td><strong>400 zł</strong></td></tr><tr><td>5 osób*</td><td><strong>450 zł</strong></td></tr></tbody></table>
+    </article>
+    <article class="price-group is-late" data-price-tier="weekend-late">
+      <div class="price-group-head"><div class="price-group-days">Piątek – Niedziela i święta</div><div class="price-group-time"><span>Pt.–sob. 21:00 · niedz. 20:30</span><span class="price-group-badge">Późne wejście</span></div></div>
+      <table class="price-table"><tbody><tr><td>2 osoby</td><td><strong>300 zł</strong></td></tr><tr><td>3 osoby</td><td><strong>370 zł</strong></td></tr><tr><td>4 osoby</td><td><strong>420 zł</strong></td></tr><tr><td>5 osób*</td><td><strong>470 zł</strong></td></tr></tbody></table>
+    </article>
+  </div>
+  <div class="note">* Standardowo grają 2–4 osoby. Piąta osoba może dołączyć na wyraźne życzenie grupy.</div>
+  <div class="actions"><a class="btn primary" data-booking-link href="/starzik/#rezerwacja">Sprawdź wolne terminy</a><a class="btn" href="/starzik/">O pokoju Starzik</a></div>
+</div></section>
 
 <section class="section alt"><div class="wrap"><h2>Tesla Escape Box</h2><p>Około 60 minut zabawy dla jednej lub dwóch osób.</p><table class="price-table"><thead><tr><th>Liczba osób</th><th>Cena</th></tr></thead><tbody><tr><td>1 osoba</td><td><strong>100 zł</strong></td></tr><tr><td>2 osoby</td><td><strong>125 zł</strong></td></tr></tbody></table><div class="note">Rezerwacje Tesli będą dostępne wkrótce.</div></div></section>
 

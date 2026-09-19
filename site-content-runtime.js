@@ -52,55 +52,50 @@
   function applyHomepagePrices(overrides){
     const weekday=byPath(overrides,'prices.starzik.weekday')||{};
     const weekend=byPath(overrides,'prices.starzik.weekend')||{};
-    const blocks=[...document.querySelectorAll('#tab-starzik .price-block')];
+    const surcharge=Number(byPath(overrides,'prices.starzik.lateNightSurcharge'))||0;
     const ids=['2','3','4','5'];
-    if(blocks[0]){
-      [...blocks[0].querySelectorAll('.price-row')].forEach((row,index)=>{
-        const id=ids[index];if(!Object.prototype.hasOwnProperty.call(weekday,id))return;
-        text(row.querySelector('.price-amount-main')||row.querySelector('.price-amount'),money(weekday[id]));
+    const tiers={
+      'weekday-standard':{prices:weekday,extra:0},
+      'weekday-late':{prices:weekday,extra:surcharge},
+      'weekend-standard':{prices:weekend,extra:0},
+      'weekend-late':{prices:weekend,extra:surcharge}
+    };
+    Object.entries(tiers).forEach(([tier,cfg])=>{
+      const block=document.querySelector(`#tab-starzik [data-price-tier="${tier}"]`);if(!block)return;
+      [...block.querySelectorAll('.price-row')].forEach((row,index)=>{
+        const id=ids[index];if(!Object.prototype.hasOwnProperty.call(cfg.prices,id))return;
+        text(row.querySelector('.price-amount-main')||row.querySelector('.price-amount'),money((Number(cfg.prices[id])||0)+cfg.extra));
       });
-    }
-    if(blocks[1]){
-      [...blocks[1].querySelectorAll('.price-row')].forEach((row,index)=>{
-        const id=ids[index];if(!Object.prototype.hasOwnProperty.call(weekend,id))return;
-        text(row.querySelector('.price-amount-main')||row.querySelector('.price-amount'),money(weekend[id]));
-      });
-    }
+    });
     const tesla=byPath(overrides,'prices.tesla')||{};
     const teslaRows=[...document.querySelectorAll('#tab-tesla .price-block:first-child .price-row')];
     ['1','2'].forEach((id,index)=>{if(Object.prototype.hasOwnProperty.call(tesla,id))text(teslaRows[index]?.querySelector('.price-amount'),money(tesla[id]));});
-    if(hasPath(overrides,'prices.starzik.lateNightSurcharge')){
-      const surcharge=Number(byPath(overrides,'prices.starzik.lateNightSurcharge'))||0;
-      const weekdayNote=[...document.querySelectorAll('#tab-starzik .price-block:nth-child(1) .price-note')].find(x=>/Wejście o 21:00/.test(x.textContent||''));
-      if(weekdayNote)text(weekdayNote,`Wejście o 21:00: 2 osoby ${money((Number(weekday['2'])||0)+surcharge)}, 3 osoby ${money((Number(weekday['3'])||0)+surcharge)}, 4 osoby ${money((Number(weekday['4'])||0)+surcharge)}, 5 osób ${money((Number(weekday['5'])||0)+surcharge)}.`);
-      const weekendNote=[...document.querySelectorAll('#tab-starzik .price-block:nth-child(2) .price-note')].find(x=>/Ostatnie wejście/.test(x.textContent||''));
-      if(weekendNote)text(weekendNote,`Ostatnie wejście: piątek i sobota o 21:00, niedziela o 20:30. Ceny: 2 osoby ${money((Number(weekend['2'])||0)+surcharge)}, 3 osoby ${money((Number(weekend['3'])||0)+surcharge)}, 4 osoby ${money((Number(weekend['4'])||0)+surcharge)}, 5 osób ${money((Number(weekend['5'])||0)+surcharge)}.`);
-    }
   }
 
   function applyPricePage(overrides){
-    const table=document.querySelector('.price-table tbody');
-    if(!table)return;
-    const rows=[...table.querySelectorAll('tr')];
     const ids=['2','3','4','5'];
     const weekday=byPath(overrides,'prices.starzik.weekday')||{};
     const weekend=byPath(overrides,'prices.starzik.weekend')||{};
-    rows.forEach((row,index)=>{
-      const id=ids[index];const cells=row.querySelectorAll('td strong');
-      if(Object.prototype.hasOwnProperty.call(weekday,id))text(cells[0],money(weekday[id]));
-      if(Object.prototype.hasOwnProperty.call(weekend,id))text(cells[1],money(weekend[id]));
+    const surcharge=Number(byPath(overrides,'prices.starzik.lateNightSurcharge'))||0;
+    const tiers={
+      'weekday-standard':{prices:weekday,extra:0},
+      'weekday-late':{prices:weekday,extra:surcharge},
+      'weekend-standard':{prices:weekend,extra:0},
+      'weekend-late':{prices:weekend,extra:surcharge}
+    };
+    let found=false;
+    Object.entries(tiers).forEach(([tier,cfg])=>{
+      const card=document.querySelector(`#starzik-prices [data-price-tier="${tier}"]`);if(!card)return;
+      found=true;
+      [...card.querySelectorAll('tbody tr')].forEach((row,index)=>{
+        const id=ids[index];if(!Object.prototype.hasOwnProperty.call(cfg.prices,id))return;
+        text(row.querySelector('td strong'),money((Number(cfg.prices[id])||0)+cfg.extra));
+      });
     });
+    if(!found)return;
     if(Object.prototype.hasOwnProperty.call(weekday,'2')){
       const fact=[...document.querySelectorAll('.facts .fact')].find(x=>/za grupę/i.test(x.textContent||''));
       if(fact)text(fact.querySelector('strong'),`od ${money(weekday['2'])}`);
-    }
-    if(hasPath(overrides,'prices.starzik.lateNightSurcharge')){
-      const note=document.querySelector('.price-table + .note');
-      if(note){
-        const base='* Piąta osoba może dołączyć na wyraźne życzenie grupy.';
-        const surcharge=Number(byPath(overrides,'prices.starzik.lateNightSurcharge'))||0;
-        text(note,`${base} Ostatnie wejścia są droższe o ${surcharge} zł: od poniedziałku do soboty o 21:00, a w niedzielę o 20:30. Ceny ostatnich wejść: 2 osoby ${money((Number(weekday['2'])||0)+surcharge)} od poniedziałku do czwartku i ${money((Number(weekend['2'])||0)+surcharge)} od piątku do niedzieli; 3 osoby ${money((Number(weekday['3'])||0)+surcharge)} i ${money((Number(weekend['3'])||0)+surcharge)}; 4 osoby ${money((Number(weekday['4'])||0)+surcharge)} i ${money((Number(weekend['4'])||0)+surcharge)}; 5 osób ${money((Number(weekday['5'])||0)+surcharge)} i ${money((Number(weekend['5'])||0)+surcharge)}.`);
-      }
     }
   }
 
