@@ -228,6 +228,22 @@ section{padding:5.5rem 3rem}
 .price-save{display:inline-block;font-family:var(--fd);font-size:.58rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:var(--red-dark);color:#fff;padding:.18rem .55rem;margin-left:.5rem;vertical-align:middle;position:relative;top:-2px}
 .price-amount-main{font-family:var(--fd);font-size:1.7rem;font-weight:900;color:var(--cream)}
 .price-amounts{display:flex;align-items:baseline;gap:.3rem;flex-wrap:wrap}
+.price-compare-block{padding:0;overflow:hidden}
+.price-compare-block .price-block-head{margin:0;padding:1.35rem 2rem}
+.price-compare-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.price-compare-table th,.price-compare-table td{padding:1rem 1.1rem;border-bottom:1px solid var(--border);text-align:center;vertical-align:middle}
+.price-compare-table th:first-child,.price-compare-table td:first-child{width:25%;text-align:left;padding-left:2rem}
+.price-compare-table th{font-family:var(--fd);font-size:.72rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--cream2);background:rgba(255,255,255,.018)}
+.price-compare-table th span{display:block;margin-top:.3rem;font-size:.62rem;font-weight:600;letter-spacing:.06em;color:var(--muted)}
+.price-compare-table .late-column{background:rgba(90,42,46,.16)}
+.price-compare-table th.late-column{color:var(--cream);box-shadow:inset 0 2px 0 var(--red)}
+.price-compare-table tbody tr:last-child td{border-bottom:0}
+.price-compare-table .price-persons{display:inline-block}
+.price-compare-table .price-amount-main{display:block}
+.price-compare-table .price-was{margin:0 .2rem 0 0;font-size:.78rem}
+.price-compare-table .price-save{margin:0;font-size:.5rem;padding:.12rem .35rem;top:0}
+.price-compare-table .price-deal{display:block;margin-top:.15rem;white-space:nowrap}
+.price-compare-block .price-note{margin:0;padding:1rem 2rem;border-top:1px solid var(--border)}
 .rabaty-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
 .rabat-card{background:var(--card2);border:1px solid var(--border2);padding:1.8rem;position:relative;overflow:hidden}
 .rabat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red-dark),var(--red))}
@@ -428,6 +444,16 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   .hero-actions{flex-direction:column;align-items:flex-start}
   .galeria-grid{grid-template-columns:1fr;gap:1rem}
   .gal-item img{height:auto;aspect-ratio:3/2}
+  .price-compare-block .price-block-head{padding:1.1rem 1rem}
+  .price-compare-table th,.price-compare-table td{padding:.8rem .35rem}
+  .price-compare-table th:first-child,.price-compare-table td:first-child{width:27%;padding-left:.75rem}
+  .price-compare-table th{font-size:.62rem;letter-spacing:.04em;line-height:1.2}
+  .price-compare-table th span{font-size:.54rem;letter-spacing:.02em}
+  .price-compare-table .price-persons{font-size:.82rem}
+  .price-compare-table .price-amount-main{font-size:1.35rem}
+  .price-compare-table .price-was{font-size:.68rem}
+  .price-compare-table .price-save{font-size:.42rem;padding:.08rem .24rem}
+  .price-compare-block .price-note{padding:.9rem 1rem}
 }
 </style>
 </head>
@@ -592,40 +618,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button class="tab-btn" onclick="switchTab('tab-tesla',this)">Tesla Escape Box</button>
     </div>
     <div class="cennik-panel active" id="tab-starzik">
-      <div class="price-block reveal" data-price-tier="weekday-standard">
+      <div class="price-block price-compare-block reveal" data-price-group="weekday">
         <div class="price-block-head">Poniedziałek – Czwartek</div>
-        <div class="price-block-time"><span>16:00 i 18:30</span><span class="price-block-badge">Wcześniejsze wejścia</span></div>
-        <div class="price-row price-row-wrap"><span class="price-persons">2 osoby</span><div class="price-amounts"><span class="price-was">280 zł</span><span class="price-amount-main">250 zł</span><span class="price-save">-30 zł.</span></div></div>
-        <div class="price-row price-row-wrap"><span class="price-persons">3 osoby</span><div class="price-amounts"><span class="price-was">350 zł</span><span class="price-amount-main">310 zł</span><span class="price-save">-40 zł.</span></div></div>
-        <div class="price-row price-row-wrap"><span class="price-persons">4 osoby</span><div class="price-amounts"><span class="price-was">400 zł</span><span class="price-amount-main">360 zł</span><span class="price-save">-40 zł.</span></div></div>
-        <div class="price-row price-row-wrap"><span class="price-persons">5 osób*</span><div class="price-amounts"><span class="price-was">450 zł</span><span class="price-amount-main">400 zł</span><span class="price-save">-50 zł.</span></div></div>
+        <table class="price-compare-table"><thead><tr><th>Liczba osób</th><th>16:00 i 18:30<span>Wcześniejsze wejścia</span></th><th class="late-column">21:00<span>Późne wejście</span></th></tr></thead><tbody>
+          <tr><td><span class="price-persons">2 osoby</span></td><td><span class="price-amount-main" data-price-tier="weekday-standard" data-players="2">250 zł</span><span class="price-deal"><span class="price-was">280 zł</span><span class="price-save">-30 zł.</span></span></td><td class="late-column"><span class="price-amount-main" data-price-tier="weekday-late" data-players="2">270 zł</span></td></tr>
+          <tr><td><span class="price-persons">3 osoby</span></td><td><span class="price-amount-main" data-price-tier="weekday-standard" data-players="3">310 zł</span><span class="price-deal"><span class="price-was">350 zł</span><span class="price-save">-40 zł.</span></span></td><td class="late-column"><span class="price-amount-main" data-price-tier="weekday-late" data-players="3">330 zł</span></td></tr>
+          <tr><td><span class="price-persons">4 osoby</span></td><td><span class="price-amount-main" data-price-tier="weekday-standard" data-players="4">360 zł</span><span class="price-deal"><span class="price-was">400 zł</span><span class="price-save">-40 zł.</span></span></td><td class="late-column"><span class="price-amount-main" data-price-tier="weekday-late" data-players="4">380 zł</span></td></tr>
+          <tr><td><span class="price-persons">5 osób*</span></td><td><span class="price-amount-main" data-price-tier="weekday-standard" data-players="5">400 zł</span><span class="price-deal"><span class="price-was">450 zł</span><span class="price-save">-50 zł.</span></span></td><td class="late-column"><span class="price-amount-main" data-price-tier="weekday-late" data-players="5">420 zł</span></td></tr>
+        </tbody></table>
         <p class="price-note">*Tylko na wyraźne życzenie graczy.</p>
       </div>
-      <div class="price-block is-late reveal" data-price-tier="weekday-late" style="transition-delay:.05s">
-        <div class="price-block-head">Poniedziałek – Czwartek</div>
-        <div class="price-block-time"><span>21:00</span><span class="price-block-badge">Późne wejście</span></div>
-        <div class="price-row"><span class="price-persons">2 osoby</span><span class="price-amount">270 zł</span></div>
-        <div class="price-row"><span class="price-persons">3 osoby</span><span class="price-amount">330 zł</span></div>
-        <div class="price-row"><span class="price-persons">4 osoby</span><span class="price-amount">380 zł</span></div>
-        <div class="price-row"><span class="price-persons">5 osób*</span><span class="price-amount">420 zł</span></div>
-        <p class="price-note">*Tylko na wyraźne życzenie graczy.</p>
-      </div>
-      <div class="price-block reveal" data-price-tier="weekend-standard" style="transition-delay:.1s">
+      <div class="price-block price-compare-block reveal" data-price-group="weekend" style="transition-delay:.05s">
         <div class="price-block-head">Piątek – Niedziela &amp; Święta</div>
-        <div class="price-block-time"><span>Wcześniejsze godziny</span><span class="price-block-badge">Cena standardowa</span></div>
-        <div class="price-row"><span class="price-persons">2 osoby</span><span class="price-amount">280 zł</span></div>
-        <div class="price-row"><span class="price-persons">3 osoby</span><span class="price-amount">350 zł</span></div>
-        <div class="price-row"><span class="price-persons">4 osoby</span><span class="price-amount">400 zł</span></div>
-        <div class="price-row"><span class="price-persons">5 osób*</span><span class="price-amount">450 zł</span></div>
-        <p class="price-note">*Tylko na wyraźne życzenie graczy.</p>
-      </div>
-      <div class="price-block is-late reveal" data-price-tier="weekend-late" style="transition-delay:.15s">
-        <div class="price-block-head">Piątek – Niedziela &amp; Święta</div>
-        <div class="price-block-time"><span>Pt.–sob. 21:00 · niedz. 20:30</span><span class="price-block-badge">Późne wejście</span></div>
-        <div class="price-row"><span class="price-persons">2 osoby</span><span class="price-amount">300 zł</span></div>
-        <div class="price-row"><span class="price-persons">3 osoby</span><span class="price-amount">370 zł</span></div>
-        <div class="price-row"><span class="price-persons">4 osoby</span><span class="price-amount">420 zł</span></div>
-        <div class="price-row"><span class="price-persons">5 osób*</span><span class="price-amount">470 zł</span></div>
+        <table class="price-compare-table"><thead><tr><th>Liczba osób</th><th>Do 18:30<span>Wcześniejsze wejścia</span></th><th class="late-column">Pt.–sob. 21:00<span>Niedz. 20:30 · późne wejście</span></th></tr></thead><tbody>
+          <tr><td><span class="price-persons">2 osoby</span></td><td><span class="price-amount-main" data-price-tier="weekend-standard" data-players="2">280 zł</span></td><td class="late-column"><span class="price-amount-main" data-price-tier="weekend-late" data-players="2">300 zł</span></td></tr>
+          <tr><td><span class="price-persons">3 osoby</span></td><td><span class="price-amount-main" data-price-tier="weekend-standard" data-players="3">350 zł</span></td><td class="late-column"><span class="price-amount-main" data-price-tier="weekend-late" data-players="3">370 zł</span></td></tr>
+          <tr><td><span class="price-persons">4 osoby</span></td><td><span class="price-amount-main" data-price-tier="weekend-standard" data-players="4">400 zł</span></td><td class="late-column"><span class="price-amount-main" data-price-tier="weekend-late" data-players="4">420 zł</span></td></tr>
+          <tr><td><span class="price-persons">5 osób*</span></td><td><span class="price-amount-main" data-price-tier="weekend-standard" data-players="5">450 zł</span></td><td class="late-column"><span class="price-amount-main" data-price-tier="weekend-late" data-players="5">470 zł</span></td></tr>
+        </tbody></table>
         <p class="price-note">*Tylko na wyraźne życzenie graczy.</p>
       </div>
     </div>
