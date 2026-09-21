@@ -61,10 +61,9 @@
       'weekend-late':{prices:weekend,extra:surcharge}
     };
     Object.entries(tiers).forEach(([tier,cfg])=>{
-      const block=document.querySelector(`#tab-starzik [data-price-tier="${tier}"]`);if(!block)return;
-      [...block.querySelectorAll('.price-row')].forEach((row,index)=>{
-        const id=ids[index];if(!Object.prototype.hasOwnProperty.call(cfg.prices,id))return;
-        text(row.querySelector('.price-amount-main')||row.querySelector('.price-amount'),money((Number(cfg.prices[id])||0)+cfg.extra));
+      ids.forEach(id=>{
+        if(!Object.prototype.hasOwnProperty.call(cfg.prices,id))return;
+        text(document.querySelector(`#tab-starzik [data-price-tier="${tier}"][data-players="${id}"]`),money((Number(cfg.prices[id])||0)+cfg.extra));
       });
     });
     const tesla=byPath(overrides,'prices.tesla')||{};
@@ -85,11 +84,11 @@
     };
     let found=false;
     Object.entries(tiers).forEach(([tier,cfg])=>{
-      const card=document.querySelector(`#starzik-prices [data-price-tier="${tier}"]`);if(!card)return;
-      found=true;
-      [...card.querySelectorAll('tbody tr')].forEach((row,index)=>{
-        const id=ids[index];if(!Object.prototype.hasOwnProperty.call(cfg.prices,id))return;
-        text(row.querySelector('td strong'),money((Number(cfg.prices[id])||0)+cfg.extra));
+      ids.forEach(id=>{
+        const amount=document.querySelector(`#starzik-prices [data-price-tier="${tier}"][data-players="${id}"]`);if(!amount)return;
+        found=true;
+        if(!Object.prototype.hasOwnProperty.call(cfg.prices,id))return;
+        text(amount,money((Number(cfg.prices[id])||0)+cfg.extra));
       });
     });
     if(!found)return;
