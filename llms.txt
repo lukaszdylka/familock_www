@@ -1,43 +1,36 @@
 # Familock Escape Room
 
-Familock to kameralny escape room w Świętochłowicach przy ul. Cmentarnej 5/3.
+> Familock to kameralny escape room w Świętochłowicach przy ul. Cmentarnej 5/3. Aktualnie dostępny jest fabularny pokój Starzik.
+
+## Najważniejsze strony
+
+- [Strona główna](https://familock.pl/): oferta, cennik, rezerwacje, galeria i kontakt
+- [Starzik](https://familock.pl/starzik/): opis pokoju, zasady gry i kalendarz rezerwacji
+- [Cennik](https://familock.pl/cennik/): aktualne ceny dla 2–5 osób i godziny wejść
+- [Voucher](https://familock.pl/voucher/): voucher PDF lub personalizowany voucher na sklejce
+- [Grupy i okazje](https://familock.pl/dla-szkol-i-firm/): informacje dla małych grup, szkół, firm i urodzin
+- [Pierwszy escape room](https://familock.pl/pierwszy-escape-room/): informacje dla osób grających po raz pierwszy
+- [Regulamin](https://familock.pl/regulamin.html): zasady udziału w grze
+- [Polityka prywatności](https://familock.pl/polityka.html): informacje o danych, cookies i usługach zewnętrznych
 
 ## Aktualna oferta
 
 ### Starzik
 
-Fabularny escape room osadzony w klimacie śląskiego familoka.
+Starzik to fabularny escape room osadzony w klimacie śląskiego familoka. Gra trwa do 90 minut i jest przeznaczona standardowo dla 2–4 osób. Piąta osoba może dołączyć po wcześniejszym uzgodnieniu. Minimalny wiek gracza wynosi 10 lat.
 
-- czas gry: do 90 minut
-- standardowa liczba graczy: 2–4 osoby
-- piąta osoba: możliwa po wcześniejszym uzgodnieniu
-- minimalny wiek: 10 lat
-- rezerwacje: https://familock.pl/starzik/#rezerwacja
-- opis pokoju: https://familock.pl/starzik/
+Rezerwacja odbywa się przez kalendarz na stronie [Starzika](https://familock.pl/starzik/#rezerwacja).
 
-### Urodziny
+### Urodziny, szkoły i firmy
 
-Familock nie jest salą urodzinową. Nie organizuje przyjęć, cateringu, tortu ani osobnej części imprezowej.
-
-Urodziny mogą mieć formę wspólnej gry solenizanta ze znajomymi. Po wcześniejszym uzgodnieniu grupa urodzinowa może liczyć maksymalnie 6 osób. Możliwe jest wcześniejsze przekazanie niewielkiego prezentu lub kartki, które zostaną ukryte w pokoju i odnalezione podczas gry.
-
-### Szkoły
-
-Oferta nie jest przeznaczona dla całych klas. Starzik może być wykorzystany jako wyjście niewielkiej grupy uczniów, na przykład w ramach nagrody, koła zainteresowań lub samorządu uczniowskiego.
-
-### Firmy
-
-Familock może być miejscem wyjścia integracyjnego dla małego zespołu. Standardowo w jednej grze uczestniczą 2–4 osoby. Piąta osoba może dołączyć po wcześniejszym uzgodnieniu. Familock nie posiada sali konferencyjnej, cateringu ani przestrzeni do organizacji większych wydarzeń firmowych.
-
-Więcej informacji o urodzinach, szkołach i firmach: https://familock.pl/dla-szkol-i-firm/
+Familock przyjmuje małe grupy. Nie posiada osobnej sali urodzinowej, cateringu, sali konferencyjnej ani przestrzeni do organizacji dużych wydarzeń. Szczegóły znajdują się na stronie [Grupy i okazje](https://familock.pl/dla-szkol-i-firm/).
 
 ### Gry online
 
-Darmowe gry Familock są dostępne na stronie: https://familock.pl/gry-online/
+Darmowe gry Familock są dostępne na stronie [Gry online](https://familock.pl/gry-online/).
 
 ## Kontakt
 
-- telefon: +48 573 955 316
-- e-mail: kontakt@familock.pl
-- adres: ul. Cmentarna 5/3, 41-600 Świętochłowice
-- strona: https://familock.pl/
+- Telefon: +48 573 955 316
+- E-mail: kontakt@familock.pl
+- Adres: ul. Cmentarna 5/3, 41-600 Świętochłowice
