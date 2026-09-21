@@ -268,7 +268,7 @@ section{padding:5.5rem 3rem}
 .reviews-widget-title{font-family:var(--fd);font-size:1.35rem;font-weight:800;line-height:1.1;color:var(--cream)}
 .reviews-widget-source{margin-left:auto;text-align:right;font-family:var(--fd);font-size:.64rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);line-height:1.35;white-space:nowrap}
 .reviews-widget-source strong{display:block;font-size:.82rem;color:var(--cream2);letter-spacing:.1em}
-.reviews-lockme-frame{display:block;width:100%;height:450px;background:#fff;border:0;color-scheme:light}
+.reviews-lockme-frame{display:block;width:100%;height:450px!important;min-height:450px!important;max-height:450px!important;background:#fff;border:0;color-scheme:light;overflow:auto}
 .booking-lockme-frame[hidden],.map-wrap iframe[hidden]{display:none!important}
 .service-consent-placeholder{display:flex;min-height:260px;align-items:center;justify-content:center;padding:2rem;background:linear-gradient(145deg,var(--card),var(--bg2));text-align:center}
 .service-consent-placeholder[hidden]{display:none!important}
@@ -439,7 +439,7 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   .reviews-widget-title{font-size:1.15rem}
   .reviews-widget-source{font-size:.57rem;letter-spacing:.08em}
   .reviews-widget-source strong{font-size:.72rem}
-  .reviews-lockme-frame{height:480px}
+  .reviews-lockme-frame{height:480px!important;min-height:480px!important;max-height:480px!important}
 }
 </style>
 </head>
@@ -674,7 +674,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <div class="reviews-widget-source">Zweryfikowane opinie<strong>LockMe</strong></div>
         </div>
-        <iframe class="reviews-lockme-frame" src="https://widget.lock.me/pl/comments/fd5ace6aab33825bcc05880372c4f7b0.html" loading="lazy" title="Opinie graczy o Familock na LockMe"></iframe>
+        <iframe class="reviews-lockme-frame" src="https://widget.lock.me/pl/comments/fd5ace6aab33825bcc05880372c4f7b0.html" loading="lazy" scrolling="auto" title="Opinie graczy o Familock na LockMe"></iframe>
       </div>
     </div>
     <div class="rez-grid" style="grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem">
