@@ -126,6 +126,65 @@
         "question": "Czy Familock nadaje się na urodziny, wyjście szkolne lub firmowe?",
         "answer": "Tak, jeśli chodzi o małą grupę. Starzik jest przeznaczony standardowo dla 2–4 osób. Piąta osoba może dołączyć po wcześniejszym uzgodnieniu. Przy urodzinach po wcześniejszym uzgodnieniu może zagrać maksymalnie 6 osób. Nie mamy sali urodzinowej, cateringu ani przestrzeni na większe imprezy. W przypadku szkoły zapraszamy np. niewielką grupę uczniów w ramach nagrody, koła zainteresowań lub samorządu. Zobacz szczegóły dla grup i okazji."
       }
+    },
+    "pages": {
+      "starzik": {
+        "heroTitle": "Starzik",
+        "heroSubtitle": "Escape room w śląskim familoku",
+        "heroLead": "Stary familok, zaginiony lokator i historia, której nikt się nie spodziewał. Odkryjcie tajemnicę Starzika.",
+        "storyIntro": "Dziadek Józef od dłuższego czasu nie daje znaku życia. Nie odpowiada na telefony, nikt nie wie, gdzie jest, a sprawy związane z jego mieszkaniem zaczynają się piętrzyć.",
+        "storyTask": "Waszym zadaniem jest dostać się do środka i ustalić, co właściwie stało się z lokatorem. Zamiast serii przypadkowych kłódek czeka na Was historia opowiadana przez mieszkanie, przedmioty i autorskie zagadki.",
+        "storyPositioning": "Starzik powstał jako pełnoprawny fabularny escape room osadzony w śląskim klimacie. Nie jest horrorem. Może jednak zaskoczyć i momentami budować napięcie.",
+        "galleryText": "Pokazujemy wnętrza i detale bez zdradzania rozwiązań. Zdjęcia pochodzą z pokoju Starzik w Familocku.",
+        "bookingText": "Kalendarz LockMe jest dostępny bezpośrednio poniżej. Wybierzcie dogodny termin i dokończcie rezerwację online."
+      },
+      "cennik": {
+        "eyebrow": "Escape room · Świętochłowice",
+        "title": "Cennik",
+        "lead": "Starzik to 90 minut gry dla 2–4 osób. Piąta osoba może dołączyć po wcześniejszym uzgodnieniu. Cena zależy od dnia tygodnia, godziny wejścia i liczby graczy.",
+        "teslaText": "Około 60 minut zabawy dla jednej lub dwóch osób.",
+        "paymentText": "Płatność następuje po grze. Dostępne formy: gotówka, karta, BLIK lub przelew. Na życzenie wystawiamy fakturę."
+      },
+      "voucher": {
+        "eyebrow": "Prezent · Escape room · Świętochłowice",
+        "title": "Voucher",
+        "lead": "Voucher Familock to prezent na grę w escape roomie w Świętochłowicach. Jest ważny przez 6 miesięcy od daty zakupu. Dostępna jest wersja PDF oraz personalizowany voucher na sklejce.",
+        "orderTitle": "Jak zamówić voucher?",
+        "includesText": "Voucher można wykorzystać na grę w Familocku. Aktualnie dostępny do rezerwacji jest pokój Starzik: 90 minut gry dla 2–5 osób.",
+        "pdfText": "Wersja elektroniczna do samodzielnego wydruku lub przesłania obdarowanej osobie.",
+        "woodText": "Personalizowana wersja fizyczna przygotowana do wręczenia jako prezent."
+      },
+      "groups": {
+        "eyebrow": "Małe grupy · Świętochłowice",
+        "title": "Urodziny, szkoły i firmy",
+        "lead": "Familock jest kameralnym escape roomem. Mamy jeden pokój, dlatego nie organizujemy dużych imprez ani wydarzeń dla całych klas. Starzik sprawdzi się za to na urodziny w gronie znajomych, wyjście małej grupy uczniów albo integrację kilkuosobowego zespołu.",
+        "birthdayIntro": "Jeżeli solenizant lubi escape roomy i zagadki, możecie po prostu zebrać znajomych i wspólnie zagrać w Starzika.",
+        "birthdayOutro": "To propozycja dla solenizanta i jego znajomych, którzy chcą spędzić urodziny na wspólnej grze, a nie organizować przyjęcie.",
+        "schoolIntro": "Nie obsługujemy całej klasy jednocześnie. Możemy za to przyjąć małą grupę uczniów, na przykład w ramach nagrody, wyjścia samorządu, koła zainteresowań albo innej kilkuosobowej grupy.",
+        "schoolOutro": "Jeżeli planujesz wyjście z uczniami, skontaktuj się z nami przed rezerwacją. Ustalimy termin dla konkretnej, małej grupy.",
+        "companyIntro": "Starzik może być pomysłem na wspólne wyjście małego zespołu. W czasie gry uczestnicy razem rozwiązują zagadki i wymieniają się informacjami.",
+        "companyOutro": "Obowiązuje standardowy cennik Familock."
+      },
+      "firstEscape": {
+        "eyebrow": "Dla początkujących · Świętochłowice",
+        "title": "Pierwszy escape room",
+        "lead": "Escape room to zespołowa gra na żywo. Wchodzicie do przygotowanej przestrzeni, odkrywacie historię, szukacie wskazówek i rozwiązujecie zagadki. Nie trzeba znać specjalnych zasad ani mieć doświadczenia.",
+        "howOutro": "Starzik trwa maksymalnie 90 minut. Na całą wizytę warto przeznaczyć około 2 godzin.",
+        "suitableIntro": "Tak. Starzik potrafi być wymagający, ale początkująca grupa może przejść grę z pomocą podpowiedzi. Najważniejsze są współpraca, uważność i dzielenie się informacjami w grupie.",
+        "noKnowledgeText": "Nie wymagamy wiedzy o escape roomach ani znajomości konkretnych mechanizmów.",
+        "notHorrorText": "Starzik nie jest horrorem, ale zawiera elementy napięcia i zaskoczenia.",
+        "openExitText": "Gracze mogą w każdej chwili przerwać grę i samodzielnie wyjść.",
+        "phonesText": "Podczas rozgrywki nie korzystamy z telefonów, nie fotografujemy i nie nagrywamy."
+      },
+      "online": {
+        "eyebrow": "Darmowe gry w przeglądarce",
+        "title": "Gry online Familock",
+        "lead": "Codzienne śląskie zagadki, szybkie gierki i przygodówka ze Starzikiem. Wybierz grę i zacznij od razu, bez instalowania.",
+        "szpilplacText": "Śląski plac z krótkimi grami słownymi i logicznymi. Możesz grać bez logowania albo założyć konto, aby zapisywać wyniki, osiągnięcia i miejsce w rankingu.",
+        "gamesText": "Kopalnia, skoki po familoku, automat i klasyczny Pong. Klikasz i od razu grasz.",
+        "theszpilText": "Krótka gra point&click, która wprowadza w klimat kamienicy, ale nie zdradza fabuły pokoju.",
+        "liveText": "Starzik to 90-minutowy fabularny escape room w Świętochłowicach dla 2–4 osób. Piąta osoba może dołączyć po wcześniejszym uzgodnieniu."
+      }
     }
   },
   "overrides": {},
