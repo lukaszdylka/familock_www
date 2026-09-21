@@ -133,6 +133,105 @@
     });
   }
 
+
+  function setTextNode(selector,overrides,path,index=0){
+    if(!hasPath(overrides,path))return;
+    const node=document.querySelector(selector);if(!node)return;
+    const textNode=[...node.childNodes].filter(item=>item.nodeType===3)[index]||null;
+    if(textNode)textNode.nodeValue=String(byPath(overrides,path));
+  }
+
+  function pageSections(){
+    return [...document.querySelectorAll('main > section.section, main > section.section.alt')];
+  }
+
+  function applyGenericHero(overrides,prefix){
+    setText('.hero .eyebrow',overrides,`${prefix}.eyebrow`);
+    setText('.hero h1',overrides,`${prefix}.title`);
+    setText('.hero .lead',overrides,`${prefix}.lead`);
+  }
+
+  function applyStarzikPage(overrides){
+    const prefix='pages.starzik';
+    setTextNode('.hero h1',overrides,`${prefix}.heroTitle`);
+    setText('.hero h1 span',overrides,`${prefix}.heroSubtitle`);
+    setText('.hero .lead',overrides,`${prefix}.heroLead`);
+    const story=[...document.querySelectorAll('#historia .copy > p')];
+    if(hasPath(overrides,`${prefix}.storyIntro`))text(story[0],byPath(overrides,`${prefix}.storyIntro`));
+    if(hasPath(overrides,`${prefix}.storyTask`))text(story[1],byPath(overrides,`${prefix}.storyTask`));
+    if(hasPath(overrides,`${prefix}.storyPositioning`))text(story[2],byPath(overrides,`${prefix}.storyPositioning`));
+    setText('#galeria .shell > p',overrides,`${prefix}.galleryText`);
+    setText('#rezerwacja .shell > p',overrides,`${prefix}.bookingText`);
+  }
+
+  function applyCennikPage(overrides){
+    const prefix='pages.cennik';
+    applyGenericHero(overrides,prefix);
+    const sections=pageSections();
+    const tesla=sections.find(section=>section.querySelector('h2')?.textContent?.trim()==='Tesla Escape Box');
+    const payment=sections.find(section=>section.querySelector('h2')?.textContent?.trim()==='Płatność');
+    if(hasPath(overrides,`${prefix}.teslaText`))text(tesla?.querySelector(':scope > .wrap > p'),byPath(overrides,`${prefix}.teslaText`));
+    if(hasPath(overrides,`${prefix}.paymentText`))text(payment?.querySelector(':scope > .wrap > p'),byPath(overrides,`${prefix}.paymentText`));
+  }
+
+  function applyVoucherPage(overrides){
+    const prefix='pages.voucher';
+    applyGenericHero(overrides,prefix);
+    const sections=pageSections();
+    if(hasPath(overrides,`${prefix}.orderTitle`))text(sections[0]?.querySelector('h2'),byPath(overrides,`${prefix}.orderTitle`));
+    if(hasPath(overrides,`${prefix}.includesText`))text(sections[1]?.querySelector(':scope > .wrap > p'),byPath(overrides,`${prefix}.includesText`));
+    const cards=[...sections[1]?.querySelectorAll('.card')||[]];
+    if(hasPath(overrides,`${prefix}.pdfText`))text(cards[0]?.querySelector('p'),byPath(overrides,`${prefix}.pdfText`));
+    if(hasPath(overrides,`${prefix}.woodText`))text(cards[1]?.querySelector('p'),byPath(overrides,`${prefix}.woodText`));
+  }
+
+  function applyGroupsPage(overrides){
+    const prefix='pages.groups';
+    applyGenericHero(overrides,prefix);
+    const sections=pageSections();
+    const applyPair=(section,startPath,endPath)=>{
+      const ps=[...section?.querySelectorAll(':scope > .wrap > p')||[]];
+      if(hasPath(overrides,startPath))text(ps[0],byPath(overrides,startPath));
+      if(hasPath(overrides,endPath))text(ps[1],byPath(overrides,endPath));
+    };
+    applyPair(sections[0],`${prefix}.birthdayIntro`,`${prefix}.birthdayOutro`);
+    applyPair(sections[1],`${prefix}.schoolIntro`,`${prefix}.schoolOutro`);
+    applyPair(sections[2],`${prefix}.companyIntro`,`${prefix}.companyOutro`);
+  }
+
+  function applyFirstEscapePage(overrides){
+    const prefix='pages.firstEscape';
+    applyGenericHero(overrides,prefix);
+    const sections=pageSections();
+    if(hasPath(overrides,`${prefix}.howOutro`))text(sections[0]?.querySelector(':scope > .wrap > p'),byPath(overrides,`${prefix}.howOutro`));
+    if(hasPath(overrides,`${prefix}.suitableIntro`))text(sections[1]?.querySelector(':scope > .wrap > p'),byPath(overrides,`${prefix}.suitableIntro`));
+    const cards=[...sections[1]?.querySelectorAll('.card')||[]];
+    [['noKnowledgeText',0],['notHorrorText',1],['openExitText',2],['phonesText',3]].forEach(([key,index])=>{
+      if(hasPath(overrides,`${prefix}.${key}`))text(cards[index]?.querySelector('p'),byPath(overrides,`${prefix}.${key}`));
+    });
+  }
+
+  function applyOnlinePage(overrides){
+    const prefix='pages.online';
+    applyGenericHero(overrides,prefix);
+    const cards=[...document.querySelectorAll('.game-card')];
+    [['szpilplacText',0],['gamesText',1],['theszpilText',2]].forEach(([key,index])=>{
+      if(hasPath(overrides,`${prefix}.${key}`))text(cards[index]?.querySelector('p'),byPath(overrides,`${prefix}.${key}`));
+    });
+    const sections=pageSections();
+    if(hasPath(overrides,`${prefix}.liveText`))text(sections[1]?.querySelector(':scope > .wrap > p'),byPath(overrides,`${prefix}.liveText`));
+  }
+
+  function applySubpageContent(overrides){
+    const path=location.pathname.replace(/\/+$/,'')||'/';
+    if(path==='/starzik')applyStarzikPage(overrides);
+    else if(path==='/cennik')applyCennikPage(overrides);
+    else if(path==='/voucher')applyVoucherPage(overrides);
+    else if(path==='/dla-szkol-i-firm')applyGroupsPage(overrides);
+    else if(path==='/pierwszy-escape-room')applyFirstEscapePage(overrides);
+    else if(path==='/gry-online')applyOnlinePage(overrides);
+  }
+
   function applyContent(payload){
     const overrides=payload&&payload.overrides&&typeof payload.overrides==='object'?payload.overrides:{};
     setText('#home .hero-tagline',overrides,'home.heroTagline');
@@ -146,6 +245,7 @@
     applyPricePage(overrides);
     applyPromotions(overrides);
     applyFaq(overrides);
+    applySubpageContent(overrides);
   }
 
   fetch(CONTENT_URL,{cache:'no-store',headers:{Accept:'application/json'}})
