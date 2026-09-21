@@ -61,7 +61,7 @@ export default {
       })
       .on('body', {
         element(body) {
-          body.append('<script src="/analytics-events.js" defer></script><script src="/site-content-runtime.js?v=2" defer></script>', { html: true });
+          body.append('<script src="/analytics-events.js" defer></script><script src="/site-content-runtime.js?v=3" defer></script>', { html: true });
         }
       })
       .transform(normalizedResponse);
