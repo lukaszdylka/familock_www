@@ -1,0 +1,10 @@
+desktop_b64=48976
+mobile_b64=61921
+desktop_decode_rc=0
+mobile_decode_rc=1
+desktop_bytes=36730
+mobile_bytes=46440
+400d1203c14621e332caca0e849ecb2ec87fbec80f3012eb3b28962899fe43be  /tmp/desktop.webp
+22141acf5bd81296539913ea63938fbd2bdb763f9d024da5517b8a3c399f5e57  /tmp/mobile.webp
+desktop_error=
+mobile_error=base64: invalid input
