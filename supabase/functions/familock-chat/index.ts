@@ -211,13 +211,14 @@ Deno.serve(async (req: Request) => {
       });
       return new Response(JSON.stringify({ error: "Nie udało się teraz uzyskać odpowiedzi." }), { status: 502, headers });
     }
+    const needsContact = /nie mam potwierdzonej|nie mam informacji|nie mogę potwierdzić|skontaktuj się|skontaktujcie się|napisz do familocka|zadzwoń do familocka/i.test(answer);
     await logChatEvent({
       conversation_id: analyticsMeta.conversationId,
       question: analyticsQuestion,
       category: analyticsCategory,
       source: analyticsMeta.source,
       page_path: analyticsMeta.pagePath,
-      status: "ok",
+      status: needsContact ? "needs_contact" : "ok",
       response_ms: Math.round(performance.now() - startedAt),
       error_code: null,
       model: String(data?.model || "gpt-6-luna")
