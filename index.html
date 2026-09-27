@@ -271,7 +271,16 @@ section{padding:5.5rem 3rem}
 .reviews-widget-title{font-family:var(--fd);font-size:1.35rem;font-weight:800;line-height:1.1;color:var(--cream)}
 .reviews-widget-source{margin-left:auto;text-align:right;font-family:var(--fd);font-size:.64rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);line-height:1.35;white-space:nowrap}
 .reviews-widget-source strong{display:block;font-size:.82rem;color:var(--cream2);letter-spacing:.1em}
-.reviews-lockme-frame{display:block;width:100%;height:450px!important;min-height:450px!important;max-height:450px!important;background:#fff;border:0;color-scheme:light;overflow:auto}
+.reviews-quotes{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border2);border-top:1px solid var(--border2)}
+.review-quote{position:relative;padding:1.6rem;background:linear-gradient(145deg,var(--card2),var(--card));min-height:205px;display:flex;flex-direction:column}
+.review-quote::before{content:"“";position:absolute;right:1.2rem;top:.2rem;font-family:var(--fs);font-size:5rem;line-height:1;color:rgba(210,96,111,.12)}
+.review-quote-stars{font-size:.82rem;letter-spacing:.12em;color:#f4b400;margin-bottom:.75rem}
+.review-quote-text{position:relative;font-family:var(--fs);font-style:italic;font-size:.93rem;line-height:1.75;color:var(--cream);margin-bottom:1.1rem}
+.review-quote-author{margin-top:auto;font-family:var(--fd);font-size:.78rem;font-weight:800;letter-spacing:.08em;color:var(--cream2)}
+.review-quote-source{font-size:.66rem;color:var(--muted);margin-top:.12rem}
+.reviews-footer{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.5rem;background:var(--bg3);border-top:1px solid var(--border2);flex-wrap:wrap}
+.reviews-footer-note{font-size:.7rem;color:var(--muted)}
+.reviews-footer-actions{display:flex;gap:.55rem;flex-wrap:wrap}
 .reviews-sources{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border2);border-bottom:1px solid var(--border2)}
 .review-source-card{min-height:190px;padding:1.5rem;background:var(--card);display:flex;flex-direction:column;justify-content:center}
 .review-source-name{font-family:var(--fd);font-size:.68rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--gray-light);margin-bottom:.45rem}
@@ -286,7 +295,7 @@ section{padding:5.5rem 3rem}
 .review-source-actions a:first-child{border-color:var(--red-dark);color:var(--cream)}
 .review-source-actions a:hover,.review-source-link:hover{border-color:var(--red);color:var(--cream);background:var(--red-deep)}
 .reviews-lockme-label{padding:.7rem 1.5rem;background:var(--bg3);border-bottom:1px solid var(--border2);font-family:var(--fd);font-size:.64rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-@media(max-width:700px){.reviews-sources{grid-template-columns:1fr}.review-source-card{min-height:0;padding:1.25rem}.reviews-widget-source{display:none}}
+@media(max-width:700px){.reviews-sources,.reviews-quotes{grid-template-columns:1fr}.review-source-card{min-height:0;padding:1.25rem}.review-quote{min-height:0;padding:1.25rem}.reviews-widget-source{display:none}.reviews-footer{padding:1rem 1.25rem}}
 .booking-lockme-frame[hidden],.map-wrap iframe[hidden]{display:none!important}
 .service-consent-placeholder{display:flex;min-height:260px;align-items:center;justify-content:center;padding:2rem;background:linear-gradient(145deg,var(--card),var(--bg2));text-align:center}
 .service-consent-placeholder[hidden]{display:none!important}
@@ -460,7 +469,6 @@ footer{background:#080808;border-top:1px solid var(--border);padding:2.5rem 3rem
   .reviews-widget-title{font-size:1.15rem}
   .reviews-widget-source{font-size:.57rem;letter-spacing:.08em}
   .reviews-widget-source strong{font-size:.72rem}
-  .reviews-lockme-frame{height:480px!important;min-height:480px!important;max-height:480px!important}
 }
 </style>
 </head>
@@ -700,20 +708,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="review-source-name">Google</div>
             <div class="review-source-score"><span>5,0</span><span class="review-stars" aria-label="5 na 5 gwiazdek">★★★★★</span></div>
             <div class="review-source-count">24 opinie graczy</div>
-            <div class="review-source-actions">
-              <a href="https://www.google.com/maps/search/?api=1&query=Familock%20Escape%20Room&query_place_id=ChIJ4Y6DzX7NFkcR1tnUJDcp-6w" target="_blank" rel="noopener noreferrer">Zobacz opinie</a>
-              <a href="https://g.page/r/CdbZ1CQ3KfusEBI/review" target="_blank" rel="noopener noreferrer">Dodaj opinię</a>
-            </div>
           </div>
           <div class="review-source-card review-source-lockme">
             <div class="review-source-name">LockMe</div>
-            <div class="review-source-label">Zweryfikowane opinie graczy</div>
-            <div class="review-source-copy">Przeczytaj oceny osób, które odwiedziły Starzika i dodały wizytę w serwisie LockMe.</div>
-            <a class="review-source-link" href="https://lock.me/pl/poland/slaskie/swietochlowice/escape-room/familock/14685-starzik" target="_blank" rel="noopener noreferrer">Zobacz Starzika na LockMe</a>
+            <div class="review-source-score"><span>9,5</span><span class="review-source-label">/ 10</span></div>
+            <div class="review-source-count">8 opinii graczy</div>
           </div>
         </div>
-        <div class="reviews-lockme-label">Najnowsze opinie na LockMe</div>
-        <iframe class="reviews-lockme-frame" src="https://widget.lock.me/pl/comments/fd5ace6aab33825bcc05880372c4f7b0.html" loading="lazy" scrolling="auto" title="Opinie graczy o Familock na LockMe"></iframe>
+        <div class="reviews-quotes" aria-label="Wybrane opinie Google">
+          <article class="review-quote">
+            <div class="review-quote-stars" aria-label="5 na 5 gwiazdek">★★★★★</div>
+            <blockquote class="review-quote-text">„Byłam w kilku ESCAPE ROOM, to mój 8 zaliczony pokój i jestem pod mega wrażeniem 😍 świetna zabawa, super zagadki łączące się w ciekawą historię z morałem ❤️ bardzo polecam i czekamy na kolejne pokoje 🥰”</blockquote>
+            <div class="review-quote-author">Wioleta Prusak</div>
+            <div class="review-quote-source">Opinia w Google</div>
+          </article>
+          <article class="review-quote">
+            <div class="review-quote-stars" aria-label="5 na 5 gwiazdek">★★★★★</div>
+            <blockquote class="review-quote-text">„Odwiedziłyśmy pokój „Starzik” i byłyśmy pod wrażeniem!! Od samego wprowadzenia świetnie zbudowany klimat, zagadki bardzo przyjemne i spójne - pasują do fabuły! Na wielkie wyróżnienie zasługuje także mistrz gry/właściciel. Widać, że wkłada całe serce w to co robi!”</blockquote>
+            <div class="review-quote-author">Martyna Wróbel</div>
+            <div class="review-quote-source">Opinia w Google</div>
+          </article>
+        </div>
+        <div class="reviews-footer">
+          <div class="reviews-footer-note">Oceny i cytaty pochodzą z profili Familock w Google i LockMe.</div>
+          <div class="reviews-footer-actions review-source-actions">
+            <a href="https://www.google.com/maps/search/?api=1&query=Familock%20Escape%20Room&query_place_id=ChIJ4Y6DzX7NFkcR1tnUJDcp-6w" target="_blank" rel="noopener noreferrer">Więcej opinii Google</a>
+            <a href="https://g.page/r/CdbZ1CQ3KfusEAE/review" target="_blank" rel="noopener noreferrer">Dodaj opinię</a>
+            <a href="https://lock.me/pl/poland/slaskie/swietochlowice/escape-room/familock/14685-starzik" target="_blank" rel="noopener noreferrer">Opinie LockMe</a>
+          </div>
+        </div>
       </div>
     </div>
     <div class="rez-grid" style="grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem">
