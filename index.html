@@ -1606,8 +1606,8 @@ document.addEventListener('keydown', function(e) {
 <style>
 #familock-ai-launch{position:fixed;right:22px;bottom:22px;z-index:9997;border:1px solid #4a4244;background:#8b2530;color:#fff;border-radius:999px;padding:12px 17px;font:700 14px "Barlow Condensed",sans-serif;letter-spacing:.04em;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 #familock-ai-launch:hover{background:#a03340}
-#familock-ai-box{position:fixed;right:22px;bottom:78px;z-index:9998;width:min(460px,calc(100vw - 24px));height:auto;max-height:min(570px,calc(100vh - 100px));background:#121212;border:1px solid #353030;border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.55);display:none;overflow:hidden;font-family:"Barlow",sans-serif}
-#familock-ai-box.open{display:flex;flex-direction:column}
+#familock-ai-box{position:fixed;right:22px;bottom:78px;z-index:9998;width:min(460px,calc(100vw - 24px));height:auto!important;max-height:min(570px,calc(100vh - 100px));background:#121212;border:1px solid #353030;border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.55);display:none;overflow:hidden;font-family:"Barlow",sans-serif}
+#familock-ai-box.open{display:flex;flex-direction:column;min-height:0!important}
 .fai-head{padding:15px 16px;background:#1c1a1a;border-bottom:1px solid #353030;display:flex;align-items:center;justify-content:space-between}
 .fai-title{font:700 18px "Barlow Condensed",sans-serif;letter-spacing:.04em;color:#f0ecec}.fai-sub{font-size:11px;color:#9a918f}
 .fai-close{border:0;background:transparent;color:#b0a8a5;font-size:24px;cursor:pointer;line-height:1}
@@ -1616,7 +1616,7 @@ document.addEventListener('keydown', function(e) {
 .fai-bot{align-self:flex-start;background:#211f1f;color:#f0ecec;border:1px solid #353030}.fai-user{align-self:flex-end;background:#8b2530;color:#fff}
 .fai-quick{display:flex;gap:7px;flex-wrap:wrap;padding:0 18px 12px}.fai-quick button{border:1px solid #4a4244;background:#161616;color:#b0a8a5;border-radius:999px;padding:6px 9px;font:600 11px "Barlow",sans-serif;cursor:pointer}.fai-quick button:hover{border-color:#8b2530;color:#f0ecec}
 .fai-form{display:flex;gap:8px;padding:12px;border-top:1px solid #353030;background:#161616}.fai-form input{min-width:0;flex:1;background:#0d0d0d;color:#f0ecec;border:1px solid #353030;border-radius:9px;padding:10px 11px;font:400 13px "Barlow",sans-serif;outline:none}.fai-form input:focus{border-color:#8b2530}.fai-form button{border:0;border-radius:9px;background:#8b2530;color:#fff;padding:0 13px;font-weight:700;cursor:pointer}
-.fai-note{padding:0 12px 9px;background:#161616;color:#777;font-size:9px;text-align:center}
+.fai-note{padding:0 12px 9px;background:#161616;color:#777;font-size:9px;text-align:center}#familock-ai-box:after{display:none!important;content:none!important}
 @media(max-width:520px){#familock-ai-launch{right:12px;bottom:12px}#familock-ai-box{left:8px;right:8px;bottom:64px;width:auto;height:auto;max-height:calc(100dvh - 82px);border-radius:14px}.fai-head{padding:13px 14px}#familock-ai-messages{padding:14px}.fai-msg{max-width:92%;font-size:14px}.fai-quick{padding:0 14px 10px}.fai-form{padding:10px}.fai-note{padding:0 10px 8px}}
 </style>
 <button id="familock-ai-launch" type="button" aria-controls="familock-ai-box" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="vertical-align:-4px;margin-right:7px"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3 1.7-5.1A7 7 0 0 1 3 12V8a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>Zapytej Starzika</button>
