@@ -72,6 +72,7 @@ function questionCategory(value: unknown) {
   if (/dziec|wiek|lat|małolet|rodzic|opiekun/.test(q)) return "dzieci";
   if (/ile koszt|cena|cennik|koszt|zł|zlot/.test(q)) return "cennik";
   if (/rezerw|woln.{0,6}termin|termin|dostęp|kalendarz/.test(q)) return "rezerwacja";
+  if (/kontakt|telefon|mail|email|napisać|zadzwonić/.test(q)) return "kontakt";
   if (/parking|zapark|dojazd|adres|gdzie jesteście|gdzie jest/.test(q)) return "dojazd_parking";
   if (/horror|strach|strasz|ciem|ciasn|klaustro/.test(q)) return "charakter_gry";
   if (/pierwszy.*escape|pierwszy raz|początkuj|doświadczen/.test(q)) return "pierwszy_raz";
@@ -79,7 +80,6 @@ function questionCategory(value: unknown) {
   if (/spóź|spozn|wcześniej|wczesniej|przyjść|przyjechać|godzin.{0,8}przed/.test(q)) return "organizacja_wizyty";
   if (/podpowied|wskazów/.test(q)) return "podpowiedzi";
   if (/tesla/.test(q)) return "tesla_box";
-  if (/kontakt|telefon|mail|email|napisać|zadzwonić/.test(q)) return "kontakt";
   return "inne";
 }
 
