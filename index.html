@@ -1632,18 +1632,30 @@ document.addEventListener('keydown', function(e) {
   var endpoint='https://xyivrakegwybwhmmcawq.supabase.co/functions/v1/familock-chat';
   var launch=document.getElementById('familock-ai-launch'),box=document.getElementById('familock-ai-box'),close=box.querySelector('.fai-close'),form=box.querySelector('.fai-form'),input=document.getElementById('familock-ai-input'),messagesEl=document.getElementById('familock-ai-messages'),quick=box.querySelector('.fai-quick');
   var history=[],busy=false;
+  var conversationId=(function(){
+    var key='familock_ai_conversation_id';
+    try{
+      var existing=sessionStorage.getItem(key);
+      if(existing)return existing;
+      var created=(window.crypto&&typeof window.crypto.randomUUID==='function')?window.crypto.randomUUID():('chat_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,10));
+      sessionStorage.setItem(key,created);
+      return created;
+    }catch(e){
+      return 'chat_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,10);
+    }
+  })();
   function toggle(open){box.classList.toggle('open',open);box.setAttribute('aria-hidden',open?'false':'true');launch.setAttribute('aria-expanded',open?'true':'false');if(open)setTimeout(function(){input.focus()},50)}
   function add(text,who){var d=document.createElement('div');d.className='fai-msg '+(who==='user'?'fai-user':'fai-bot');d.textContent=text;messagesEl.appendChild(d);messagesEl.scrollTop=messagesEl.scrollHeight;return d}
-  async function ask(text){
-    text=(text||'').trim();if(!text||busy)return;busy=true;input.value='';add(text,'user');history.push({role:'user',content:text});if(history.length>10)history=history.slice(-10);
+  async function ask(text,source){
+    text=(text||'').trim();if(!text||busy)return;source=source==='quick'?'quick':'typed';busy=true;input.value='';add(text,'user');history.push({role:'user',content:text});if(history.length>10)history=history.slice(-10);
     var wait=add('Chwileczkę…','bot');
-    try{var r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:history})});var data=await r.json();wait.remove();if(!r.ok)throw new Error(data.error||'Błąd');var answer=data.answer||'Nie udało mi się odpowiedzieć.';add(answer,'bot');history.push({role:'assistant',content:answer});if(history.length>10)history=history.slice(-10)}
+    try{var r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:history,meta:{conversationId:conversationId,pagePath:location.pathname,source:source}})});var data=await r.json();wait.remove();if(!r.ok)throw new Error(data.error||'Błąd');var answer=data.answer||'Nie udało mi się odpowiedzieć.';add(answer,'bot');history.push({role:'assistant',content:answer});if(history.length>10)history=history.slice(-10)}
     catch(e){wait.remove();add(e.message==='Czat jest jeszcze konfigurowany.'?e.message:'Czat jest chwilowo niedostępny. Spróbuj ponownie później.','bot')}
     finally{busy=false}
   }
   launch.addEventListener('click',function(){toggle(!box.classList.contains('open'))});close.addEventListener('click',function(){toggle(false)});
-  form.addEventListener('submit',function(e){e.preventDefault();ask(input.value)});
-  quick.addEventListener('click',function(e){if(e.target.tagName==='BUTTON')ask(e.target.textContent)});
+  form.addEventListener('submit',function(e){e.preventDefault();ask(input.value,'typed')});
+  quick.addEventListener('click',function(e){if(e.target.tagName==='BUTTON')ask(e.target.textContent,'quick')});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&box.classList.contains('open'))toggle(false)});
 })();
 </script>
