@@ -1,3 +1,9 @@
+User-agent: OAI-AdsBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
 User-agent: *
 Allow: /
 
