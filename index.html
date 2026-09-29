@@ -64,6 +64,23 @@ window.gtag('consent', 'default', {
 window.gtag('set', 'ads_data_redaction', true);
 window.gtag('js', new Date());
 </script>
+<!-- OpenAI Ads Measurement Pixel -->
+<script>
+(function (w, d, s, u) {
+  if (w.oaiq) return;
+  var q = function () { q.q.push(arguments); };
+  q.q = [];
+  w.oaiq = q;
+  var js = d.createElement(s);
+  js.async = true;
+  js.src = u;
+  var first = d.getElementsByTagName(s)[0];
+  first.parentNode.insertBefore(js, first);
+})(window, document, "script", "https://bzrcdn.openai.com/sdk/oaiq.min.js");
+oaiq("consent", false);
+oaiq("init", { pixelId: "GteFZqEZmoygVMNge5XJkH" });
+</script>
+<!-- End OpenAI Ads Measurement Pixel -->
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -1383,10 +1400,10 @@ document.addEventListener('keydown', function(e) {
         <div class="cookie-category">
           <div>
             <div class="cookie-category-name">Reklamowe</div>
-            <div class="cookie-category-copy">Google Ads służy do pomiaru skuteczności reklam i konwersji. Personalizacja reklam pozostaje wyłączona.</div>
+            <div class="cookie-category-copy">Google Ads i OpenAI Ads służą do pomiaru skuteczności reklam i konwersji. Personalizacja reklam pozostaje wyłączona.</div>
           </div>
           <label class="cookie-toggle">
-            <input id="cookie-marketing" type="checkbox" aria-label="Zezwól na pomiar Google Ads">
+            <input id="cookie-marketing" type="checkbox" aria-label="Zezwól na pomiar Google Ads i OpenAI Ads">
             <span class="cookie-switch" aria-hidden="true"></span>
           </label>
         </div>
@@ -1406,14 +1423,15 @@ document.addEventListener('keydown', function(e) {
 (function() {
   'use strict';
 
-  var STORAGE_KEY = 'familock_cookie_consent_v5';
-  var CONSENT_VERSION = 5;
+  var STORAGE_KEY = 'familock_cookie_consent_v6';
+  var CONSENT_VERSION = 6;
   var CONSENT_MAX_AGE = 180 * 24 * 60 * 60 * 1000;
   var GA_MEASUREMENT_ID = 'G-LY7D7XH1K3';
   var GOOGLE_ADS_ID = 'AW-18392650191';
   var currentConsent = null;
   var analyticsConfigured = false;
   var adsConfigured = false;
+  var openAiPageViewedSent = false;
 
   // Google tag i domyślne stany Consent Mode są inicjalizowane w <head>.
 
@@ -1533,6 +1551,16 @@ document.addEventListener('keydown', function(e) {
         allow_ad_personalization_signals: false
       });
     }
+
+    // OpenAI Ads Measurement Pixel korzysta z tej samej zgody reklamowej.
+    if (typeof window.oaiq === 'function') {
+      window.oaiq('consent', !!enabled);
+      if (enabled && !openAiPageViewedSent) {
+        window.oaiq('measure', 'page_viewed', { type: 'contents' });
+        openAiPageViewedSent = true;
+      }
+    }
+
     if (!enabled) deleteAdvertisingCookies();
   }
 
