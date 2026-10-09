@@ -53,34 +53,148 @@ Gdy ktoś pyta ogólnie „ile kosztuje gra?”, najpierw zapytaj: „Ile osób 
 Jeżeli użytkownik od razu poda liczbę osób, dzień i godzinę, podaj cenę bez dodatkowych pytań.
 Jeśli pyta o dziecko i wiek dziecka ma znaczenie, dopytaj o wiek. Jeśli pyta o 6 osób, dopytaj, ile z tych osób to dzieci. W innych tematach również zadawaj krótkie pytanie uzupełniające, jeśli bez niego odpowiedź mogłaby być błędna.
 
-Jeżeli pytanie dotyczy konkretnego wolnego terminu lub innej informacji, której nie ma w tej bazie, nie wymyślaj wartości. Skieruj użytkownika do aktualnego cennika/rezerwacji na familock.pl.
+REZERWACJE I SZARE TERMINY:
+Kalendarz rezerwacji pokazuje wyłącznie godziny, które są aktualnie udostępnione do rezerwacji. Jeżeli przyszły dzień jest wyszarzony, oznacza to, że w tej chwili nie ma na nim aktywnej godziny do zarezerwowania — terminy mogą nie być jeszcze udostępnione albo mogą być niedostępne. Nie twierdź, że dany dzień jest definitywnie zamknięty.
+Jeśli ktoś pyta „kiedy będzie można zarezerwować 7.11?” albo „od listopada wszystko jest szare”, wyjaśnij powyższą zasadę. Jeśli nie masz potwierdzonej daty publikacji konkretnego dnia, powiedz wprost, że nie znasz dokładnego dnia jego udostępnienia i zasugeruj ponowne sprawdzenie kalendarza. Nie kieruj automatycznie do kontaktu tylko dlatego, że termin jest jeszcze szary.
+Aktualne terminy są pod: https://familock.pl/starzik/#rezerwacja
+
+JĘZYK POLSKI:
+Nie trzeba znać śląskiego. Starzik jest prowadzony po polsku i nie ma pełnej wersji angielskiej.
+Jeżeli w grupie tylko jedna osoba dobrze zna polski, może tłumaczyć pozostałym. Nie ma wymogu, aby więcej niż jedna osoba znała polski. Trzeba jednak pamiętać, że część fabuły, komunikatów i wskazówek jest po polsku, więc bez osoby tłumaczącej komfort gry będzie wyraźnie mniejszy.
+Nie sugeruj, że znajomość śląskiej gwary jest potrzebna.
+
+RANKING LOCKME:
+Jeśli pytanie dotyczy miejsca Starzika w rankingu LockMe, korzystaj z DANYCH LIVE LOCKME dołączonych do rozmowy. Ranking zmienia się wraz z opiniami, dlatego podawaj go jako „aktualnie według LockMe”. Jeśli danych live nie udało się pobrać, nie zgaduj pozycji.
+
+KRÓTKIE I NIETYPOWE WIADOMOŚCI:
+Na samo „Dzień dobry”, „cześć”, „hej” odpowiedz krótko i zapytaj, w czym pomóc.
+Jeśli użytkownik odpowiada pojedynczym słowem lub liczbą na Twoje wcześniejsze pytanie („3”, „sobota”, „18”, „tak”), traktuj to jako ciąg dalszy rozmowy i wykorzystuj wcześniejszy kontekst.
+Jeżeli wiadomość wygląda na przypadkowy ciąg znaków, np. „DGYOJK”, nie udawaj, że rozumiesz. Napisz krótko: „Nie złapałem pytania 🙂 Napisz proszę jeszcze raz — mogę pomóc z ceną, terminem, liczbą graczy, dziećmi albo voucherem.”
+
+Jeżeli pytanie dotyczy konkretnego wolnego terminu lub innej informacji, której nie ma w tej bazie, nie wymyślaj wartości. Najpierw wykorzystaj DANE LIVE LOCKME, jeśli zostały dołączone. Jeśli nadal nie ma odpowiedzi, wskaż aktualny kalendarz na familock.pl/starzik/#rezerwacja.
 `;
 
 
 function redactQuestion(value: unknown) {
   let text = String(value ?? "").trim().slice(0, 500);
+  const dates: string[] = [];
+  text = text.replace(/\b(?:0?[1-9]|[12]\d|3[01])[.\/-](?:0?[1-9]|1[0-2])(?:[.\/-](?:20)?\d{2})?\b/g, match => {
+    const token = `__FAMILOCK_DATE_${dates.length}__`;
+    dates.push(match);
+    return token;
+  });
   text = text.replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, "[email]");
   text = text.replace(/(?:\+?\d[\d\s().-]{7,}\d)/g, "[telefon]");
+  dates.forEach((date, index) => {
+    text = text.replace(`__FAMILOCK_DATE_${index}__`, date);
+  });
   return text;
 }
 
 function questionCategory(value: unknown) {
-  const q = String(value ?? "").toLowerCase();
+  const q = String(value ?? "").toLowerCase().trim();
+  if (/^(dzień dobry|dzien dobry|cześć|czesc|hej|witam|siema)[!,. ]*$/.test(q)) return "powitanie";
+  if (/^[a-ząćęłńóśźż]{5,}$/i.test(q) && !/[aeiouyąęó]/i.test(q)) return "niezrozumiale";
+  if (/ranking|którym miejscu|ktorym miejscu|miejsce.*lockme|lockme.*miejsce|miejsce.*śląsk|miejsce.*slask/.test(q)) return "ranking";
   if (/voucher|bon|prezent/.test(q)) return "voucher";
   if (/promoc|zniż|rabat|karta seniora|stefa|józef|tesli/.test(q)) return "promocje";
   if (/ile (osób|graczy)|gracz|osob.{0,4}może|6 osób|sześć osób/.test(q)) return "liczba_graczy";
   if (/dziec|wiek|lat|małolet|rodzic|opiekun/.test(q)) return "dzieci";
   if (/ile koszt|cena|cennik|koszt|zł|zlot/.test(q)) return "cennik";
-  if (/rezerw|woln.{0,6}termin|termin|dostęp|kalendarz/.test(q)) return "rezerwacja";
+  if (/rezerw|woln.{0,6}termin|termin|dostęp|kalendarz|szar.{0,8}(dzień|dni|termin)/.test(q)) return "rezerwacja";
   if (/kontakt|telefon|mail|email|napisać|zadzwonić/.test(q)) return "kontakt";
   if (/parking|zapark|dojazd|adres|gdzie jesteście|gdzie jest/.test(q)) return "dojazd_parking";
   if (/horror|strach|strasz|ciem|ciasn|klaustro/.test(q)) return "charakter_gry";
   if (/pierwszy.*escape|pierwszy raz|początkuj|doświadczen/.test(q)) return "pierwszy_raz";
-  if (/angiel|język|sląsk|śląsk|gwara/.test(q)) return "jezyk";
+  if (/angiel|język|polsk|gwara|śląsk.{0,8}(język|gwara)|slask.{0,8}(jezyk|gwara)/.test(q)) return "jezyk";
   if (/spóź|spozn|wcześniej|wczesniej|przyjść|przyjechać|godzin.{0,8}przed/.test(q)) return "organizacja_wizyty";
   if (/podpowied|wskazów/.test(q)) return "podpowiedzi";
   if (/tesla/.test(q)) return "tesla_box";
   return "inne";
+}
+
+function questionCategoryWithContext(messages: Array<{role:string,content:string}>) {
+  const last = messages[messages.length - 1]?.content || "";
+  const direct = questionCategory(last);
+  if (direct !== "inne") return direct;
+  const compact = String(last).trim();
+  if (compact.length > 18) return direct;
+  for (let i = messages.length - 2; i >= 0; i--) {
+    if (messages[i]?.role !== "user") continue;
+    const inherited = questionCategory(messages[i].content);
+    if (!["inne","powitanie","niezrozumiale"].includes(inherited)) return inherited;
+  }
+  return direct;
+}
+
+async function liveLockmeContext(question: string) {
+  const q = String(question || "").toLowerCase();
+  const needsRanking = /ranking|którym miejscu|ktorym miejscu|miejsce.*lockme|lockme.*miejsce|miejsce.*śląsk|miejsce.*slask/.test(q);
+  const needsAvailability = /rezerw|termin|kalendarz|woln|szar/.test(q);
+  if (!needsRanking && !needsAvailability) return "";
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 2500);
+  try {
+    const response = await fetch("https://lock.me/pl/poland/slaskie/swietochlowice/escape-room/tajemnica-garazu/14685-starzik", {
+      headers: { "User-Agent": "FamilockChat/1.0", "Accept": "text/html" },
+      signal: controller.signal
+    });
+    if (!response.ok) return "";
+    const html = await response.text();
+    const text = html
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/&oacute;/gi, "ó")
+      .replace(/&Oacute;/gi, "Ó")
+      .replace(/&sacute;/gi, "ś")
+      .replace(/&Sacute;/gi, "Ś")
+      .replace(/&lstrok;/gi, "ł")
+      .replace(/&Lstrok;/gi, "Ł")
+      .replace(/&aogon;/gi, "ą")
+      .replace(/&Aogon;/gi, "Ą")
+      .replace(/&eogon;/gi, "ę")
+      .replace(/&Eogon;/gi, "Ę")
+      .replace(/&zacute;/gi, "ź")
+      .replace(/&Zacute;/gi, "Ź")
+      .replace(/&zdot;/gi, "ż")
+      .replace(/&Zdot;/gi, "Ż")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    const parts: string[] = [];
+    const rating = text.match(/(\d+[.,]\d+)\s*\/\s*10/i);
+    const reviews = text.match(/(\d+)\s+opinii/i);
+    const city = text.match(/Świętochłowice:\s*(\d+)\.\s*miejsce/i);
+    const region = text.match(/Śląskie:\s*(\d+)\.\s*miejsce/i);
+    const poland = text.match(/Polska:\s*(\d+)\.\s*miejsce/i);
+    const nearest = text.match(/Najbliższy wolny termin:\s*(\d{1,2}\.\d{1,2}\.\d{4})/i);
+
+    if (needsRanking) {
+      if (rating) parts.push(`ocena ${rating[1]}/10`);
+      if (reviews) parts.push(`${reviews[1]} opinii`);
+      if (city) parts.push(`Świętochłowice: ${city[1]}. miejsce`);
+      if (region) parts.push(`Śląskie: ${region[1]}. miejsce`);
+      if (poland) parts.push(`Polska: ${poland[1]}. miejsce`);
+    }
+    if (needsAvailability && nearest) parts.push(`najbliższy wolny termin widoczny publicznie: ${nearest[1]}`);
+
+    return parts.length ? `DANE LIVE LOCKME (pobrane teraz z publicznego profilu Starzika): ${parts.join("; ")}. Ranking i terminy mogą się zmieniać.` : "";
+  } catch (_) {
+    return "";
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function polishToday() {
+  try {
+    return new Intl.DateTimeFormat("pl-PL",{timeZone:"Europe/Warsaw",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
+  } catch (_) {
+    return new Date().toISOString().slice(0,10);
+  }
 }
 
 function safeMeta(body: any) {
@@ -148,7 +262,7 @@ Deno.serve(async (req: Request) => {
     }
 
     analyticsQuestion = redactQuestion(messages[messages.length - 1].content);
-    analyticsCategory = questionCategory(analyticsQuestion);
+    analyticsCategory = questionCategoryWithContext(messages);
 
     const apiKey = Deno.env.get("OPENAI_API_KEY");
     if (!apiKey) {
@@ -171,7 +285,7 @@ Deno.serve(async (req: Request) => {
       headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "gpt-6-luna",
-        instructions: KNOWLEDGE,
+        instructions: `${KNOWLEDGE}\n\nDZISIAJ: ${polishToday()}\n${await liveLockmeContext(messages[messages.length - 1].content)}`,
         input: messages,
         max_output_tokens: 350,
         reasoning: { effort: "none" },
@@ -211,7 +325,7 @@ Deno.serve(async (req: Request) => {
       });
       return new Response(JSON.stringify({ error: "Nie udało się teraz uzyskać odpowiedzi." }), { status: 502, headers });
     }
-    const needsContact = /nie mam potwierdzonej|nie mam informacji|nie mogę potwierdzić|skontaktuj się|skontaktujcie się|napisz do familocka|zadzwoń do familocka/i.test(answer);
+    const needsContact = /skontaktuj się|skontaktujcie się|napisz do (nas|familocka)|zadzwoń do (nas|familocka)|kontakt z familockiem/i.test(answer);
     await logChatEvent({
       conversation_id: analyticsMeta.conversationId,
       question: analyticsQuestion,
