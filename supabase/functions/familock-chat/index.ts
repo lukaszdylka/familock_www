@@ -242,7 +242,7 @@ async function liveKnowledgeContext(question: string, category: string) {
 
     const ranked = rows
       .map((row:any) => ({...row, score:knowledgeScore(question, String(row.question||""), category, String(row.category||"inne"))}))
-      .filter((row:any) => row.score >= 0.7 || (String(question).trim().length <= 20 && String(row.category||"") === category))
+      .filter((row:any) => row.score >= 0.55 || (String(question).trim().length <= 20 && String(row.category||"") === category))
       .sort((a:any,b:any) => b.score-a.score)
       .slice(0,3);
 
