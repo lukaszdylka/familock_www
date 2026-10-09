@@ -192,6 +192,70 @@ async function liveLockmeContext(question: string) {
   }
 }
 
+
+function normalizeKnowledgeText(value: unknown) {
+  return String(value ?? "")
+    .toLocaleLowerCase("pl-PL")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9ąćęłńóśźż\s]/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function knowledgeTokens(value: unknown) {
+  const stop = new Set(["czy","jak","ile","jest","sa","są","sie","się","na","do","od","w","z","ze","i","a","o","po","dla","ten","ta","to","te","mozna","można","bedzie","będzie","mam","chce","chcę"]);
+  return new Set(normalizeKnowledgeText(value).split(" ").filter(token => token.length >= 3 && !stop.has(token)));
+}
+
+function knowledgeScore(question: string, sample: string, category: string, sampleCategory: string) {
+  const q = normalizeKnowledgeText(question);
+  const s = normalizeKnowledgeText(sample);
+  if (!q || !s) return 0;
+  if (q === s) return 10;
+  let score = 0;
+  if ((q.includes(s) || s.includes(q)) && Math.min(q.length, s.length) >= 8) score += 2.5;
+  const qt = knowledgeTokens(q), st = knowledgeTokens(s);
+  let overlap = 0;
+  for (const token of qt) if (st.has(token)) overlap += 1;
+  if (qt.size && st.size) score += overlap / Math.max(1, Math.min(qt.size, st.size));
+  if (category && sampleCategory === category) score += 0.35;
+  return score;
+}
+
+async function liveKnowledgeContext(question: string, category: string) {
+  const url = Deno.env.get("SUPABASE_URL");
+  const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!url || !key) return "";
+  try {
+    const endpoint = new URL(`${url}/rest/v1/familock_chat_knowledge`);
+    endpoint.searchParams.set("select","id,question,answer,category,updated_at");
+    endpoint.searchParams.set("active","eq.true");
+    endpoint.searchParams.set("order","updated_at.desc");
+    endpoint.searchParams.set("limit","200");
+    const response = await fetch(endpoint, {
+      headers: { apikey:key, Authorization:`Bearer ${key}`, Accept:"application/json" }
+    });
+    if (!response.ok) return "";
+    const rows = await response.json().catch(() => []);
+    if (!Array.isArray(rows) || !rows.length) return "";
+
+    const ranked = rows
+      .map((row:any) => ({...row, score:knowledgeScore(question, String(row.question||""), category, String(row.category||"inne"))}))
+      .filter((row:any) => row.score >= 0.7 || (String(question).trim().length <= 20 && String(row.category||"") === category))
+      .sort((a:any,b:any) => b.score-a.score)
+      .slice(0,3);
+
+    if (!ranked.length) return "";
+    const entries = ranked.map((row:any,index:number) =>
+      `${index+1}. [${String(row.category||"inne")}] Pytanie wzorcowe: ${String(row.question||"").slice(0,500)}\nZatwierdzona odpowiedź: ${String(row.answer||"").slice(0,1800)}`
+    ).join("\n\n");
+    return `ZATWIERDZONA WIEDZA LIVE OD WŁAŚCICIELA FAMILOCKA:\n${entries}\nJeżeli wpis dotyczy pytania użytkownika, ma pierwszeństwo przed bardziej ogólnymi informacjami. Dostosuj brzmienie do rozmowy, ale zachowaj jego sens.`;
+  } catch (_) {
+    return "";
+  }
+}
+
 function polishToday() {
   try {
     return new Intl.DateTimeFormat("pl-PL",{timeZone:"Europe/Warsaw",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
@@ -288,7 +352,7 @@ Deno.serve(async (req: Request) => {
       headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "gpt-6-luna",
-        instructions: `${KNOWLEDGE}\n\nDZISIAJ: ${polishToday()}\n${await liveLockmeContext(messages[messages.length - 1].content)}`,
+        instructions: `${KNOWLEDGE}\n\nDZISIAJ: ${polishToday()}\n${await liveKnowledgeContext(messages[messages.length - 1].content, analyticsCategory)}\n${await liveLockmeContext(messages[messages.length - 1].content)}`,
         input: messages,
         max_output_tokens: 350,
         reasoning: { effort: "none" },
@@ -338,7 +402,8 @@ Deno.serve(async (req: Request) => {
       status: needsContact ? "needs_contact" : "ok",
       response_ms: Math.round(performance.now() - startedAt),
       error_code: null,
-      model: String(data?.model || "gpt-6-luna")
+      model: String(data?.model || "gpt-6-luna"),
+      answer: answer.slice(0, 4000)
     });
     return new Response(JSON.stringify({ answer }), { status: 200, headers });
   } catch (e) {
