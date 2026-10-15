@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'familock_cookie_consent_v5';
-  var CONSENT_VERSION = 5;
+  var STORAGE_KEY = 'familock_cookie_consent_v6';
+  var CONSENT_VERSION = 6;
   var GA_MEASUREMENT_ID = 'G-LY7D7XH1K3';
   var leadSentAt = 0;
   var bookingViewSent = false;
