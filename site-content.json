@@ -13,7 +13,7 @@
       "starzik": {
         "status": "available",
         "statusText": "Dostępny",
-        "tag": "Pokój zagadek · 2–4 osoby",
+        "tag": "Pokój zagadek · 2–5 osób",
         "description": "Dziadek Józef zaginął. Nikt nie ma kluczy. Jako pracownicy MOPS musicie dostać się do familoka i odkryć, co mu się przydarzyło.",
         "priceText": "od 250 zł"
       },
@@ -124,7 +124,7 @@
       },
       "12": {
         "question": "Czy Familock nadaje się na urodziny, wyjście szkolne lub firmowe?",
-        "answer": "Tak, jeśli chodzi o małą grupę. Starzik jest przeznaczony standardowo dla 2–4 osób. Piąta osoba może dołączyć po wcześniejszym uzgodnieniu. Przy urodzinach po wcześniejszym uzgodnieniu może zagrać maksymalnie 6 osób. Nie mamy sali urodzinowej, cateringu ani przestrzeni na większe imprezy. W przypadku szkoły zapraszamy np. niewielką grupę uczniów w ramach nagrody, koła zainteresowań lub samorządu. Zobacz szczegóły dla grup i okazji."
+        "answer": "Tak, jeśli chodzi o małą grupę. Starzik jest przeznaczony standardowo dla 2–5 osób. Przy urodzinach po wcześniejszym uzgodnieniu może zagrać maksymalnie 6 osób. Nie mamy sali urodzinowej, cateringu ani przestrzeni na większe imprezy. W przypadku szkoły zapraszamy np. niewielką grupę uczniów w ramach nagrody, koła zainteresowań lub samorządu. Zobacz szczegóły dla grup i okazji."
       }
     },
     "pages": {
@@ -141,7 +141,7 @@
       "cennik": {
         "eyebrow": "Escape room · Świętochłowice",
         "title": "Cennik",
-        "lead": "Starzik to 90 minut gry dla 2–4 osób. Piąta osoba może dołączyć po wcześniejszym uzgodnieniu. Cena zależy od dnia tygodnia, godziny wejścia i liczby graczy.",
+        "lead": "Starzik to 90 minut gry dla 2–5 osób. Cena zależy od dnia tygodnia, godziny wejścia i liczby graczy.",
         "teslaText": "Około 60 minut zabawy dla jednej lub dwóch osób.",
         "paymentText": "Płatność następuje po grze. Dostępne formy: gotówka, karta, BLIK lub przelew. Na życzenie wystawiamy fakturę."
       },
@@ -183,7 +183,7 @@
         "szpilplacText": "Śląski plac z krótkimi grami słownymi i logicznymi. Możesz grać bez logowania albo założyć konto, aby zapisywać wyniki, osiągnięcia i miejsce w rankingu.",
         "gamesText": "Kopalnia, skoki po familoku, automat i klasyczny Pong. Klikasz i od razu grasz.",
         "theszpilText": "Krótka gra point&click, która wprowadza w klimat kamienicy, ale nie zdradza fabuły pokoju.",
-        "liveText": "Starzik to 90-minutowy fabularny escape room w Świętochłowicach dla 2–4 osób. Piąta osoba może dołączyć po wcześniejszym uzgodnieniu."
+        "liveText": "Starzik to 90-minutowy fabularny escape room w Świętochłowicach dla 2–5 osób. Piąta osoba może dołączyć po wcześniejszym uzgodnieniu."
       }
     }
   },
