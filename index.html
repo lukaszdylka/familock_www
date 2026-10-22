@@ -1745,5 +1745,108 @@ document.addEventListener('keydown', function(e) {
 </script>
 <!-- /Familock AI chat -->
 
+
+<!-- Tymczasowa zapowiedź Starzik Mieszkańcy: 30–31.10.2026 -->
+<style>
+#starzik-special-popup[hidden]{display:none!important}
+#starzik-special-popup{position:fixed;inset:0;z-index:9995;background:rgba(5,3,2,.83);display:grid;place-items:center;padding:16px;backdrop-filter:blur(5px)}
+#starzik-special-dialog{position:relative;width:min(740px,100%);max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;background:#21100d;border:1px solid #a45549;box-shadow:0 22px 90px #000c;color:#f4e4c7;text-align:center}
+#starzik-special-close{position:absolute;z-index:2;top:10px;right:10px;background:#230e0de8;border:1px solid #c68c7b;color:#fff;width:40px;height:40px;font-size:23px;line-height:1;cursor:pointer}
+#starzik-special-visual{display:grid;grid-template-columns:minmax(180px,43%) 1fr;align-items:center}
+#starzik-special-poster{width:100%;height:100%;max-height:580px;object-fit:cover;object-position:center}
+#starzik-special-poster[hidden]{display:none!important}
+#starzik-special-copy{padding:clamp(23px,4vw,43px);background:radial-gradient(circle at 50% 10%,#54231b,#260f0b 70%)}
+#starzik-special-kicker{font:600 12px "Barlow Condensed",sans-serif;letter-spacing:.32em;color:#e3b2a3}
+#starzik-special-title{font:900 clamp(35px,5vw,58px)/.95 "Barlow Condensed",sans-serif;text-transform:uppercase;margin:20px 0 13px;color:#f5e6cd}
+#starzik-special-title span{display:block;color:#d26c5e}
+#starzik-special-date{font:700 clamp(23px,3vw,33px)/1.3 "Playfair Display",serif;color:#f7e6ca}
+#starzik-special-desc{font:400 15px/1.65 "Barlow",sans-serif;margin:18px auto 24px;max-width:300px;color:#dfcabf}
+#starzik-special-book{display:block;background:#a23a35;color:#fff;padding:15px 18px;font:700 16px "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
+#starzik-special-book:hover{background:#b94c41}
+#starzik-special-later{background:none;border:0;color:#e8c9bc;text-decoration:underline;cursor:pointer;padding:15px 10px 0;font:400 12px "Barlow",sans-serif}
+@media(max-width:600px){#starzik-special-visual{display:block}#starzik-special-poster{width:100%;height:auto;max-height:53dvh;object-fit:contain}#starzik-special-copy{padding:22px}#starzik-special-title{margin:9px 0;font-size:31px}#starzik-special-desc{margin:10px auto 16px;font-size:13px}#starzik-special-date{font-size:23px}#starzik-special-book{padding:12px}}
+@media(prefers-reduced-motion:no-preference){#starzik-special-dialog{animation:starzik-special-enter .25s ease-out}@keyframes starzik-special-enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}}
+</style>
+<div id="starzik-special-popup" hidden aria-hidden="true">
+  <div id="starzik-special-dialog" role="dialog" aria-modal="true" aria-labelledby="starzik-special-title">
+    <button id="starzik-special-close" type="button" aria-label="Zamknij zapowiedź">×</button>
+    <div id="starzik-special-visual">
+      <img id="starzik-special-poster" src="/img/starzik-mieszkancy-2026.webp" alt="Familock. Starzik Mieszkańcy, 30–31 października. Specjalna odsłona gry." width="450" height="800" decoding="async" hidden>
+      <div id="starzik-special-copy">
+        <p id="starzik-special-kicker">FAMILOCK · WYDARZENIE SPECJALNE</p>
+        <h2 id="starzik-special-title">STARZIK <span>MIESZKAŃCY</span></h2>
+        <p id="starzik-special-date">30–31 października</p>
+        <p id="starzik-special-desc">Przez dwa dni familok pokaże się z trochę innej strony. Dodatkowy epizod, więcej życia wokół historii i nieco inne emocje niż zwykle.</p>
+        <a id="starzik-special-book" href="#rezerwacja">Sprawdź terminy i zarezerwuj</a>
+        <button id="starzik-special-later" type="button">Nie pokazuj ponownie</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  'use strict';
+  var key='familock_starzik_mieszkancy_2026_seen';
+  var cutoff=Date.parse('2026-10-31T23:00:00Z'); // 01.11.2026 00:00 w Warszawie
+  if(Date.now()>=cutoff)return;
+  var popup=document.getElementById('starzik-special-popup');
+  var close=document.getElementById('starzik-special-close');
+  var later=document.getElementById('starzik-special-later');
+  var poster=document.getElementById('starzik-special-poster');
+  var previouslyFocused=null;
+  try{if(localStorage.getItem(key)==='1')return;}catch(e){}
+  // Opcjonalny publiczny status ze źródła danych po stronie serwera:
+  // {"sold_out":true} wyłącza baner; błędy nie blokują zapowiedzi.
+  function soldOut(){
+    return fetch('/starzik-special-status.json',{cache:'no-store'})
+      .then(function(r){if(!r.ok)return false;return r.json().then(function(v){return v.sold_out===true;});})
+      .catch(function(){return false;});
+  }
+  function dismiss(){
+    popup.hidden=true;popup.setAttribute('aria-hidden','true');
+    document.removeEventListener('keydown',handleKeys);
+    if(previouslyFocused && typeof previouslyFocused.focus==='function')previouslyFocused.focus();
+  }
+  function rememberAndDismiss(){
+    try{localStorage.setItem(key,'1');}catch(e){}
+    dismiss();
+  }
+  function handleKeys(e){
+    if(e.key==='Escape')rememberAndDismiss();
+    if(e.key==='Tab'){
+      var focusables=Array.prototype.slice.call(popup.querySelectorAll('button,a[href]'));
+      if(!focusables.length)return;
+      var first=focusables[0],last=focusables[focusables.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+  }
+  poster.onload=function(){poster.hidden=false;};
+  poster.onerror=function(){poster.hidden=true;};
+  close.addEventListener('click',rememberAndDismiss);
+  later.addEventListener('click',rememberAndDismiss);
+  popup.addEventListener('click',function(e){if(e.target===popup)rememberAndDismiss();});
+  document.getElementById('starzik-special-book').addEventListener('click',rememberAndDismiss);
+  soldOut().then(function(isSoldOut){
+    if(isSoldOut||Date.now()>=cutoff)return;
+    // Nie pokazuj podczas aktywnego komunikatu o zgodach.
+    function open(){
+      if(Date.now()>=cutoff)return;
+      var cookies=document.getElementById('cookie-banner');
+      if(cookies && !cookies.hidden && getComputedStyle(cookies).display!=='none'){
+        window.setTimeout(open,1200);return;
+      }
+      previouslyFocused=document.activeElement;
+      popup.hidden=false;popup.setAttribute('aria-hidden','false');
+      try{localStorage.setItem(key,'1');}catch(e){}
+      document.addEventListener('keydown',handleKeys);
+      close.focus();
+    }
+    window.setTimeout(open,900);
+  });
+})();
+</script>
+<!-- /Tymczasowa zapowiedź Starzik Mieszkańcy -->
+
 </body>
 </html>
