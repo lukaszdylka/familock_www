@@ -1832,7 +1832,7 @@ document.addEventListener('keydown', function(e) {
     // Nie pokazuj podczas aktywnego komunikatu o zgodach.
     function open(){
       if(Date.now()>=cutoff)return;
-      var cookies=document.getElementById('cookie-banner');
+      var cookies=document.getElementById('cookie-consent');
       if(cookies && !cookies.hidden && getComputedStyle(cookies).display!=='none'){
         window.setTimeout(open,1200);return;
       }
