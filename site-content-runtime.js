@@ -53,17 +53,19 @@
     const weekday=byPath(overrides,'prices.starzik.weekday')||{};
     const weekend=byPath(overrides,'prices.starzik.weekend')||{};
     const surcharge=Number(byPath(overrides,'prices.starzik.lateNightSurcharge'))||0;
+    const weekdayLate=byPath(overrides,'prices.starzik.weekdayLate')||{};
+    const weekendLate=byPath(overrides,'prices.starzik.weekendLate')||{};
     const ids=['2','3','4','5'];
     const tiers={
       'weekday-standard':{prices:weekday,extra:0},
-      'weekday-late':{prices:weekday,extra:surcharge},
+      'weekday-late':{prices:weekday,extra:surcharge,overrides:weekdayLate},
       'weekend-standard':{prices:weekend,extra:0},
-      'weekend-late':{prices:weekend,extra:surcharge}
+      'weekend-late':{prices:weekend,extra:surcharge,overrides:weekendLate}
     };
     Object.entries(tiers).forEach(([tier,cfg])=>{
       ids.forEach(id=>{
         if(!Object.prototype.hasOwnProperty.call(cfg.prices,id))return;
-        text(document.querySelector(`#tab-starzik [data-price-tier="${tier}"][data-players="${id}"]`),money((Number(cfg.prices[id])||0)+cfg.extra));
+        text(document.querySelector(`#tab-starzik [data-price-tier="${tier}"][data-players="${id}"]`),money(Object.prototype.hasOwnProperty.call(cfg.overrides||{},id)?cfg.overrides[id]:(Number(cfg.prices[id])||0)+cfg.extra));
       });
     });
     const tesla=byPath(overrides,'prices.tesla')||{};
@@ -76,11 +78,13 @@
     const weekday=byPath(overrides,'prices.starzik.weekday')||{};
     const weekend=byPath(overrides,'prices.starzik.weekend')||{};
     const surcharge=Number(byPath(overrides,'prices.starzik.lateNightSurcharge'))||0;
+    const weekdayLate=byPath(overrides,'prices.starzik.weekdayLate')||{};
+    const weekendLate=byPath(overrides,'prices.starzik.weekendLate')||{};
     const tiers={
       'weekday-standard':{prices:weekday,extra:0},
-      'weekday-late':{prices:weekday,extra:surcharge},
+      'weekday-late':{prices:weekday,extra:surcharge,overrides:weekdayLate},
       'weekend-standard':{prices:weekend,extra:0},
-      'weekend-late':{prices:weekend,extra:surcharge}
+      'weekend-late':{prices:weekend,extra:surcharge,overrides:weekendLate}
     };
     let found=false;
     Object.entries(tiers).forEach(([tier,cfg])=>{
@@ -88,7 +92,7 @@
         const amount=document.querySelector(`#starzik-prices [data-price-tier="${tier}"][data-players="${id}"]`);if(!amount)return;
         found=true;
         if(!Object.prototype.hasOwnProperty.call(cfg.prices,id))return;
-        text(amount,money((Number(cfg.prices[id])||0)+cfg.extra));
+        text(amount,money(Object.prototype.hasOwnProperty.call(cfg.overrides||{},id)?cfg.overrides[id]:(Number(cfg.prices[id])||0)+cfg.extra));
       });
     });
     if(!found)return;
