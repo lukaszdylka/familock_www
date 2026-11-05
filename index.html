@@ -359,6 +359,7 @@ section{padding:5.5rem 3rem}
 .faq-a{max-height:0;overflow:hidden;font-size:.88rem;color:var(--cream2);line-height:1.85;transition:max-height .4s ease,padding .4s ease}
 .faq-item.open .faq-a{max-height:300px;padding-bottom:1.5rem}
 .entrance-photo{display:block;max-width:440px;margin:1rem 0 1.5rem;color:var(--cream2);text-decoration:none}
+.entrance-photo{cursor:zoom-in}
 .entrance-photo img{display:block;width:100%;height:auto;border:1px solid var(--border3);border-top:2px solid var(--red-dark);border-radius:3px;transition:border-color .2s,transform .2s}
 .entrance-photo:hover img,.entrance-photo:focus-visible img{border-color:var(--red);transform:translateY(-2px)}
 .entrance-photo span{display:block;margin-top:.55rem;font-size:.76rem;line-height:1.55;color:var(--muted)}
@@ -408,6 +409,7 @@ section{padding:5.5rem 3rem}
 .galeria-empty.show{display:block}
 .gallery-lightbox{display:none;position:fixed;inset:0;z-index:10000;background:rgba(5,4,4,.96);padding:clamp(1rem,3vw,2.5rem);align-items:center;justify-content:center}
 .gallery-lightbox.open{display:flex}
+.gallery-lightbox.entrance-mode .gallery-lightbox-nav,.gallery-lightbox.entrance-mode .gallery-lightbox-counter{display:none}
 .gallery-lightbox-inner{position:relative;display:flex;flex-direction:column;align-items:center;max-width:min(1500px,100%);max-height:100%;gap:.8rem}
 .gallery-lightbox-img{display:block;max-width:100%;max-height:calc(100vh - 7rem);width:auto;height:auto;object-fit:contain;box-shadow:0 20px 70px rgba(0,0,0,.65)}
 .gallery-lightbox-caption{max-width:900px;color:var(--cream2);font-size:.82rem;line-height:1.5;text-align:center}
@@ -824,7 +826,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-9" onclick="toggleFaq(this)"><span>Jak wygląda płatność i odwołanie rezerwacji?</span><span class="faq-ico" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a-9">Płatność następuje po grze: gotówką, kartą, BLIK-iem lub przelewem. Rezerwację można bezpłatnie odwołać najpóźniej 24 godziny przed rozpoczęciem gry. Późniejsze odwołanie lub nieobecność oznaczają obowiązek zapłaty 100% ceny na podstawie wystawionej faktury.</div></div>
     <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-10" onclick="toggleFaq(this)"><span>Jak się ubrać i czy potrzebna jest sprawność fizyczna?</span><span class="faq-ico" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a-10">Najlepiej wybrać wygodny strój. Starzik wymaga minimalnej sprawności fizycznej, a lokal nie jest dostosowany do potrzeb osób z ograniczoną sprawnością ruchową. Osoby z klaustrofobią, epilepsją, chorobami serca, silnymi stanami lękowymi lub innymi problemami zdrowotnymi oraz kobiety w ciąży prosimy o kontakt przed rezerwacją.</div></div>
     <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-11" onclick="toggleFaq(this)"><span>Czy można kupić voucher i otrzymać fakturę?</span><span class="faq-ico" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a-11">Tak. Oferujemy vouchery ważne przez 6 miesięcy, w wersji PDF lub jako personalizowany voucher na sklejce. Na życzenie wystawiamy również faktury.</div></div>
-    <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-dojazd" onclick="toggleFaq(this)"><span>Jak trafić do Familocka i gdzie jest wejście?</span><span class="faq-ico" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a-dojazd">Znajdziecie nas przy ul. Cmentarnej 5/3 w Świętochłowicach. Wejście prowadzi przez drzwi kamienicy po prawej stronie witryn escape roomu, a nie bezpośrednio przez witryny. <a class="entrance-photo" href="/img/wejscie-familock-wieczor.webp" target="_blank" rel="noopener noreferrer" aria-label="Powiększ zdjęcie wejścia do Familocka"><img src="/img/wejscie-familock-wieczor.webp" alt="Wejście do Familocka: drzwi kamienicy po prawej stronie witryn escape roomu, oznaczone strzałką" width="1448" height="1086" loading="lazy" decoding="async" onerror="this.parentElement.hidden=true"><span>Wejście przez drzwi kamienicy po prawej stronie witryn escape roomu. Kliknij zdjęcie, aby je powiększyć.</span></a></div></div>
+    <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-dojazd" onclick="toggleFaq(this)"><span>Jak trafić do Familocka i gdzie jest wejście?</span><span class="faq-ico" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a-dojazd">Znajdziecie nas przy ul. Cmentarnej 5/3 w Świętochłowicach. Wejście prowadzi przez drzwi kamienicy po prawej stronie witryn escape roomu, a nie bezpośrednio przez witryny. <a class="entrance-photo" href="/img/wejscie-familock-wieczor.webp" aria-haspopup="dialog" aria-controls="gallery-lightbox" aria-label="Powiększ zdjęcie wejścia do Familocka"><img src="/img/wejscie-familock-wieczor.webp" alt="Wejście do Familocka: drzwi kamienicy po prawej stronie witryn escape roomu, oznaczone strzałką" width="1448" height="1086" loading="lazy" decoding="async" onerror="this.parentElement.hidden=true"><span>Wejście przez drzwi kamienicy po prawej stronie witryn escape roomu. Kliknij zdjęcie, aby je powiększyć.</span></a></div></div>
     <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-12" onclick="toggleFaq(this)"><span>Czy organizujecie gry dla szkół i firm?</span><span class="faq-ico" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a-12">Tak. Dla grup szkolnych i firmowych możemy ustalić odpowiednią godzinę oraz szczegóły wizyty. Skontaktujcie się z nami przed rezerwacją.</div></div>
   </div>
 </section>
@@ -835,7 +837,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="section-eyebrow">Znajdź nas</div>
       <h2 class="section-title">Kontakt<br />&amp; <em>Dojazd</em></h2>
       <div class="info-block"><div class="info-label">Dane firmy</div><div class="info-val"><strong>Łukasz Dyłka Familock</strong><br />NIP: 6272709230<br />ul. Cmentarna 5/3<br />41-600 Świętochłowice<br /><span style="font-size:.8rem;color:var(--muted)">wejście przez klatkę schodową</span></div></div>
-      <a class="entrance-photo" href="/img/wejscie-familock-wieczor.webp" target="_blank" rel="noopener noreferrer" aria-label="Powiększ zdjęcie wejścia do Familocka"><img src="/img/wejscie-familock-wieczor.webp" alt="Wejście do Familocka: drzwi kamienicy po prawej stronie witryn escape roomu, oznaczone strzałką" width="1448" height="1086" loading="lazy" decoding="async" onerror="this.parentElement.hidden=true"><span>Wejście przez drzwi kamienicy po prawej stronie witryn escape roomu. Kliknij zdjęcie, aby je powiększyć.</span></a>
+      <a class="entrance-photo" href="/img/wejscie-familock-wieczor.webp" aria-haspopup="dialog" aria-controls="gallery-lightbox" aria-label="Powiększ zdjęcie wejścia do Familocka"><img src="/img/wejscie-familock-wieczor.webp" alt="Wejście do Familocka: drzwi kamienicy po prawej stronie witryn escape roomu, oznaczone strzałką" width="1448" height="1086" loading="lazy" decoding="async" onerror="this.parentElement.hidden=true"><span>Wejście przez drzwi kamienicy po prawej stronie witryn escape roomu. Kliknij zdjęcie, aby je powiększyć.</span></a>
       <div class="info-block"><div class="info-label">Telefon</div><div class="info-val"><a href="tel:573955316">573 955 316</a></div></div>
       <div class="info-block"><div class="info-label">E-mail</div><div class="info-val"><a href="mailto:kontakt@familock.pl">kontakt@familock.pl</a></div></div>
       <div class="info-block"><div class="info-label">Parking i dojazd</div><div class="info-val">Bezpłatny parking na ul. Cmentarnej i ul. Dulcissimy Hoffmann. Przystanki autobusowe i tramwajowe w pobliżu. Dworzec kolejowy &lt;1 km.</div></div>
@@ -1115,10 +1117,12 @@ function showGalleryImage(index) {
 }
 
 function changeGalleryImage(direction) {
+  if (galleryLightbox.classList.contains('entrance-mode')) return;
   showGalleryImage(galleryCurrentIndex + direction);
 }
 
 function openGalleryLightbox(item) {
+  galleryLightbox.classList.remove('entrance-mode');
   var img = item.querySelector('img');
   if (!img) return;
   galleryLastFocused = item;
@@ -1131,6 +1135,29 @@ function openGalleryLightbox(item) {
   document.body.style.overflow = 'hidden';
   galleryLightboxClose.focus();
 }
+
+function openEntranceLightbox(link) {
+  var img = link.querySelector('img');
+  if (!img) return;
+  galleryLastFocused = link;
+  galleryCurrentItems = [];
+  galleryLightbox.classList.add('entrance-mode');
+  galleryLightboxImg.src = link.getAttribute('href');
+  galleryLightboxImg.alt = img.alt;
+  galleryLightboxCaption.textContent = 'Wejście przez drzwi kamienicy po prawej stronie witryn escape roomu.';
+  galleryLightboxCounter.textContent = '';
+  galleryLightbox.classList.add('open');
+  galleryLightbox.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  galleryLightboxClose.focus();
+}
+
+document.querySelectorAll('a.entrance-photo').forEach(function(link) {
+  link.addEventListener('click', function(event) {
+    event.preventDefault();
+    openEntranceLightbox(link);
+  });
+});
 
 function closeGalleryLightbox() {
   if (!galleryLightbox.classList.contains('open')) return;
