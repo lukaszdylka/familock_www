@@ -45,7 +45,19 @@
           "4": 400,
           "5": 450
         },
-        "lateNightSurcharge": 20
+        "lateNightSurcharge": 20,
+        "weekdayLate": {
+          "2": 300,
+          "3": 350,
+          "4": 400,
+          "5": 450
+        },
+        "weekendLate": {
+          "2": 320,
+          "3": 370,
+          "4": 420,
+          "5": 470
+        }
       },
       "tesla": {
         "1": 100,
