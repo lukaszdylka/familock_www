@@ -262,14 +262,43 @@ async function hSlots(b: any) {
   const people = b.people ? Number(b.people) : null;
   if (people != null && (!Number.isInteger(people) || people < 2 || people > 5))
     return { ok: false, error: "Liczba graczy musi wynosić od 2 do 5" };
+
   const view = (date: string, free: { hour: string }[]) => ({
     ok: true, source: "lockme", room: room.nazwa, date, ...dateLabel(date),
     free: free.map((s) => ({
       godzina: hhmm(s.hour),
       slownie: hourWords(hhmm(s.hour)),
-      cena_zl: people ? priceFor(date, s.hour, people) : priceTable(date, s.hour), // łącznie za grę
+      cena_zl: people ? priceFor(date, s.hour, people) : priceTable(date, s.hour),
     })),
   });
+
+  const mode = String(b.mode || "").trim().toLowerCase();
+
+  if (mode === "weekday") {
+    const start = Date.parse(`${warsawNow().date}T12:00:00Z`);
+    const matches:any[] = [];
+    for (let i = 0; i < 28 && matches.length < 4; i++) {
+      const d = new Date(start + i * 86400000).toISOString().slice(0, 10);
+      const dow = new Date(`${d}T12:00:00Z`).getUTCDay();
+      if (dow < 1 || dow > 4) continue;
+      try {
+        const free = await getSlots(room.id, d);
+        if (free.length) matches.push(view(d, free));
+      } catch (e) {
+        console.warn("slots_weekday_error", d, String(e));
+      }
+    }
+    const result = {
+      ok: true,
+      source: "lockme",
+      mode: "weekday",
+      zakres: "poniedziałek–czwartek",
+      dni: matches,
+      najblizszy_termin: matches[0] || null
+    };
+    console.log("slots_result", JSON.stringify(result));
+    return result;
+  }
 
   if (b.date) {
     const date = resolveDate(b.date);
@@ -279,14 +308,13 @@ async function hSlots(b: any) {
     return result;
   }
 
-  // Brak daty = najbliższy termin. Zwracamy tylko pierwszy dzień z wolnymi godzinami.
   const start = Date.parse(`${warsawNow().date}T12:00:00Z`);
   const days = Array.from({ length: 14 }, (_, i) => new Date(start + i * 86400000).toISOString().slice(0, 10));
   for (const d of days) {
     try {
       const free = await getSlots(room.id, d);
       if (free.length) {
-        const result = { ok: true, source: "lockme", najblizszy_termin: view(d, free) };
+        const result = { ok: true, source: "lockme", mode: "nearest", najblizszy_termin: view(d, free) };
         console.log("slots_result", JSON.stringify(result));
         return result;
       }
@@ -294,9 +322,7 @@ async function hSlots(b: any) {
       console.warn("slots_day_error", d, String(e));
     }
   }
-  const result = { ok: true, source: "lockme", room: room.nazwa, najblizszy_termin: null, message: "Brak wolnych terminów w ciągu 14 dni" };
-  console.log("slots_result", JSON.stringify(result));
-  return result;
+  return { ok: true, source: "lockme", mode: mode || "nearest", najblizszy_termin: null, info: "Brak wolnych terminów w najbliższych 14 dniach" };
 }
 
 async function hReserve(b: any, callerFromHeader: string) {
