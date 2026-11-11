@@ -151,6 +151,68 @@ function normalizeEmail(input: unknown): string | null {
   return emailRe.test(s) ? s : null;
 }
 
+function normalizeNip(input: unknown): string | null {
+  const nip = String(input ?? "").replace(/\D/g,"");
+  if (nip.length !== 10) return null;
+  const weights = [6,5,7,2,3,4,5,6,7];
+  const checksum = weights.reduce((sum,w,i)=>sum + w * Number(nip[i]),0) % 11;
+  return checksum !== 10 && checksum === Number(nip[9]) ? nip : null;
+}
+
+function parsePolishAddress(raw: unknown) {
+  const address = String(raw ?? "").trim().replace(/\s+/g," ");
+  if (!address) return { raw:"", street:"", postal_code:"", city:"", complete:false };
+  const match = address.match(/^(.*?)[,\s]+(\d{2}-\d{3})\s+(.+)$/);
+  if (!match) return { raw:address, street:"", postal_code:"", city:"", complete:false };
+  return {
+    raw:address,
+    street:String(match[1]||"").replace(/[,\s]+$/,"").trim(),
+    postal_code:String(match[2]||"").trim(),
+    city:String(match[3]||"").replace(/,?\s*PL$/i,"").trim(),
+    complete:Boolean(match[1]&&match[2]&&match[3])
+  };
+}
+
+async function hCompanyByNip(b: any) {
+  const nip = normalizeNip(b?.nip);
+  if (!nip) return { ok:false, error:"Podaj prawidłowy 10-cyfrowy NIP." };
+
+  const date = warsawNow().date;
+  const url = `https://wykazpodatnikowvat.mf.gov.pl/api/search/nip/${nip}?date=${date}`;
+  const controller = new AbortController();
+  const timer = setTimeout(()=>controller.abort(),7000);
+  try {
+    const response = await fetch(url,{ headers:{ accept:"application/json" }, signal:controller.signal });
+    const data = await response.json().catch(()=>({}));
+    if (!response.ok) {
+      return { ok:false, error:String(data?.message || data?.error?.message || `MF HTTP ${response.status}`) };
+    }
+    const subject = data?.result?.subject || data?.subject || null;
+    if (!subject) return { ok:false, error:"Nie znaleziono firmy dla tego NIP-u w Wykazie podatników VAT." };
+
+    const parsed = parsePolishAddress(subject.workingAddress || subject.residenceAddress || "");
+    return {
+      ok:true,
+      source:"Ministerstwo Finansów · Wykaz podatników VAT",
+      query_date:date,
+      nip,
+      name:String(subject.name || "").trim(),
+      regon:String(subject.regon || "").trim(),
+      status_vat:String(subject.statusVat || "").trim(),
+      address:parsed.raw,
+      street:parsed.street,
+      postal_code:parsed.postal_code,
+      city:parsed.city,
+      address_complete:parsed.complete,
+      request_id:String(data?.result?.requestId || data?.requestId || "").trim()
+    };
+  } catch (error) {
+    return { ok:false, error:"Nie udało się teraz pobrać danych firmy z Ministerstwa Finansów.", detail:String(error) };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function normalizeInvoiceRequest(b: any) {
   if (!b?.invoice_requested) return { requested:false, data:null, label:"" };
   const company = String(b.invoice_company ?? "").trim();
@@ -163,7 +225,8 @@ function normalizeInvoiceRequest(b: any) {
   if (!company || !taxId || !street || !/^\d{2}-\d{3}$/.test(postal) || !city) {
     return {
       requested:true,
-      error:"Do faktury potrzebuję: pełnej nazwy firmy, 10-cyfrowego NIP-u, ulicy i numeru, kodu pocztowego w formacie 00-000 oraz miasta."
+      error:"Do faktury brakuje kompletnych danych firmy.",
+      missing:true
     };
   }
   const data = {
@@ -174,6 +237,42 @@ function normalizeInvoiceRequest(b: any) {
   };
   const label = `${company}\n${street}\n${postal} ${city}, PL\nVAT-ID: ${taxId}`;
   return { requested:true, data, label };
+}
+
+async function resolveInvoiceRequest(b:any) {
+  const direct = normalizeInvoiceRequest(b);
+  if (!direct.requested || !direct.error) return direct;
+
+  const nip = normalizeNip(b?.invoice_tax_id);
+  if (!nip) {
+    return {
+      requested:true,
+      error:"Do faktury podaj NIP firmy. Jeśli nie uda się pobrać danych automatycznie, poproszę o nazwę i adres."
+    };
+  }
+
+  const company = await hCompanyByNip({ nip });
+  if (!company?.ok) {
+    return {
+      requested:true,
+      error:`Nie udało się pobrać danych firmy po NIP-ie. ${String(company?.error||"Podaj nazwę firmy i adres ręcznie.")}`
+    };
+  }
+  if (!company.name || !company.address_complete) {
+    return {
+      requested:true,
+      error:"Znalazłem firmę po NIP-ie, ale rejestr nie zwrócił pełnego adresu. Podaj proszę nazwę firmy, ulicę i numer, kod pocztowy oraz miasto."
+    };
+  }
+
+  return normalizeInvoiceRequest({
+    invoice_requested:true,
+    invoice_tax_id:nip,
+    invoice_company:company.name,
+    invoice_street:company.street,
+    invoice_postal_code:company.postal_code,
+    invoice_city:company.city
+  });
 }
 
 const ORD = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "dwunasta", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
@@ -348,7 +447,7 @@ async function hReserve(b: any, callerFromHeader: string) {
   const price = priceFor(date, slot.hour, Number(people));
   if (price == null) return { ok: false, error: "Pokój jest dla 2–5 osób" };
 
-  const invoice = normalizeInvoiceRequest(b);
+  const invoice = await resolveInvoiceRequest(b);
   if (invoice.error) return { ok:false, error:invoice.error, code:"invoice_data_required" };
 
   const channel = b.channel === "chat" ? "chat" : "voice";
@@ -380,7 +479,7 @@ async function hReserve(b: any, callerFromHeader: string) {
 async function hInvoice(b: any) {
   const conversationId = String(b?.conversation_id || "").trim();
   if (!conversationId) return { ok:false, error:"Nie mam identyfikatora tej rozmowy." };
-  const invoice = normalizeInvoiceRequest({ ...b, invoice_requested:true });
+  const invoice = await resolveInvoiceRequest({ ...b, invoice_requested:true });
   if (invoice.error) return { ok:false, error:invoice.error, code:"invoice_data_required" };
 
   const { data:rows, error } = await sb.from("voice_reservations")
@@ -486,6 +585,7 @@ Deno.serve(async (req) => {
     console.log("tool", route, JSON.stringify(body));
     if (route === "rooms") return json(await hRooms());
     if (route === "slots") return json(await hSlots(body));
+    if (route === "company") return json(await hCompanyByNip(body));
     if (route === "reserve") return json(await hReserve(body, body.caller_id ?? ""));
     if (route === "invoice") return json(await hInvoice(body));
     return json({ error: "not found" }, 404);
