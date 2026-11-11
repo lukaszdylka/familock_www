@@ -29,6 +29,13 @@ Fizyczny voucher trzeba zamówić wcześniej; jest wykonywany na zamówienie i w
 Jeśli przyjdzie więcej osób niż wpisano w rezerwacji, w granicach dopuszczalnej liczby graczy można dopłacić na miejscu gotówką lub kartą, również gdy pierwotna rezerwacja była opłacona online.
 Nie ujawniaj informacji o obecności aktora ani możliwości gry bez aktora.
 
+FAKTURY:
+Familock wystawia faktury do rezerwacji. Jeśli klient chce fakturę, nie odsyłaj go automatycznie do obsługi.
+Przy rezerwacji przez czat możesz od razu oznaczyć rezerwację jako fakturową.
+Do faktury firmowej potrzebujesz: pełnej nazwy firmy, NIP-u, ulicy i numeru, kodu pocztowego oraz miasta.
+Jeżeli klient poprosi o fakturę już po utworzeniu rezerwacji w tej samej rozmowie, zbierz te dane i użyj narzędzia do dopięcia faktury do ostatniej rezerwacji.
+Nie używaj Markdown ani znaków **. Czat wyświetla zwykły tekst. Podsumowania zapisuj w krótkich, czytelnych wierszach.
+
 CENNIK STARZIK:
 Poniedziałek–czwartek: 2 osoby 250 zł, 3 osoby 310 zł, 4 osoby 360 zł, 5 osób 400 zł.
 Piątek–niedziela i święta: 2 osoby 280 zł, 3 osoby 350 zł, 4 osoby 400 zł, 5 osób 450 zł.
@@ -264,6 +271,165 @@ function polishToday() {
   }
 }
 
+
+const BOOKING_TOOLS = [
+  {
+    type: "function",
+    name: "check_availability",
+    description: "Sprawdza rzeczywistą dostępność Starzika w LockMe. Użyj zawsze, gdy użytkownik pyta o wolne terminy, konkretny dzień lub najbliższy termin.",
+    parameters: {
+      type: "object",
+      properties: {
+        date: { type: "string", description: "Data lub określenie daty, np. 2026-11-14, jutro, sobota. Pomiń, aby znaleźć najbliższy termin." },
+        people: { type: "integer", minimum: 2, maximum: 5, description: "Liczba graczy, jeśli znana. Pozwala zwrócić dokładną cenę." }
+      },
+      additionalProperties: false
+    }
+  },
+  {
+    type: "function",
+    name: "create_reservation",
+    description: "Tworzy prawdziwą rezerwację Starzika w LockMe. Wywołuj wyłącznie po zebraniu kompletu danych i po jednoznacznym finalnym potwierdzeniu użytkownika.",
+    parameters: {
+      type: "object",
+      properties: {
+        date: { type: "string", description: "Data rezerwacji." },
+        hour: { type: "string", description: "Godzina rezerwacji, np. 18:30." },
+        name: { type: "string", description: "Imię osoby rezerwującej." },
+        surname: { type: "string", description: "Nazwisko osoby rezerwującej." },
+        people: { type: "integer", minimum: 2, maximum: 5 },
+        email: { type: "string", description: "Adres e-mail osoby rezerwującej." },
+        phone: { type: "string", description: "Numer telefonu osoby rezerwującej." },
+        invoice_requested: { type: "boolean", description: "Czy klient chce fakturę do tej rezerwacji." },
+        invoice_company: { type: "string", description: "Pełna nazwa firmy do faktury." },
+        invoice_tax_id: { type: "string", description: "NIP firmy." },
+        invoice_street: { type: "string", description: "Ulica i numer do faktury." },
+        invoice_postal_code: { type: "string", description: "Kod pocztowy do faktury, np. 41-600." },
+        invoice_city: { type: "string", description: "Miasto do faktury." }
+      },
+      required: ["date","hour","name","surname","people","email","phone","invoice_requested"],
+      additionalProperties: false
+    }
+  },
+  {
+    type: "function",
+    name: "add_invoice_to_reservation",
+    description: "Dodaje dane do faktury do ostatniej rezerwacji utworzonej w tej samej rozmowie. Użyj, gdy klient poprosi o fakturę już po utworzeniu rezerwacji.",
+    parameters: {
+      type: "object",
+      properties: {
+        invoice_company: { type: "string" },
+        invoice_tax_id: { type: "string" },
+        invoice_street: { type: "string" },
+        invoice_postal_code: { type: "string" },
+        invoice_city: { type: "string" }
+      },
+      required: ["invoice_company","invoice_tax_id","invoice_street","invoice_postal_code","invoice_city"],
+      additionalProperties: false
+    }
+  }
+]
+
+function bookingConfirmationPresent(messages: Array<{role:string,content:string}>) {
+  const lastUser = String([...messages].reverse().find(m => m.role === "user")?.content || "").trim().toLowerCase();
+  const previousAssistant = String([...messages].reverse().find((m, i, arr) => {
+    if (m.role !== "assistant") return false;
+    const originalIndex = messages.length - 1 - i;
+    return originalIndex < messages.length - 1;
+  })?.content || "").toLowerCase();
+  if (!lastUser || lastUser.length > 160) return false;
+  const affirmative = /^(tak|tak,.*|potwierdzam|potwierdzam[.! ]*|ok|okej|zgadza się|zgadza sie|rezerwuj|zarezerwuj|proszę rezerwować|prosze rezerwowac)[.! ]*$/i.test(lastUser)
+    || /\b(potwierdzam|proszę rezerwować|prosze rezerwowac|tak,? rezerwuj|tak,? zarezerwuj)\b/i.test(lastUser);
+  const wasConfirmationPrompt = /potwierd|mam zarezerwować|mam zarezerwowac|czy rezerwuję|czy rezerwuje|rezerwacja:|podsumowanie rezerwacji/i.test(previousAssistant);
+  return affirmative && wasConfirmationPrompt;
+}
+
+async function callBookingBridge(route: "slots"|"reserve"|"invoice", payload: Record<string, unknown>) {
+  const base = String(Deno.env.get("SUPABASE_URL") || "").replace(/\/$/,"");
+  const secret = Deno.env.get("AGENT_SECRET") || "";
+  if (!base || !secret) return { ok:false, error:"System rezerwacji nie jest teraz dostępny." };
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 9000);
+  try {
+    const response = await fetch(`${base}/functions/v1/smart-processor/${route}`, {
+      method:"POST",
+      headers:{ "content-type":"application/json", "x-agent-secret":secret },
+      body:JSON.stringify(payload),
+      signal:controller.signal
+    });
+    const data = await response.json().catch(() => ({ ok:false, error:`HTTP ${response.status}` }));
+    if (!response.ok) return { ok:false, error:String(data?.error || `HTTP ${response.status}`) };
+    return data;
+  } catch (error) {
+    return { ok:false, error:"Nie udało się połączyć z kalendarzem LockMe. Spróbuj ponownie za chwilę.", detail:String(error) };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function runBookingTool(name: string, args: any, messages: Array<{role:string,content:string}>, conversationId: string) {
+  if (name === "check_availability") {
+    const payload: Record<string, unknown> = {};
+    if (args?.date) payload.date = String(args.date);
+    if (Number.isInteger(Number(args?.people))) payload.people = Number(args.people);
+    return callBookingBridge("slots", payload);
+  }
+  if (name === "create_reservation") {
+    if (!bookingConfirmationPresent(messages)) {
+      return {
+        ok:false,
+        code:"confirmation_required",
+        error:"Nie twórz jeszcze rezerwacji. Najpierw podsumuj datę, godzinę, liczbę osób, imię i nazwisko, e-mail oraz telefon i poproś użytkownika o jednoznaczne potwierdzenie."
+      };
+    }
+    return callBookingBridge("reserve", {
+      date:String(args?.date||""),
+      hour:String(args?.hour||""),
+      name:String(args?.name||""),
+      surname:String(args?.surname||""),
+      people:Number(args?.people||0),
+      email:String(args?.email||""),
+      phone:String(args?.phone||""),
+      invoice_requested:args?.invoice_requested===true,
+      invoice_company:String(args?.invoice_company||""),
+      invoice_tax_id:String(args?.invoice_tax_id||""),
+      invoice_street:String(args?.invoice_street||""),
+      invoice_postal_code:String(args?.invoice_postal_code||""),
+      invoice_city:String(args?.invoice_city||""),
+      conversation_id:conversationId,
+      channel:"chat"
+    });
+  }
+  if (name === "add_invoice_to_reservation") {
+    return callBookingBridge("invoice", {
+      conversation_id:conversationId,
+      invoice_requested:true,
+      invoice_company:String(args?.invoice_company||""),
+      invoice_tax_id:String(args?.invoice_tax_id||""),
+      invoice_street:String(args?.invoice_street||""),
+      invoice_postal_code:String(args?.invoice_postal_code||""),
+      invoice_city:String(args?.invoice_city||"")
+    });
+  }
+  return { ok:false, error:"Nieznane narzędzie." };
+}
+
+async function openAIResponse(apiKey: string, body: Record<string, unknown>) {
+  const response = await fetch("https://api.openai.com/v1/responses", {
+    method:"POST",
+    headers:{ "Authorization":`Bearer ${apiKey}`, "Content-Type":"application/json" },
+    body:JSON.stringify(body)
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    const error:any = new Error(String(data?.error?.message || `OpenAI HTTP ${response.status}`));
+    error.status = response.status;
+    error.data = data;
+    throw error;
+  }
+  return data;
+}
+
 function safeMeta(body: any) {
   const raw = body?.meta && typeof body.meta === "object" ? body.meta : {};
   const conversationRaw = String(raw.conversationId || "").trim();
@@ -347,23 +513,68 @@ Deno.serve(async (req: Request) => {
       return new Response(JSON.stringify({ error: "Czat jest jeszcze konfigurowany." }), { status: 503, headers });
     }
 
-    const response = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "gpt-6-luna",
-        instructions: `${KNOWLEDGE}\n\nDZISIAJ: ${polishToday()}\n${await liveKnowledgeContext(messages[messages.length - 1].content, analyticsCategory)}\n${await liveLockmeContext(messages[messages.length - 1].content)}`,
-        input: messages,
-        max_output_tokens: 350,
-        reasoning: { effort: "none" },
-        store: false
-      })
-    });
+    const bookingInstructions = `
+REZERWACJE LIVE:
+Masz dostęp do rzeczywistego kalendarza LockMe przez narzędzia.
+Jeżeli użytkownik pyta o wolny termin, konkretny dzień albo najbliższy termin, użyj check_availability. Nie zgaduj dostępności i nie opieraj jej na samym publicznym profilu LockMe.
+Jeżeli użytkownik chce zarezerwować, prowadź rozmowę krok po kroku. Do rezerwacji potrzebujesz: daty, wybranej wolnej godziny, liczby osób 2–5, imienia, nazwiska, e-maila i telefonu.
+Zawsze sprawdź wybraną godzinę narzędziem check_availability przed finalnym podsumowaniem.
+Jeżeli w trakcie rezerwacji klient zapyta o fakturę, odpowiedz, że tak. Nie resetuj zebranych wcześniej danych rezerwacji. Zapytaj tylko o brakujące dane do faktury: pełna nazwa firmy, NIP, ulica i numer, kod pocztowy, miasto.
+Jeśli klient chce fakturę, finalne podsumowanie musi zawierać również informację "Faktura: tak" i dane firmy. Następnie create_reservation wywołaj z invoice_requested=true i kompletem danych fakturowych.
+Jeśli klient nie chce faktury, ustaw invoice_requested=false.
+Jeżeli klient poprosi o fakturę już po utworzeniu rezerwacji w tej rozmowie, zbierz dane firmy i użyj add_invoice_to_reservation.
+Przed create_reservation podsumuj komplet danych i zapytaj wprost o potwierdzenie. Dopiero gdy użytkownik w kolejnej wiadomości jednoznacznie potwierdzi, użyj create_reservation.
+Nie twórz rezerwacji na podstawie samego "chciałbym zarezerwować". Jeśli brakuje danych, pytaj tylko o brakujące.
+Po sukcesie create_reservation napisz jasno, że rezerwacja została utworzona w LockMe, podaj datę, godzinę, liczbę osób i cenę oraz czy zapisano fakturę.
+Po sukcesie add_invoice_to_reservation potwierdź, że dane do faktury zostały dopisane do rezerwacji.
+Jeżeli termin został w międzyczasie zajęty, zaproponuj wolne godziny zwrócone przez narzędzie.
+`;
 
-    const data = await response.json();
-    if (!response.ok) {
-      const errorCode = String(data?.error?.type || data?.error?.code || `openai_http_${response.status}`);
-      console.error("OpenAI error", response.status, errorCode);
+    const instructions = `${KNOWLEDGE}\n\n${bookingInstructions}\nDZISIAJ: ${polishToday()}\n${await liveKnowledgeContext(messages[messages.length - 1].content, analyticsCategory)}\n${await liveLockmeContext(messages[messages.length - 1].content)}`;
+    let workingInput:any[] = [...messages];
+    let data:any;
+    try {
+      data = await openAIResponse(apiKey, {
+        model:"gpt-6-luna",
+        instructions,
+        input:workingInput,
+        tools:BOOKING_TOOLS,
+        tool_choice:"auto",
+        parallel_tool_calls:false,
+        max_output_tokens:450,
+        reasoning:{ effort:"none" },
+        store:false
+      });
+
+      for (let round=0; round<3; round++) {
+        const calls = Array.isArray(data?.output) ? data.output.filter((item:any) => item?.type === "function_call") : [];
+        if (!calls.length) break;
+        workingInput.push(...(Array.isArray(data.output) ? data.output : []));
+        for (const call of calls) {
+          let args:any = {};
+          try { args = JSON.parse(String(call.arguments || "{}")); } catch (_) {}
+          const result = await runBookingTool(String(call.name || ""), args, messages, analyticsMeta.conversationId);
+          workingInput.push({
+            type:"function_call_output",
+            call_id:call.call_id,
+            output:JSON.stringify(result)
+          });
+        }
+        data = await openAIResponse(apiKey, {
+          model:"gpt-6-luna",
+          instructions,
+          input:workingInput,
+          tools:BOOKING_TOOLS,
+          tool_choice:"auto",
+          parallel_tool_calls:false,
+          max_output_tokens:450,
+          reasoning:{ effort:"none" },
+          store:false
+        });
+      }
+    } catch (error:any) {
+      const errorCode = String(error?.data?.error?.type || error?.data?.error?.code || `openai_http_${error?.status||502}`);
+      console.error("OpenAI error", error?.status||502, errorCode, String(error?.message||error));
       await logChatEvent({
         conversation_id: analyticsMeta.conversationId,
         question: analyticsQuestion,
@@ -377,7 +588,8 @@ Deno.serve(async (req: Request) => {
       });
       return new Response(JSON.stringify({ error: "Nie udało się teraz uzyskać odpowiedzi. Spróbuj ponownie za chwilę." }), { status: 502, headers });
     }
-    const answer = (typeof data.output_text === "string" ? data.output_text : (Array.isArray(data.output) ? data.output.flatMap((item: any) => Array.isArray(item?.content) ? item.content : []).filter((part: any) => part?.type === "output_text" && typeof part?.text === "string").map((part: any) => part.text).join("\n") : "")).trim();
+
+    const answer = (typeof data?.output_text === "string" ? data.output_text : (Array.isArray(data?.output) ? data.output.flatMap((item: any) => Array.isArray(item?.content) ? item.content : []).filter((part: any) => part?.type === "output_text" && typeof part?.text === "string").map((part: any) => part.text).join("\n") : "")).trim();
     if (!answer) {
       await logChatEvent({
         conversation_id: analyticsMeta.conversationId,
