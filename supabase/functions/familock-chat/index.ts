@@ -289,6 +289,19 @@ const BOOKING_TOOLS = [
   },
   {
     type: "function",
+    name: "lookup_company_by_nip",
+    description: "Pobiera oficjalne dane firmy po polskim NIP-ie z Wykazu podatników VAT Ministerstwa Finansów. Użyj, gdy klient chce fakturę i poda NIP.",
+    parameters: {
+      type: "object",
+      properties: {
+        nip: { type: "string", description: "Polski NIP firmy, 10 cyfr." }
+      },
+      required: ["nip"],
+      additionalProperties: false
+    }
+  },
+  {
+    type: "function",
     name: "create_reservation",
     description: "Tworzy prawdziwą rezerwację Starzika w LockMe. Wywołuj wyłącznie po zebraniu kompletu danych i po jednoznacznym finalnym potwierdzeniu użytkownika.",
     parameters: {
@@ -302,11 +315,11 @@ const BOOKING_TOOLS = [
         email: { type: "string", description: "Adres e-mail osoby rezerwującej." },
         phone: { type: "string", description: "Numer telefonu osoby rezerwującej." },
         invoice_requested: { type: "boolean", description: "Czy klient chce fakturę do tej rezerwacji." },
-        invoice_company: { type: "string", description: "Pełna nazwa firmy do faktury." },
-        invoice_tax_id: { type: "string", description: "NIP firmy." },
-        invoice_street: { type: "string", description: "Ulica i numer do faktury." },
-        invoice_postal_code: { type: "string", description: "Kod pocztowy do faktury, np. 41-600." },
-        invoice_city: { type: "string", description: "Miasto do faktury." }
+        invoice_company: { type: "string", description: "Pełna nazwa firmy do faktury, jeśli była podana ręcznie." },
+        invoice_tax_id: { type: "string", description: "NIP firmy. Gdy invoice_requested=true, zwykle wystarczy ten NIP, bo backend pobierze resztę danych z MF." },
+        invoice_street: { type: "string", description: "Ulica i numer do faktury, opcjonalnie gdy dane po NIP-ie są niepełne." },
+        invoice_postal_code: { type: "string", description: "Kod pocztowy do faktury, opcjonalnie gdy dane po NIP-ie są niepełne." },
+        invoice_city: { type: "string", description: "Miasto do faktury, opcjonalnie gdy dane po NIP-ie są niepełne." }
       },
       required: ["date","hour","name","surname","people","email","phone","invoice_requested"],
       additionalProperties: false
@@ -320,12 +333,12 @@ const BOOKING_TOOLS = [
       type: "object",
       properties: {
         invoice_company: { type: "string" },
-        invoice_tax_id: { type: "string" },
+        invoice_tax_id: { type: "string", description: "NIP firmy. Backend może na jego podstawie pobrać pozostałe dane z MF." },
         invoice_street: { type: "string" },
         invoice_postal_code: { type: "string" },
         invoice_city: { type: "string" }
       },
-      required: ["invoice_company","invoice_tax_id","invoice_street","invoice_postal_code","invoice_city"],
+      required: ["invoice_tax_id"],
       additionalProperties: false
     }
   }
@@ -345,7 +358,7 @@ function bookingConfirmationPresent(messages: Array<{role:string,content:string}
   return affirmative && wasConfirmationPrompt;
 }
 
-async function callBookingBridge(route: "slots"|"reserve"|"invoice", payload: Record<string, unknown>) {
+async function callBookingBridge(route: "slots"|"reserve"|"invoice"|"company", payload: Record<string, unknown>) {
   const base = String(Deno.env.get("SUPABASE_URL") || "").replace(/\/$/,"");
   const secret = Deno.env.get("AGENT_SECRET") || "";
   if (!base || !secret) return { ok:false, error:"System rezerwacji nie jest teraz dostępny." };
@@ -422,6 +435,9 @@ function shouldForceAvailability(messages: Array<{role:string,content:string}>) 
 async function runBookingTool(name: string, args: any, messages: Array<{role:string,content:string}>, conversationId: string) {
   if (name === "check_availability") {
     return callBookingBridge("slots", availabilityArgsWithContext(args, messages));
+  }
+  if (name === "lookup_company_by_nip") {
+    return callBookingBridge("company", { nip:String(args?.nip||"") });
   }
   if (name === "create_reservation") {
     if (!bookingConfirmationPresent(messages)) {
@@ -571,10 +587,12 @@ Nie mów "sprawdzę", "już sprawdzam" ani "mogę sprawdzić", jeśli w tej same
 Przy krótkiej kontynuacji typu "2" zachowaj wcześniejsze ograniczenie dnia lub zakresu. Jeśli wcześniej klient chciał poniedziałek, nie wracaj do najbliższego terminu ogółem. Jeśli chciał "w tygodniu", zachowaj mode="weekday".
 Jeżeli użytkownik chce zarezerwować, prowadź rozmowę krok po kroku. Do rezerwacji potrzebujesz: daty, wybranej wolnej godziny, liczby osób 2–5, imienia, nazwiska, e-maila i telefonu.
 Zawsze sprawdź wybraną godzinę narzędziem check_availability przed finalnym podsumowaniem.
-Jeżeli w trakcie rezerwacji klient zapyta o fakturę, odpowiedz, że tak. Nie resetuj zebranych wcześniej danych rezerwacji. Zapytaj tylko o brakujące dane do faktury: pełna nazwa firmy, NIP, ulica i numer, kod pocztowy, miasto.
-Jeśli klient chce fakturę, finalne podsumowanie musi zawierać również informację "Faktura: tak" i dane firmy. Następnie create_reservation wywołaj z invoice_requested=true i kompletem danych fakturowych.
+Jeżeli w trakcie rezerwacji klient zapyta o fakturę, odpowiedz, że tak. Nie resetuj zebranych wcześniej danych rezerwacji.
+Najpierw poproś wyłącznie o NIP firmy. Gdy klient poda NIP, użyj lookup_company_by_nip. Jeśli narzędzie zwróci pełną nazwę i adres, pokaż je użytkownikowi i poproś o potwierdzenie. Nie pytaj wtedy ponownie o nazwę firmy, ulicę, kod ani miasto.
+Jeżeli lookup_company_by_nip nie znajdzie firmy albo zwróci address_complete=false, dopiero wtedy poproś ręcznie o brakujące dane.
+Jeśli klient chce fakturę, finalne podsumowanie musi zawierać "Faktura: tak", NIP oraz nazwę firmy. Następnie create_reservation wywołaj z invoice_requested=true. Zawsze przekaż invoice_tax_id. Pozostałe dane firmy możesz przekazać, jeśli były dostępne; backend potrafi ponownie pobrać je po NIP-ie.
 Jeśli klient nie chce faktury, ustaw invoice_requested=false.
-Jeżeli klient poprosi o fakturę już po utworzeniu rezerwacji w tej rozmowie, zbierz dane firmy i użyj add_invoice_to_reservation.
+Jeżeli klient poprosi o fakturę już po utworzeniu rezerwacji w tej rozmowie, najpierw poproś o NIP, pobierz dane przez lookup_company_by_nip, pokaż do potwierdzenia, a potem użyj add_invoice_to_reservation.
 Przed create_reservation podsumuj komplet danych i zapytaj wprost o potwierdzenie. Dopiero gdy użytkownik w kolejnej wiadomości jednoznacznie potwierdzi, użyj create_reservation.
 Nie twórz rezerwacji na podstawie samego "chciałbym zarezerwować". Jeśli brakuje danych, pytaj tylko o brakujące.
 Po sukcesie create_reservation napisz jasno, że rezerwacja została utworzona w LockMe, podaj datę, godzinę, liczbę osób i cenę oraz czy zapisano fakturę.
