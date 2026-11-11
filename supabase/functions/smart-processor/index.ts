@@ -173,6 +173,64 @@ function parsePolishAddress(raw: unknown) {
   };
 }
 
+async function companyFromCeidg(nip:string) {
+  const token = String(Deno.env.get("CEIDG_API_TOKEN") || "").trim();
+  if (!token) return null;
+  const controller = new AbortController();
+  const timer = setTimeout(()=>controller.abort(),7000);
+  try {
+    const url = `https://dane.biznes.gov.pl/api/ceidg/v3/firmy?nip=${encodeURIComponent(nip)}`;
+    const response = await fetch(url,{
+      headers:{ accept:"application/json", authorization:`Bearer ${token}` },
+      signal:controller.signal
+    });
+    if (!response.ok) return null;
+    const data = await response.json().catch(()=>({}));
+    const firm = Array.isArray(data?.firmy) ? data.firmy[0] : null;
+    if (!firm) return null;
+    const addr = firm?.adresDzialalnosci || {};
+    const streetBase = String(addr?.ulica || "").trim();
+    const building = String(addr?.budynek || "").trim();
+    const local = String(addr?.lokal || "").trim();
+    const street = [streetBase, building ? `${building}${local ? "/"+local : ""}` : ""].filter(Boolean).join(" ").trim();
+    return {
+      ok:true,
+      source:"CEIDG",
+      nip,
+      name:String(firm?.nazwa || "").trim(),
+      regon:String(firm?.wlasciciel?.regon || "").trim(),
+      status_ceidg:String(firm?.status || "").trim(),
+      address:[street,String(addr?.kod||"").trim(),String(addr?.miasto||"").trim()].filter(Boolean).join(" "),
+      street,
+      postal_code:String(addr?.kod || "").trim(),
+      city:String(addr?.miasto || "").trim(),
+      address_complete:Boolean(street && /^\d{2}-\d{3}$/.test(String(addr?.kod||"").trim()) && String(addr?.miasto||"").trim())
+    };
+  } catch (_) {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function knownCompanyFallback(nip:string) {
+  if (nip === "6272709230") {
+    return {
+      ok:true,
+      source:"Familock · dane własne firmy",
+      nip,
+      name:"Łukasz Dyłka Familock",
+      regon:"524722644",
+      address:"Cmentarna 5/3 41-600 Świętochłowice",
+      street:"Cmentarna 5/3",
+      postal_code:"41-600",
+      city:"Świętochłowice",
+      address_complete:true
+    };
+  }
+  return null;
+}
+
 async function hCompanyByNip(b: any) {
   const nip = normalizeNip(b?.nip);
   if (!nip) return { ok:false, error:"Podaj prawidłowy 10-cyfrowy NIP." };
@@ -184,33 +242,42 @@ async function hCompanyByNip(b: any) {
   try {
     const response = await fetch(url,{ headers:{ accept:"application/json" }, signal:controller.signal });
     const data = await response.json().catch(()=>({}));
-    if (!response.ok) {
-      return { ok:false, error:String(data?.message || data?.error?.message || `MF HTTP ${response.status}`) };
+    const subject = data?.result?.subject || null;
+    if (response.ok && subject) {
+      const parsed = parsePolishAddress(subject.workingAddress || subject.residenceAddress || "");
+      return {
+        ok:true,
+        source:"Ministerstwo Finansów · Wykaz podatników VAT",
+        query_date:date,
+        nip,
+        name:String(subject.name || "").trim(),
+        regon:String(subject.regon || "").trim(),
+        status_vat:String(subject.statusVat || "").trim(),
+        address:parsed.raw,
+        street:parsed.street,
+        postal_code:parsed.postal_code,
+        city:parsed.city,
+        address_complete:parsed.complete,
+        request_id:String(data?.result?.requestId || "").trim()
+      };
     }
-    const subject = data?.result?.subject || data?.subject || null;
-    if (!subject) return { ok:false, error:"Nie znaleziono firmy dla tego NIP-u w Wykazie podatników VAT." };
-
-    const parsed = parsePolishAddress(subject.workingAddress || subject.residenceAddress || "");
-    return {
-      ok:true,
-      source:"Ministerstwo Finansów · Wykaz podatników VAT",
-      query_date:date,
-      nip,
-      name:String(subject.name || "").trim(),
-      regon:String(subject.regon || "").trim(),
-      status_vat:String(subject.statusVat || "").trim(),
-      address:parsed.raw,
-      street:parsed.street,
-      postal_code:parsed.postal_code,
-      city:parsed.city,
-      address_complete:parsed.complete,
-      request_id:String(data?.result?.requestId || data?.requestId || "").trim()
-    };
-  } catch (error) {
-    return { ok:false, error:"Nie udało się teraz pobrać danych firmy z Ministerstwa Finansów.", detail:String(error) };
+  } catch (_) {
+    // przejdź do fallbacków
   } finally {
     clearTimeout(timer);
   }
+
+  const ceidg = await companyFromCeidg(nip);
+  if (ceidg) return ceidg;
+
+  const known = knownCompanyFallback(nip);
+  if (known) return known;
+
+  return {
+    ok:false,
+    error:"Nie udało się automatycznie pobrać danych firmy z dostępnych rejestrów. NIP może być prawidłowy mimo braku wyniku w Wykazie VAT.",
+    code:"company_lookup_unavailable"
+  };
 }
 
 function normalizeInvoiceRequest(b: any) {
