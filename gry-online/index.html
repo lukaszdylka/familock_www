@@ -67,7 +67,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 #familock-ai-messages{flex:0 1 auto;min-height:0;max-height:330px;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px}
 .fai-msg{max-width:86%;padding:12px 14px;border-radius:12px;font-size:14px;line-height:1.55;white-space:pre-wrap}
 .fai-bot{align-self:flex-start;background:#211f1f;color:#f0ecec;border:1px solid #353030}.fai-user{align-self:flex-end;background:#8b2530;color:#fff}
-.fai-quick{display:flex;gap:7px;flex-wrap:wrap;padding:0 18px 12px}.fai-quick button{border:1px solid #4a4244;background:#161616;color:#b0a8a5;border-radius:999px;padding:6px 9px;font:600 11px "Barlow",sans-serif;cursor:pointer}.fai-quick button:hover{border-color:#8b2530;color:#f0ecec}
+.fai-quick{display:flex;gap:7px;flex-wrap:wrap;padding:0 18px 12px}.fai-quick button{border:1px solid #4a4244;background:#161616;color:#b0a8a5;border-radius:999px;padding:6px 9px;font:600 11px "Barlow",sans-serif;cursor:pointer}.fai-quick button:hover{border-color:#8b2530;color:#f0ecec}.fai-quick button.fai-book{background:#8b2530;border-color:#8b2530;color:#fff}.fai-quick button.fai-book:hover{background:#a02d39}
 .fai-form{display:flex;gap:8px;padding:12px;border-top:1px solid #353030;background:#161616}.fai-form input{min-width:0;flex:1;background:#0d0d0d;color:#f0ecec;border:1px solid #353030;border-radius:9px;padding:10px 11px;font:400 13px "Barlow",sans-serif;outline:none}.fai-form input:focus{border-color:#8b2530}.fai-form button{border:0;border-radius:9px;background:#8b2530;color:#fff;padding:0 13px;font-weight:700;cursor:pointer}
 .fai-note{padding:0 12px 9px;background:#161616;color:#777;font-size:9px;text-align:center}#familock-ai-box:after{display:none!important;content:none!important}
 @media(max-width:520px){#familock-ai-launch{right:12px;bottom:12px}#familock-ai-box{left:8px;right:8px;bottom:64px;width:auto;height:auto;max-height:calc(100dvh - 82px);border-radius:14px}.fai-head{padding:13px 14px}#familock-ai-messages{padding:14px}.fai-msg{max-width:92%;font-size:14px}.fai-quick{padding:0 14px 10px}.fai-form{padding:10px}.fai-note{padding:0 10px 8px}}
@@ -76,9 +76,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <section id="familock-ai-box" role="dialog" aria-label="Czat Familock" aria-hidden="true">
   <div class="fai-head"><div><div class="fai-title">Zapytej Starzika</div><div class="fai-sub">Pomoc przed wizytą w Starziku</div></div><button class="fai-close" type="button" aria-label="Zamknij czat">×</button></div>
   <div id="familock-ai-messages"><div class="fai-msg fai-bot">Pyrsk! Zapytej mie o Familock, Starzika, voucher i co jeszcze chcesz w związku z escape roomem.</div></div>
-  <div class="fai-quick"><button type="button">Ile kosztuje gra?</button><button type="button">Czy mogę przyjść z dzieckiem?</button><button type="button">Ile graczy może wejść?</button></div>
+  <div class="fai-quick"><button type="button" class="fai-book" data-prompt="Chcę zarezerwować Starzika.">Zarezerwuj</button><button type="button" data-prompt="Jaki jest najbliższy wolny termin?">Najbliższy termin</button><button type="button" data-prompt="Chcę kupić voucher do Starzika.">Voucher</button><button type="button" data-prompt="Czy mogę poprosić o fakturę do rezerwacji?">Faktura</button><button type="button" data-prompt="Ile kosztuje gra w Starzika?">Cena</button></div>
   <form class="fai-form"><input id="familock-ai-input" maxlength="500" autocomplete="off" placeholder="Napisz pytanie…" aria-label="Wiadomość"><button type="submit">Wyślij</button></form>
-  <div class="fai-note">Odpowiedzi generuje AI na podstawie informacji Familocka. Nie podawaj danych osobowych.</div>
+  <div class="fai-note">Przy rezerwacji możesz podać dane kontaktowe potrzebne do utworzenia jej w LockMe.</div>
 </section>
 <script>
 (function(){
@@ -98,7 +98,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
   })();
   function toggle(open){box.classList.toggle('open',open);box.setAttribute('aria-hidden',open?'false':'true');launch.setAttribute('aria-expanded',open?'true':'false');if(open)setTimeout(function(){input.focus()},50)}
-  function add(text,who){var d=document.createElement('div');d.className='fai-msg '+(who==='user'?'fai-user':'fai-bot');d.textContent=text;messagesEl.appendChild(d);messagesEl.scrollTop=messagesEl.scrollHeight;return d}
+  function cleanBot(text){return String(text||'').replace(/\*\*/g,'').replace(/^\s*[-*]\s+/gm,'• ')}
+  function add(text,who){var d=document.createElement('div');d.className='fai-msg '+(who==='user'?'fai-user':'fai-bot');d.textContent=who==='user'?text:cleanBot(text);messagesEl.appendChild(d);messagesEl.scrollTop=messagesEl.scrollHeight;return d}
   async function ask(text,source){
     text=(text||'').trim();if(!text||busy)return;source=source==='quick'?'quick':'typed';busy=true;input.value='';add(text,'user');history.push({role:'user',content:text});if(history.length>10)history=history.slice(-10);
     var wait=add('Chwileczkę…','bot');
@@ -108,7 +109,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   launch.addEventListener('click',function(){toggle(!box.classList.contains('open'))});close.addEventListener('click',function(){toggle(false)});
   form.addEventListener('submit',function(e){e.preventDefault();ask(input.value,'typed')});
-  quick.addEventListener('click',function(e){if(e.target.tagName==='BUTTON')ask(e.target.textContent,'quick')});
+  quick.addEventListener('click',function(e){if(e.target.tagName==='BUTTON')ask(e.target.getAttribute('data-prompt')||e.target.textContent,'quick')});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&box.classList.contains('open'))toggle(false)});
 })();
 </script>
