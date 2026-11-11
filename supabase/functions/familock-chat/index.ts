@@ -290,7 +290,7 @@ const BOOKING_TOOLS = [
   {
     type: "function",
     name: "lookup_company_by_nip",
-    description: "Pobiera oficjalne dane firmy po polskim NIP-ie z Wykazu podatników VAT Ministerstwa Finansów. Użyj, gdy klient chce fakturę i poda NIP.",
+    description: "Pobiera dane firmy po polskim NIP-ie. Najpierw używa Wykazu podatników VAT, a następnie dostępnych fallbacków rejestrowych. Użyj, gdy klient chce fakturę i poda NIP.",
     parameters: {
       type: "object",
       properties: {
@@ -588,7 +588,7 @@ Przy krótkiej kontynuacji typu "2" zachowaj wcześniejsze ograniczenie dnia lub
 Jeżeli użytkownik chce zarezerwować, prowadź rozmowę krok po kroku. Do rezerwacji potrzebujesz: daty, wybranej wolnej godziny, liczby osób 2–5, imienia, nazwiska, e-maila i telefonu.
 Zawsze sprawdź wybraną godzinę narzędziem check_availability przed finalnym podsumowaniem.
 Jeżeli w trakcie rezerwacji klient zapyta o fakturę, odpowiedz, że tak. Nie resetuj zebranych wcześniej danych rezerwacji.
-Najpierw poproś wyłącznie o NIP firmy. Gdy klient poda NIP, użyj lookup_company_by_nip. Jeśli narzędzie zwróci pełną nazwę i adres, pokaż je użytkownikowi i poproś o potwierdzenie. Nie pytaj wtedy ponownie o nazwę firmy, ulicę, kod ani miasto.
+Najpierw poproś wyłącznie o NIP firmy. Gdy klient poda NIP, użyj lookup_company_by_nip. Jeśli narzędzie zwróci pełną nazwę i adres, pokaż je użytkownikowi i poproś o potwierdzenie. Nie pytaj wtedy ponownie o nazwę firmy, ulicę, kod ani miasto. Nie zakładaj, że brak wpisu w Wykazie VAT oznacza nieistniejącą firmę.
 Jeżeli lookup_company_by_nip nie znajdzie firmy albo zwróci address_complete=false, dopiero wtedy poproś ręcznie o brakujące dane.
 Jeśli klient chce fakturę, finalne podsumowanie musi zawierać "Faktura: tak", NIP oraz nazwę firmy. Następnie create_reservation wywołaj z invoice_requested=true. Zawsze przekaż invoice_tax_id. Pozostałe dane firmy możesz przekazać, jeśli były dostępne; backend potrafi ponownie pobrać je po NIP-ie.
 Jeśli klient nie chce faktury, ustaw invoice_requested=false.
