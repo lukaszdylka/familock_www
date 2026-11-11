@@ -280,7 +280,8 @@ const BOOKING_TOOLS = [
     parameters: {
       type: "object",
       properties: {
-        date: { type: "string", description: "Data lub określenie daty, np. 2026-11-14, jutro, sobota. Pomiń, aby znaleźć najbliższy termin." },
+        date: { type: "string", description: "Jedna konkretna data lub dzień, np. 2026-11-14, jutro, sobota. Nie używaj tego pola dla zakresu poniedziałek–czwartek." },
+        mode: { type: "string", enum: ["nearest","weekday"], description: "nearest = najbliższy wolny termin ogółem. weekday = najbliższe wolne terminy wyłącznie od poniedziałku do czwartku." },
         people: { type: "integer", minimum: 2, maximum: 5, description: "Liczba graczy, jeśli znana. Pozwala zwrócić dokładną cenę." }
       },
       additionalProperties: false
@@ -367,12 +368,60 @@ async function callBookingBridge(route: "slots"|"reserve"|"invoice", payload: Re
   }
 }
 
+function foldedChat(value: unknown) {
+  return String(value ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ł/g,"l");
+}
+
+function availabilityArgsWithContext(args: any, messages: Array<{role:string,content:string}>) {
+  const userMessages = messages.filter(m => m.role === "user").slice(-7).map(m => String(m.content || ""));
+  const recent = foldedChat(userMessages.join(" | "));
+  const payload: Record<string, unknown> = {};
+
+  const requestedMode = String(args?.mode || "").toLowerCase();
+  if (requestedMode === "weekday" || /w tygodniu|w tygodniu roboczym|poniedzialek.{0,30}czwartek|od poniedzialku do czwartku|pon.?czw|dni robocze/.test(recent)) {
+    payload.mode = "weekday";
+  } else if (requestedMode === "nearest") {
+    payload.mode = "nearest";
+  }
+
+  if (!payload.mode && args?.date) payload.date = String(args.date);
+  if (!payload.mode && !payload.date) {
+    for (const raw of [...userMessages].reverse()) {
+      const folded = foldedChat(raw);
+      if (/\b\d{4}-\d{2}-\d{2}\b|\b(dzisiaj|jutro|pojutrze|poniedzialek|wtorek|sroda|czwartek|piatek|sobota|niedziela)\b|\b\d{1,2}\s+(stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|wrzesnia|pazdziernika|listopada|grudnia)\b/.test(folded)) {
+        payload.date = raw;
+        break;
+      }
+    }
+  }
+
+  const explicitPeople = Number(args?.people);
+  if (Number.isInteger(explicitPeople) && explicitPeople >= 2 && explicitPeople <= 5) payload.people = explicitPeople;
+  if (!payload.people) {
+    for (const raw of [...userMessages].reverse()) {
+      const match = foldedChat(raw).match(/(?:^|\D)([2-5])(?:\D|$)/);
+      if (match) { payload.people = Number(match[1]); break; }
+    }
+  }
+  return payload;
+}
+
+function shouldForceAvailability(messages: Array<{role:string,content:string}>) {
+  if (bookingConfirmationPresent(messages)) return false;
+  const last = String(messages[messages.length - 1]?.content || "");
+  const foldedLast = foldedChat(last).trim();
+  const previousAssistant = foldedChat([...messages].reverse().find((m,idx) => m.role === "assistant" && idx > 0)?.content || "");
+  const recent = foldedChat(messages.slice(-7).map(m => m.content).join(" | "));
+
+  if (/woln|termin|najbliz|poniedzial|wtorek|srod|czwart|piatek|sobot|niedziel|jutro|pojutrze|w tygodniu|dni robocze/.test(foldedLast)) return true;
+  if (/^(i co|no i co|sprawdz|sprawdz prosze|sprawdz proszę)[?!. ]*$/.test(foldedLast) && /sprawdz|termin|woln/.test(previousAssistant)) return true;
+  if (/^[2-5]$/.test(foldedLast) && /ile osob|liczba osob|osob bedzie/.test(previousAssistant) && /termin|woln|poniedzial|wtorek|srod|czwart|piatek|sobot|niedziel/.test(recent)) return true;
+  return false;
+}
+
 async function runBookingTool(name: string, args: any, messages: Array<{role:string,content:string}>, conversationId: string) {
   if (name === "check_availability") {
-    const payload: Record<string, unknown> = {};
-    if (args?.date) payload.date = String(args.date);
-    if (Number.isInteger(Number(args?.people))) payload.people = Number(args.people);
-    return callBookingBridge("slots", payload);
+    return callBookingBridge("slots", availabilityArgsWithContext(args, messages));
   }
   if (name === "create_reservation") {
     if (!bookingConfirmationPresent(messages)) {
@@ -517,6 +566,9 @@ Deno.serve(async (req: Request) => {
 REZERWACJE LIVE:
 Masz dostęp do rzeczywistego kalendarza LockMe przez narzędzia.
 Jeżeli użytkownik pyta o wolny termin, konkretny dzień albo najbliższy termin, użyj check_availability. Nie zgaduj dostępności i nie opieraj jej na samym publicznym profilu LockMe.
+Jeżeli użytkownik mówi "w tygodniu", "poniedziałek–czwartek", "dni robocze" albo podobnie, użyj check_availability z mode="weekday". Narzędzie wtedy naprawdę sprawdza kolejne dni pon–czw i zwraca kilka najbliższych dni z wolnymi godzinami.
+Nie mów "sprawdzę", "już sprawdzam" ani "mogę sprawdzić", jeśli w tej samej odpowiedzi nie wywołujesz check_availability. Każde twierdzenie, że termin jest wolny lub że nie ma wolnych terminów, musi wynikać z wyniku narzędzia w tej odpowiedzi.
+Przy krótkiej kontynuacji typu "2" zachowaj wcześniejsze ograniczenie dnia lub zakresu. Jeśli wcześniej klient chciał poniedziałek, nie wracaj do najbliższego terminu ogółem. Jeśli chciał "w tygodniu", zachowaj mode="weekday".
 Jeżeli użytkownik chce zarezerwować, prowadź rozmowę krok po kroku. Do rezerwacji potrzebujesz: daty, wybranej wolnej godziny, liczby osób 2–5, imienia, nazwiska, e-maila i telefonu.
 Zawsze sprawdź wybraną godzinę narzędziem check_availability przed finalnym podsumowaniem.
 Jeżeli w trakcie rezerwacji klient zapyta o fakturę, odpowiedz, że tak. Nie resetuj zebranych wcześniej danych rezerwacji. Zapytaj tylko o brakujące dane do faktury: pełna nazwa firmy, NIP, ulica i numer, kod pocztowy, miasto.
@@ -539,7 +591,7 @@ Jeżeli termin został w międzyczasie zajęty, zaproponuj wolne godziny zwróco
         instructions,
         input:workingInput,
         tools:BOOKING_TOOLS,
-        tool_choice:"auto",
+        tool_choice:shouldForceAvailability(messages)?{type:"function",name:"check_availability"}:"auto",
         parallel_tool_calls:false,
         max_output_tokens:450,
         reasoning:{ effort:"none" },
