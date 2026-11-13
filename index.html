@@ -183,6 +183,54 @@ section{padding:5.5rem 3rem}
 .pokoj-big-icon{position:absolute;top:1.5rem;right:2rem;font-family:var(--fd);font-size:9rem;font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(90,42,46,.14);line-height:1;pointer-events:none;user-select:none}
 .pokoj-tag{font-family:var(--fd);font-size:.62rem;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--gray-light);margin-bottom:.6rem;position:relative}
 .pokoj-name{font-family:var(--fd);font-size:clamp(3rem,5vw,4.2rem);font-weight:900;line-height:.95;margin-bottom:1rem;position:relative}
+.starzik-rank {
+  position: relative;
+  display: inline-flex;
+  align-self: flex-start;
+  margin-bottom: .85rem;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 11px 5px 5px;
+  border: 1px solid var(--red-dark, #5a2a2e);
+  border-radius: 3px;
+  background: var(--bg2, #121212);
+  color: var(--cream, #f0ecec);
+  font: 700 16px/1 var(--fd, "Barlow Condensed", "Arial Narrow", sans-serif);
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+.starzik-rank:hover {
+  border-color: var(--red-glow, #d2606f);
+}
+
+.starzik-rank:focus-visible {
+  outline: 2px solid var(--red-glow, #d2606f);
+  outline-offset: 3px;
+}
+
+.starzik-rank__number {
+  display: grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: 2px;
+  background: var(--red, #8b2530);
+  color: #fff;
+  font-size: 23px;
+}
+
+.starzik-rank__copy {
+  display: grid;
+  gap: 3px;
+}
+
+.starzik-rank__source {
+  color: var(--cream2, #b0a8a5);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .07em;
+}
 .pokoj-desc{font-size:.88rem;color:var(--cream2);line-height:1.75;max-width:380px;margin-bottom:1.8rem;position:relative}
 .pokoj-meta{display:flex;gap:2rem;position:relative}
 .meta-val{font-family:var(--fd);font-size:1.35rem;font-weight:800;color:var(--cream)}
@@ -553,6 +601,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="pokoj-big-icon" aria-hidden="true" style="-webkit-text-stroke:0;color:initial;opacity:.1">📜</div>
       <p class="pokoj-tag">Pokój zagadek · 2–5 osób</p>
       <h3 class="pokoj-name">Starzik</h3>
+      <a class="starzik-rank"
+         href="https://lock.me/pl/poland/slaskie/swietochlowice/escape-room/tajemnica-garazu/14685-starzik"
+         aria-label="Starzik, 2. miejsce na Śląsku w rankingu Lockme">
+        <span class="starzik-rank__number">2.</span>
+        <span class="starzik-rank__copy">
+          <span>miejsce na Śląsku</span>
+          <span class="starzik-rank__source">Ranking Lockme</span>
+        </span>
+      </a>
       <p class="pokoj-desc">Dziadek Józef zaginął. Nikt nie ma kluczy. Jako pracownicy MOPS musicie dostać się do familoka i odkryć, co mu się przydarzyło.</p>
       <div class="pokoj-meta">
         <div><div class="meta-val">90 min</div><div class="meta-key">Czas gry</div></div>
